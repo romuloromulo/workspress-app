@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import db from "@/lib/supabase/db";
 import { ThemeProvider } from "@/lib/providers/next-theme-provider";
-console.log(db);
+// console.log(db);
 
 const inter = Inter({ subsets: ["latin"] });
 
