@@ -12,8 +12,10 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 const routes = [
   { title: "Ferramentas", href: "#ferramentas" },
@@ -24,39 +26,39 @@ const routes = [
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Alert Dialog",
+    title: "Alerta de Diálogo",
     href: "#",
     description:
-      "A modal dialog that interrupts the user with important content and expects a response.",
+      "Um diálogo modal que interrompe o usuário com conteúdo importante e espera por uma resposta.",
   },
   {
-    title: "Hover Card",
+    title: "Cartão de Destaque",
     href: "#",
     description:
-      "For sighted users to preview content available behind a link.",
+      "Para usuários com visão para visualizar o conteúdo disponível por trás de um link.",
   },
   {
-    title: "Progress",
+    title: "Progresso",
     href: "#",
     description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+      "Exibe um indicador mostrando o progresso de conclusão de uma tarefa, geralmente exibido como uma barra de progresso.",
   },
   {
-    title: "Scroll-area",
+    title: "Área de Rolagem",
     href: "#",
-    description: "Visually or semantically separates content.",
+    description: "Separa visual ou semanticamente o conteúdo.",
   },
   {
-    title: "Tabs",
-    href: "#",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
+    title: "Abas",
     href: "#",
     description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "Um conjunto de seções de conteúdo em camadas, conhecidas como painéis de abas, que são exibidos um de cada vez.",
+  },
+  {
+    title: "Dica de Ferramenta",
+    href: "#",
+    description:
+      "Uma janela pop-up que exibe informações relacionadas a um elemento quando o elemento recebe o foco do teclado ou o mouse paira sobre ele.",
   },
 ];
 
@@ -144,9 +146,70 @@ function Header() {
               })}>
               Planos
             </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4  md:grid-row-2  ">
+                <ListItem title="Plano Pro" href={"#"}>
+                  Desbloqueie todo o poder com colaboração.
+                </ListItem>
+                <ListItem title="Plano Gratuito" href={"#"}>
+                  Ótimo para equipes que estão começando.
+                </ListItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuContent>
+              <ul
+                className="grid w-[400px]
+              gap-3
+              p-4
+              md:w-[500px]
+              md:grid-cols-2 
+              lg:w-[600px]
+              ">
+                {components.map((component) => (
+                  <ListItem
+                    key={component.title}
+                    title={component.title}
+                    href={component.href}>
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="#">
+              <NavigationMenuLink
+                className={cn(navigationMenuTriggerStyle(), {
+                  "dark:text-white": path === "#depoimentos",
+                  "dark:text-white/40": path !== "#depoimentos",
+                  "font-normal": true,
+                  "text-xl": true,
+                })}>
+                Testimonial
+              </NavigationMenuLink>
+            </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+      <aside
+        className="flex
+        w-full
+        gap-2
+        justify-end
+      ">
+        <Link href={"/login"}>
+          <Button variant="btn-secondary" className=" p-1 hidden sm:block">
+            Login
+          </Button>
+        </Link>
+        <Link href="/signup">
+          <Button variant="btn-primary" className="whitespace-nowrap">
+            Sign Up
+          </Button>
+        </Link>
+      </aside>
     </header>
   );
 }
