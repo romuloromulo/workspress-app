@@ -149,7 +149,7 @@ function HomePage() {
         "
         />
         <TitleSection
-          title="Fique em controle das suas reuniões todas em um só lugar."
+          title="Fique em controle de todos suas reuniões em um só lugar."
           subheading="Capture suas ideias, pensamentos e notas em um lugar estruturado e organizado."
           pill="Ferramentas"
         />

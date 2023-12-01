@@ -3,9 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import db from "@/lib/supabase/db";
 import { ThemeProvider } from "@/lib/providers/next-theme-provider";
+import { DM_Sans } from "next/font/google";
+import { twMerge } from "tailwind-merge";
 // console.log(db);
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Workspress",
@@ -20,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <body className={inter.className}>{children}</body>
+        <body className={twMerge("bg-background", inter.className)}>
+          {children}
+        </body>
       </ThemeProvider>
     </html>
   );
