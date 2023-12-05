@@ -64,7 +64,7 @@ const LoginPage = () => {
         <FormField
           disabled={isLoading}
           control={form.control}
-          name="password"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormControl>

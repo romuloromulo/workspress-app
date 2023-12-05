@@ -67,6 +67,7 @@ const Signup = () => {
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
+
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
     const { error } = await actionSignUpUser({ email, password });
@@ -78,7 +79,7 @@ const Signup = () => {
     setConfirmation(true);
   };
 
-  const signUpHandler = () => {};
+  // const signUpHandler = () => {};
 
   return (
     <Form {...form}>
@@ -147,41 +148,33 @@ const Signup = () => {
             <Button type="submit" className="w-full p-6" disabled={isLoading}>
               {!isLoading ? "Criar Conta" : <Loader />}
             </Button>
+            <span className="self-center">
+              Já possui uma conta?{" "}
+              <Link
+                href="/login"
+                className="text-primary hover:text-white duration-300">
+                Faça seu login.
+              </Link>
+            </span>
           </>
         )}
 
         {submitError && <FormMessage>{submitError}</FormMessage>}
-        {/* <Button
-          type="submit"
-          className="w-full p-6 hover:bg-violet-600 duration-300"
-          size="lg"
-          disabled={isLoading}>
-          {!isLoading ? "Login" : <Loader />}
-        </Button> */}
-        <span className="self-center">
-          Já possui uma conta?{" "}
-          <Link
-            href="/login"
-            className="text-primary hover:text-white duration-300">
-            Faça seu login.
-          </Link>
-        </span>
-        {confirmation ||
-          (codeExchangeError && (
-            <>
-              <Alert className={confirmationAndErrorStyles}>
-                {!codeExchangeError && <MailCheck className="h-4 w-4" />}
-                <AlertTitle>
-                  {codeExchangeError ? "Invalid Link" : "Check your email."}
-                </AlertTitle>
-                <AlertDescription>
-                  {codeExchangeError || "An email confirmation has been sent."}
-                </AlertDescription>
-              </Alert>
-            </>
-          ))}
+
+        {(confirmation || codeExchangeError) && (
+          <>
+            <Alert className={confirmationAndErrorStyles}>
+              {!codeExchangeError && <MailCheck className="h-4 w-4" />}
+              <AlertTitle>
+                {codeExchangeError ? "Link inválido" : "Cheque seu e-mail."}
+              </AlertTitle>
+              <AlertDescription>
+                {codeExchangeError || "Um e-mail de confirmação foi enviado."}
+              </AlertDescription>
+            </Alert>
+          </>
+        )}
       </form>
-      Signup
     </Form>
   );
 };
