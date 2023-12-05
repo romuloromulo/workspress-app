@@ -22,6 +22,7 @@ import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { MailCheck } from "lucide-react";
 import { FormSchema } from "@/lib/types";
+import { actionSignUpUser } from "@/lib/server-actions/auth-actions";
 
 const SignUpFormSchema = z
   .object({
@@ -44,7 +45,7 @@ const Signup = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [submitError, setSubmitError] = useState("");
-  const [confirmation, setConfirmation] = useState("");
+  const [confirmation, setConfirmation] = useState<boolean | undefined>();
 
   const codeExchangeError = useMemo(() => {
     if (!searchParams) return "";
@@ -66,14 +67,18 @@ const Signup = () => {
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
-
-  const onSubmit = async ({
-    email,
-    password,
-  }: z.infer<typeof FormSchema>) => {};
+  const isLoading = form.formState.isSubmitting;
+  const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
+    const { error } = await actionSignUpUser({ email, password });
+    if (error) {
+      setSubmitError(error.message);
+      form.reset();
+      return;
+    }
+    setConfirmation(true);
+  };
 
   const signUpHandler = () => {};
-  const isLoading = form.formState.isSubmitting;
 
   return (
     <Form {...form}>
@@ -82,7 +87,7 @@ const Signup = () => {
           if (submitError) setSubmitError("");
         }}
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full sm:justify-center sm-w-[440px] space-y-6 flex flex-col">
+        className="w-full sm:w-[400px] sm:justify-center sm-w-[440px] space-y-6 flex flex-col">
         <Link href="/" className="w-full flex justify-center items-center">
           <Image src={Logo} alt="worspress Logo" width={50} height={50} />
           <span className="font-semibold dark:text-white text-4xl first-letter:ml-2 ">
@@ -99,7 +104,7 @@ const Signup = () => {
             <FormField
               disabled={isLoading}
               control={form.control}
-              name="password"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
