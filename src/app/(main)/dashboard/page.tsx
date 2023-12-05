@@ -1,10 +1,11 @@
+"use server";
 import React from "react";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 import { cookies } from "next/headers";
 import db from "@/lib/supabase/db";
 import { redirect } from "next/navigation";
-import { DashboardSetup } from "@/components/dashboard/dashboard-setup";
+import DashboardSetup from "@/components/dashboard/dashboard-setup";
 import {
   Card,
   CardContent,
@@ -13,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getUserSubscriptionStatus } from "@/lib/supabase/queries";
 
 const DashboardPage = async () => {
   const supabase = createServerComponentClient({ cookies });
@@ -27,10 +29,10 @@ const DashboardPage = async () => {
     where: (workspace, { eq }) => eq(workspace.workspaceOwner, user.id),
   });
 
-  // const { data: subscription, error: subscriptionError } =
-  //   await getUserSubscriptionStatus(user.id);
+  const { data: subscription, error: subscriptionError } =
+    await getUserSubscriptionStatus(user.id);
 
-  // if (subscriptionError) return;
+  if (subscriptionError) return;
 
   if (!workspace)
     return (
@@ -42,7 +44,7 @@ const DashboardPage = async () => {
         justify-center
         items-center
   ">
-        <DashboardSetup subscription={""} user={user} />
+        <DashboardSetup subscription={subscription} user={user} />
       </div>
     );
 
