@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { MailCheck } from "lucide-react";
+import { FormSchema } from "@/lib/types";
 
 const SignUpFormSchema = z
   .object({
@@ -65,9 +66,15 @@ const Signup = () => {
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: { email: "", password: "", confirmPassword: "" },
   });
-  const onSubmit = () => {};
+
+  const onSubmit = async ({
+    email,
+    password,
+  }: z.infer<typeof FormSchema>) => {};
+
   const signUpHandler = () => {};
   const isLoading = form.formState.isSubmitting;
+
   return (
     <Form {...form}>
       <form
