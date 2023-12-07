@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import { getFiles } from "../supabase/queries";
 
 export type appFoldersType = Folder & { files: File[] | [] };
+
 export type appWorkspacesType = workspace & {
   folders: appFoldersType[] | [];
 };

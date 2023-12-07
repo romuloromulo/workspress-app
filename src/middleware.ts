@@ -3,10 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  // console.log(req, "REQ AQUI");
   const supabase = createMiddlewareClient({ req, res });
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
+  // console.log(session, "DATA AQUI");
+
   if (req.nextUrl.pathname.startsWith("dashboard")) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
