@@ -45,3 +45,5 @@ export const getFiles = async (folderId: string) => {
     return { data: null, error: "Error" };
   }
 };
+
+export const getFolders = async () => {};
