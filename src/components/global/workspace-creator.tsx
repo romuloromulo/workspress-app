@@ -1,6 +1,6 @@
 "use client";
 import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
-import { User } from "@/lib/supabase/supabase.types";
+import { User, workspace } from "@/lib/supabase/supabase.types";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
@@ -14,6 +14,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Lock, Share } from "lucide-react";
+import { Button } from "../ui/button";
+import { v4 } from "uuid";
+import { toast } from "../ui/use-toast";
+import { addCollaborators, createWorkspace } from "@/lib/supabase/queries";
 
 const WorkspaceCreateor = () => {
   const { user } = useSupabaseUser();
@@ -22,13 +26,42 @@ const WorkspaceCreateor = () => {
   const [permissions, setPermissions] = useState("private");
   const [title, setTitle] = useState("");
   const [collaborators, setCollaborators] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  function addCollabrorator(user: User) {
+  function addCollaborator(user: User) {
     setCollaborators([...collaborators, user]);
   }
 
   function removeCollaborator(user: User) {
     setCollaborators(collaborators.filter((c) => c.id !== user.id));
+  }
+  async function createItem() {
+    const uuid = v4();
+    if (user?.id) {
+      const newWorkspace: workspace = {
+        data: null,
+        createdAt: new Date().toISOString(),
+        iconId: "💼",
+        id: uuid,
+        inTrash: "",
+        title,
+        workspaceOwner: user.id,
+        logo: null,
+        bannerUrl: "",
+      };
+      if (permissions === "private") {
+        toast({ title: "Success", description: "Created the workspace" });
+        await createWorkspace(newWorkspace);
+        router.refresh();
+      }
+      if (permissions === "shared") {
+        toast({ title: "Success", description: "Created the workspace" });
+        await createWorkspace(newWorkspace);
+        await addCollaborators(collaborators, uuid);
+        router.refresh();
+      }
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -60,7 +93,7 @@ const WorkspaceCreateor = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="privado">
+              <SelectItem value="private">
                 <div className="p-2 flex gap-4 justify-center items-center">
                   <Lock />
                   <article className="text-left flex flex-col box-content">
@@ -72,7 +105,7 @@ const WorkspaceCreateor = () => {
                   </article>
                 </div>
               </SelectItem>
-              <SelectItem value="compartilhada">
+              <SelectItem value="shared">
                 <div className="p-2 flex gap-4 justify-center items-center">
                   <Share />
                   <article className="text-left flex flex-col box-content">
@@ -85,6 +118,16 @@ const WorkspaceCreateor = () => {
           </SelectContent>
         </Select>
       </>
+      {permissions === "shared" && <div></div>}
+      <Button
+        type="button"
+        disabled={
+          !title || (permissions === "shared" && collaborators.length === 0)
+        }
+        variant={"secondary"}
+        onClick={createItem}>
+        Criar{" "}
+      </Button>
     </div>
   );
 };

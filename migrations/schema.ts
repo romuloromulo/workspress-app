@@ -134,6 +134,25 @@ export const prices = pgTable("prices", {
   trialPeriodDays: integer("trial_period_days"),
   metadata: jsonb("metadata"),
 });
+
+// export const subscriptions = pgTable("subscriptions", {
+// 	id: text("id").primaryKey().notNull(),
+// 	userId: uuid("user_id").notNull(),
+// 	status: subscriptionStatus("status"),
+// 	metadata: jsonb("metadata"),
+// 	priceId: text("price_id").references(() => prices.id).references(() => prices.id),
+// 	quantity: integer("quantity"),
+// 	cancelAtPeriodEnd: boolean("cancel_at_period_end"),
+// 	created: timestamp("created", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())).notNull(),
+// 	currentPeriodStart: timestamp("current_period_start", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())).notNull(),
+// 	currentPeriodEnd: timestamp("current_period_end", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())).notNull(),
+// 	endedAt: timestamp("ended_at", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
+// 	cancelAt: timestamp("cancel_at", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
+// 	canceledAt: timestamp("canceled_at", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
+// 	trialStart: timestamp("trial_start", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
+// 	trialEnd: timestamp("trial_end", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
+// // });
+
 export const subscriptions = pgTable("subscriptions", {
   id: text("id").primaryKey().notNull(),
   userId: uuid("user_id").notNull(),
@@ -180,4 +199,16 @@ export const subscriptions = pgTable("subscriptions", {
     withTimezone: true,
     mode: "string",
   }).default(sql`now()`),
+});
+
+export const collaborators = pgTable("collaborators", {
+  workspaceId: uuid("workspace_id")
+    .notNull()
+    .references(() => workspaces.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 });
