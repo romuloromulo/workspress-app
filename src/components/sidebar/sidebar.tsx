@@ -5,23 +5,30 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 interface SidebarProps {
-  params: { worksplaceId: string };
+  params: { workspace: string };
   className?: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
   const supabase = createServerComponentClient({ cookies });
+  //user
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   if (!user) return;
+
+  //subscr
   const { data: subscriptionData, error: subscriptionError } =
     await getUserSubscriptionStatus(user.id);
 
-  const { data: worksplaceFolderData, error: foldersError } = await getFolders(
-    params.worksplaceId
+  //folders
+  console.log("PARAMS", params.workspace);
+  const { data: workspaceFolderData, error: foldersError } = await getFolders(
+    params.workspace
   );
-
+  //error
+  console.log("FOLDER:", foldersError, "SUBS", subscriptionError);
   if (subscriptionError || foldersError) redirect("/dashboard");
 
   return <div>Sidebar</div>;

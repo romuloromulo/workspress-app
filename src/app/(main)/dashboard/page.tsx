@@ -6,14 +6,7 @@ import { cookies } from "next/headers";
 import db from "@/lib/supabase/db";
 import { redirect } from "next/navigation";
 import DashboardSetup from "@/components/dashboard/dashboard-setup";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { getUserSubscriptionStatus } from "@/lib/supabase/queries";
 
 const DashboardPage = async () => {
