@@ -16,7 +16,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Subscription, workspace } from "@/lib/supabase/supabase.types";
 import { Button } from "../ui/button";
-import Loader from "../Loader";
+import Loader from "../global/Loader";
 import { createWorkspace } from "@/lib/supabase/queries";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";

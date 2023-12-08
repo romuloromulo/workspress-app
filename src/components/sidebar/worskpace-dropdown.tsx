@@ -4,6 +4,8 @@ import { useAppState } from "@/lib/providers/state-providers";
 import { workspace } from "@/lib/supabase/supabase.types";
 import React, { useEffect, useState } from "react";
 import SelectedWorkspace from "./selected-workspace";
+import CustomDialogTrigger from "../global/custom-dialog-trigger";
+import WorkspaceCreateor from "../global/workspace-creator";
 
 interface WorkspaceDropdownProps {
   privateWorkspaces: workspace[] | [];
@@ -97,6 +99,33 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
                   ))}{" "}
                 </>
               )}
+              <CustomDialogTrigger
+                header="Criar uma área de trabalho"
+                content={<WorkspaceCreateor />}
+                description="Áreas de trabalho dão a você poder para colaborar com outras pessoas. Você pode mudar as configurações de privacidade da sua área de trabalho mesmo após já ter a criado">
+                <div
+                  className="flex 
+              transition-all 
+              hover:bg-muted 
+              justify-center 
+              items-center 
+              gap-2 
+              p-2 
+              w-full">
+                  <article
+                    className="text-slate-500 
+                rounded-full
+                 bg-slate-800 
+                 w-4 
+                 h-4 
+                 flex 
+                 items-center 
+                 justify-center">
+                    +
+                  </article>
+                  Criar área de trabalho.
+                </div>
+              </CustomDialogTrigger>
             </div>
           </div>{" "}
         </div>
