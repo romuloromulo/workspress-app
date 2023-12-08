@@ -1,8 +1,16 @@
-import { getFolders, getUserSubscriptionStatus } from "@/lib/supabase/queries";
+import {
+  getCollaboratingWorkspaces,
+  getFolders,
+  getPrivateWorkspaces,
+  getSharedWorkspaces,
+  getUserSubscriptionStatus,
+} from "@/lib/supabase/queries";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
+import { twMerge } from "tailwind-merge";
+import WorkspaceDropdown from "./worskpace-dropdown";
 
 interface SidebarProps {
   params: { workspace: string };
@@ -23,15 +31,42 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
     await getUserSubscriptionStatus(user.id);
 
   //folders
-  console.log("PARAMS", params.workspace);
+  // console.log("PARAMS", params.workspace);
   const { data: workspaceFolderData, error: foldersError } = await getFolders(
     params.workspace
   );
   //error
-  console.log("FOLDER:", foldersError, "SUBS", subscriptionError);
+  // console.log("FOLDER:", foldersError, "SUBS", subscriptionError);
   if (subscriptionError || foldersError) redirect("/dashboard");
 
-  return <div>Sidebar</div>;
+  const [privateWorkspaces, collaboratingWorkspaces, sharedWorkspaces] =
+    await Promise.all([
+      getPrivateWorkspaces(user.id),
+      getCollaboratingWorkspaces(user.id),
+      getSharedWorkspaces(user.id),
+    ]);
+
+  return (
+    <aside
+      className={twMerge(
+        "hidden sm:flex sm:flex-col w-[280px] shrink-0 p-4 md:gap-4 !justify-between",
+        className
+      )}>
+      <div>
+        <WorkspaceDropdown
+          privateWorkspaces={privateWorkspaces}
+          sharedWorkspaces={sharedWorkspaces}
+          collaboratingWorkspaces={collaboratingWorkspaces}
+          defaultValue={[
+            ...privateWorkspaces,
+            ...collaboratingWorkspaces,
+            ...sharedWorkspaces,
+          ].find((workspace) => workspace.id === params.workspace)}
+        />
+      </div>
+      SidebarASDSADSA
+    </aside>
+  );
 };
 
 export default Sidebar;
