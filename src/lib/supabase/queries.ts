@@ -5,6 +5,7 @@ import { and, eq, ilike, notExists } from "drizzle-orm";
 import { File, Folder, Subscription, User, workspace } from "./supabase.types";
 import { files, folders, users, workspaces } from "../../../migrations/schema";
 import { collaborators } from "./schema";
+import { experimental_taintUniqueValue } from "react";
 
 export const createWorkspace = async (workspace: workspace) => {
   try {
@@ -143,4 +144,13 @@ export const addCollaborators = async (users: User[], workspaceId: string) => {
     if (!userExists)
       await db.insert(collaborators).values({ workspaceId, userId: user.id });
   });
+};
+
+export const getUsersFromSearch = async (email: string) => {
+  if (!email) return [];
+  const accounts = db
+    .select()
+    .from(users)
+    .where(ilike(users.email, `${email}%`));
+  return accounts;
 };

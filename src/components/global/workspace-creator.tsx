@@ -13,11 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Lock, Share } from "lucide-react";
+import { Lock, Plus, Share } from "lucide-react";
 import { Button } from "../ui/button";
 import { v4 } from "uuid";
 import { toast } from "../ui/use-toast";
 import { addCollaborators, createWorkspace } from "@/lib/supabase/queries";
+import CollaboratorSearch from "./collaboratorsearch";
+import { ScrollArea } from "../ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const WorkspaceCreateor = () => {
   const { user } = useSupabaseUser();
@@ -36,6 +39,7 @@ const WorkspaceCreateor = () => {
     setCollaborators(collaborators.filter((c) => c.id !== user.id));
   }
   async function createItem() {
+    setIsLoading(true);
     const uuid = v4();
     if (user?.id) {
       const newWorkspace: workspace = {
@@ -118,11 +122,87 @@ const WorkspaceCreateor = () => {
           </SelectContent>
         </Select>
       </>
-      {permissions === "shared" && <div></div>}
+      {permissions === "shared" && (
+        <div>
+          <CollaboratorSearch
+            existingCollaborators={collaborators}
+            getCollaborator={(user) => {
+              addCollaborator(user);
+            }}>
+            <Button type="button" className="text-sm mt-4">
+              <Plus />
+              Adicione colaborator
+            </Button>
+          </CollaboratorSearch>
+          <div className="mt-4">
+            <span className="text-sm text-muted-foreground">
+              Colaboradores{collaborators.length || ""}
+            </span>
+            <ScrollArea
+              className="
+            h-[120px]
+            overflow-y-scroll
+            w-full
+            rounded-md
+            border
+            border-muted-foreground/20">
+              {collaborators.length ? (
+                collaborators.map((c, index) => (
+                  <div
+                    className="p-4 flex
+                      justify-between
+                      items-center
+                "
+                    key={c.id}>
+                    <div className="flex gap-4 items-center">
+                      <Avatar>
+                        <AvatarImage src={`/avatars/${index}.png`} />
+                        <AvatarFallback>PJ</AvatarFallback>
+                      </Avatar>
+                      <div
+                        className="text-sm 
+                          gap-2
+                          text-muted-foreground
+                          overflow-hidden
+                          overflow-ellipsis
+                          sm:w-[300px]
+                          w-[140px]
+                        ">
+                        {c.email}
+                      </div>
+                    </div>
+                    <Button
+                      variant="secondary"
+                      onClick={() => removeCollaborator(c)}>
+                      Remover
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                <div
+                  className="absolute
+                  right-0 left-0
+                  top-0
+                  bottom-0
+                  flex
+                  justify-center
+                  items-center
+                ">
+                  <span className="text-muted-foreground text-sm">
+                    Você não possui colaboradores.
+                  </span>
+                </div>
+              )}
+            </ScrollArea>
+          </div>
+        </div>
+      )}
       <Button
         type="button"
         disabled={
-          !title || (permissions === "shared" && collaborators.length === 0)
+          !title ||
+          (permissions === "shared" && collaborators.length === 0) ||
+          isLoading
         }
         variant={"secondary"}
         onClick={createItem}>
