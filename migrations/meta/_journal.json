@@ -43,6 +43,13 @@
       "when": 1702353456697,
       "tag": "0005_huge_scourge",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1702408690764,
+      "tag": "0006_swift_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

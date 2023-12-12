@@ -57,7 +57,9 @@ export const subscriptionStatus = pgEnum("subscription_status", [
 
 export const workspaces = pgTable("workspaces", {
   id: uuid("id").defaultRandom().primaryKey().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
   workspaceOwner: uuid("workspace_owner").notNull(),
   title: text("title").notNull(),
   iconId: text("icon_id").notNull(),
@@ -69,7 +71,9 @@ export const workspaces = pgTable("workspaces", {
 
 export const folders = pgTable("folders", {
   id: uuid("id").defaultRandom().primaryKey().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
   title: text("title").notNull(),
   iconId: text("icon_id").notNull(),
   data: text("data"),
@@ -82,7 +86,9 @@ export const folders = pgTable("folders", {
 
 export const files = pgTable("files", {
   id: uuid("id").defaultRandom().primaryKey().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
   title: text("title").notNull(),
   iconId: text("icon_id").notNull(),
   data: text("data"),
@@ -134,24 +140,6 @@ export const prices = pgTable("prices", {
   trialPeriodDays: integer("trial_period_days"),
   metadata: jsonb("metadata"),
 });
-
-// export const subscriptions = pgTable("subscriptions", {
-// 	id: text("id").primaryKey().notNull(),
-// 	userId: uuid("user_id").notNull(),
-// 	status: subscriptionStatus("status"),
-// 	metadata: jsonb("metadata"),
-// 	priceId: text("price_id").references(() => prices.id).references(() => prices.id),
-// 	quantity: integer("quantity"),
-// 	cancelAtPeriodEnd: boolean("cancel_at_period_end"),
-// 	created: timestamp("created", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())).notNull(),
-// 	currentPeriodStart: timestamp("current_period_start", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())).notNull(),
-// 	currentPeriodEnd: timestamp("current_period_end", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())).notNull(),
-// 	endedAt: timestamp("ended_at", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
-// 	cancelAt: timestamp("cancel_at", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
-// 	canceledAt: timestamp("canceled_at", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
-// 	trialStart: timestamp("trial_start", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
-// 	trialEnd: timestamp("trial_end", { withTimezone: true, mode: 'string' }).default(timezone('utc'::text, now())),
-// // });
 
 export const subscriptions = pgTable("subscriptions", {
   id: text("id").primaryKey().notNull(),
@@ -208,4 +196,5 @@ export const collaborators = pgTable("collaborators", {
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
 });
