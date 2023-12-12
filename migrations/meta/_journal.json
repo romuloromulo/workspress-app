@@ -22,6 +22,27 @@
       "when": 1701918900303,
       "tag": "0002_sloppy_boomer",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1702352863582,
+      "tag": "0003_wakeful_the_fallen",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1702353340635,
+      "tag": "0004_nappy_spitfire",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1702353456697,
+      "tag": "0005_huge_scourge",
+      "breakpoints": true
     }
   ]
 }

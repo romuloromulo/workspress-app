@@ -98,7 +98,7 @@ const CollaboratorSearch: React.FC<CollaboratorSearchProps> = ({
                 className=" p-4 flex justify-between items-center">
                 <div className="flex gap-4 items-center">
                   <Avatar className="w-8 h-8">
-                    <AvatarImage src={`/avatars/${index}.png`} />
+                    <AvatarImage src={`/avatars/${index + 1}.png`} />
                     <AvatarFallback>CP</AvatarFallback>
                   </Avatar>
                   <div

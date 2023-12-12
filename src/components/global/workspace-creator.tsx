@@ -16,7 +16,7 @@ import {
 import { Lock, Plus, Share } from "lucide-react";
 import { Button } from "../ui/button";
 import { v4 } from "uuid";
-import { toast } from "../ui/use-toast";
+import { useToast } from "../ui/use-toast";
 import { addCollaborators, createWorkspace } from "@/lib/supabase/queries";
 import CollaboratorSearch from "./collaboratorsearch";
 import { ScrollArea } from "../ui/scroll-area";
@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const WorkspaceCreateor = () => {
   const { user } = useSupabaseUser();
+  const { toast } = useToast();
   const router = useRouter();
 
   const [permissions, setPermissions] = useState("private");
@@ -54,15 +55,17 @@ const WorkspaceCreateor = () => {
         bannerUrl: "",
       };
       if (permissions === "private") {
-        toast({ title: "Success", description: "Created the workspace" });
+        toast({ title: "Successo", description: "Área de trabalho criada!" });
         await createWorkspace(newWorkspace);
-        router.refresh();
+        console.log("CRIAADA PRIVADA");
+        window.location.reload();
       }
       if (permissions === "shared") {
-        toast({ title: "Success", description: "Created the workspace" });
+        toast({ title: "Successo", description: "Área de trabalho criada!" });
         await createWorkspace(newWorkspace);
         await addCollaborators(collaborators, uuid);
-        router.refresh();
+        console.log("CRIAADA COMPARTILHADA");
+        window.location.reload();
       }
     }
     setIsLoading(false);
@@ -156,7 +159,7 @@ const WorkspaceCreateor = () => {
                     key={c.id}>
                     <div className="flex gap-4 items-center">
                       <Avatar>
-                        <AvatarImage src={`/avatars/${index}.png`} />
+                        <AvatarImage src={`/avatars/${index + 1}.png`} />
                         <AvatarFallback>PJ</AvatarFallback>
                       </Avatar>
                       <div

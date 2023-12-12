@@ -110,8 +110,6 @@ export const subscriptions = pgTable("subscriptions", {
 });
 
 export const collaborators = pgTable("collaborators", {
-  id: uuid("id").defaultRandom().primaryKey().notNull(),
-
   workspaceId: uuid("workspace_id")
     .notNull()
     .references(() => workspaces.id, { onDelete: "cascade" }),
@@ -124,4 +122,5 @@ export const collaborators = pgTable("collaborators", {
   userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
 });

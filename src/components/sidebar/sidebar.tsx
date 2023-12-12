@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import WorkspaceDropdown from "./worskpace-dropdown";
+import PlanUsage from "./plan-usage";
 
 interface SidebarProps {
   params: { workspace: string };
@@ -64,7 +65,11 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
           ].find((workspace) => workspace.id === params.workspace)}
         />
       </div>
-      SidebarASDSADSA
+      <PlanUsage
+        foldersLength={workspaceFolderData?.length || 0}
+        subscription={subscriptionData}
+      />
+      <NativeNavigation myWorkspaceId={params.workspaceId} />
     </aside>
   );
 };

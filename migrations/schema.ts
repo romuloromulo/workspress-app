@@ -161,10 +161,7 @@ export const subscriptions = pgTable("subscriptions", {
   priceId: text("price_id").references(() => prices.id),
   quantity: integer("quantity"),
   cancelAtPeriodEnd: boolean("cancel_at_period_end"),
-  created: timestamp("created", {
-    withTimezone: true,
-    mode: "string",
-  })
+  created: timestamp("created", { withTimezone: true, mode: "string" })
     .default(sql`now()`)
     .notNull(),
   currentPeriodStart: timestamp("current_period_start", {
