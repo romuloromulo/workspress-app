@@ -8,6 +8,8 @@ import TooltipComponent from "../global/tooltip-component";
 import { PlusIcon } from "lucide-react";
 import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
 import { v4 } from "uuid";
+import { createFolder } from "@/lib/supabase/queries";
+import { useToast } from "../ui/use-toast";
 
 interface FoldersDropdownListProps {
   workspaceFolders: Folder[];
@@ -20,6 +22,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
 }) => {
   const { state, dispatch, folderId } = useAppState();
   const [folders, setFolders] = useState(workspaceFolders);
+  const { toast } = useToast();
   const { subscription } = useSupabaseUser();
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
     );
   }, [state, workspaceId]);
 
-  function addFolderHandler() {
+  async function addFolderHandler() {
     if (folders.length >= 3 && !subscription) {
     }
     const newFolder: Folder = {
@@ -60,7 +63,23 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
       workspaceId,
       bannerUrl: "",
     };
-    dispatch({type:'ADD_FOLDER',{} });
+    dispatch({
+      type: "ADD_FOLDER",
+      payload: { workspaceId, folder: { ...newFolder, files: [] } },
+    });
+    const { data, error } = await createFolder(newFolder);
+    if (error) {
+      toast({
+        title: "Error",
+        variant: "descrutctive",
+        description: "Não foi posível criar a pasta",
+      });
+    } else {
+      toast({
+        title: "Sucesso",
+        description: "Pasta criada",
+      });
+    }
   }
 
   return (

@@ -146,6 +146,15 @@ export const addCollaborators = async (users: User[], workspaceId: string) => {
   });
 };
 
+export const createFolder = async (folder: Folder) => {
+  try {
+    const results = await db.insert(folders).values(folder);
+    return { data: null, error: null };
+  } catch (error) {
+    return { data: null, error: "Algo deu errado" };
+  }
+};
+
 export const getUsersFromSearch = async (email: string) => {
   if (!email) return [];
   const accounts = db
