@@ -71,7 +71,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
     if (error) {
       toast({
         title: "Error",
-        variant: "descrutctive",
+        variant: "descructive",
         description: "Não foi posível criar a pasta",
       });
     } else {
