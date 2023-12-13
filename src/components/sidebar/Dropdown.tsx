@@ -98,10 +98,20 @@ const Dropdown: React.FC<DropdownProps> = ({
       });
     }
   }
+
   function fileTitleChange(e: any) {
+    if (!workspaceId || !folderId) return;
     const fId = id.split("folder");
     if (fId.length === 2 && fId[1]) {
-      // WIP UPDATE FILE TITLE
+      dispatch({
+        type: "UPDATE_FILE",
+        payload: {
+          file: { title: e.target.value },
+          folderId,
+          workspaceId,
+          fileId: fId[1],
+        },
+      });
     }
   }
 
@@ -213,6 +223,17 @@ const Dropdown: React.FC<DropdownProps> = ({
       });
     }
   };
+
+  const disable = state.workspaces
+    .find((workspace) => workspace.id === workspaceId)
+    ?.folders.find((folder) => folder.id === id);
+
+  if (disable) {
+    const files = disable.files;
+    console.log(files);
+  }
+  console.log(disable);
+
   return (
     <AccordionItem
       value={id}
@@ -267,7 +288,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             {listType === "folder" && !isEditing && (
               <TooltipComponent message="Adicionar arquivo">
                 <PlusIcon
-                  // onClick={addNewFile}
+                  onClick={addNewFile}
                   size={15}
                   className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
                 />
