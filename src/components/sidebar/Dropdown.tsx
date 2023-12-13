@@ -9,11 +9,7 @@ import {
 } from "../ui/accordion";
 import clsx from "clsx";
 import EmojiPicker from "../global/emoji-picker";
-// import {
-//   createFile,
-//   updateFile,
-//   updateFolder,
-// } from "../../lib/supabase/queries";
+
 import TooltipComponent from "../global/tooltip-component";
 import { PlusIcon, Trash } from "lucide-react";
 import { File } from "@/lib/supabase/supabase.types";
@@ -21,7 +17,7 @@ import { v4 } from "uuid";
 import { useToast } from "../ui/use-toast";
 import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
 import { useAppState } from "@/lib/providers/state-providers";
-import { updateFolder, createFile } from "@/lib/supabase/queries";
+import { updateFolder, createFile, updateFile } from "@/lib/supabase/queries";
 
 interface DropdownProps {
   title: string;
