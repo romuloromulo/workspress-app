@@ -130,7 +130,6 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
           </div>{" "}
         </div>
       )}
-      WorkspaceDropdown
     </div>
   );
 };

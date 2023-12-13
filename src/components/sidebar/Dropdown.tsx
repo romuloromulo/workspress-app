@@ -1,4 +1,4 @@
-("use client");
+"use client";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
@@ -21,7 +21,7 @@ import { v4 } from "uuid";
 import { useToast } from "../ui/use-toast";
 import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
 import { useAppState } from "@/lib/providers/state-providers";
-import { updateFolder } from "@/lib/supabase/queries";
+import { updateFolder, createFile } from "@/lib/supabase/queries";
 
 interface DropdownProps {
   title: string;
@@ -48,13 +48,62 @@ const Dropdown: React.FC<DropdownProps> = ({
   const { toast } = useToast();
   const router = useRouter();
 
+  const folderTitle: string | undefined = useMemo(() => {
+    if (listType === "folder") {
+      const stateTitle = state.workspaces
+        .find((workspace) => workspace.id === workspaceId)
+        ?.folders.find((folder) => folder.id === id)?.title;
+      if (title === stateTitle || !stateTitle) return title;
+      return stateTitle;
+    }
+  }, [state, listType, workspaceId, id, title]);
+
+  const fileTitle: string | undefined = useMemo(() => {
+    if (listType === "file") {
+      const fileAndFolderId = id.split("folder");
+      const stateTitle = state.workspaces
+        .find((workspace) => workspace.id === workspaceId)
+        ?.folders.find((folder) => folder.id === fileAndFolderId[0])
+        ?.files.find((file) => file.id === fileAndFolderId[1])?.title;
+      if (title === stateTitle || !stateTitle) return title;
+      return stateTitle;
+    }
+  }, [state, listType, workspaceId, id, title]);
+
   const navigatePage = (accordionId: string, type: string) => {
     if (type === "folder") {
-      router.push(`/dashboarad/${workspaceId}/${accordionId}`);
+      router.push(`/dashboard/${workspaceId}/${accordionId}`);
     }
     if (type === "file") {
+      router.push(
+        `/dashboard/${workspaceId}/${folderId}/${
+          accordionId.split("folder")[1]
+        }`
+      );
     }
   };
+  function folderTitleChange(e: any) {
+    if (!workspaceId) return;
+    const fId = id.split("folder");
+    if (fId.length === 1) {
+      dispatch({
+        type: "UPDATE_FOLDER",
+        payload: {
+          folder: {
+            title: e.target.value,
+          },
+          folderId: fId[0],
+          workspaceId,
+        },
+      });
+    }
+  }
+  function fileTitleChange(e: any) {
+    const fId = id.split("folder");
+    if (fId.length === 2 && fId[1]) {
+      // WIP UPDATE FILE TITLE
+    }
+  }
 
   const isFolder = listType === "folder";
   const listStyles = useMemo(
@@ -98,13 +147,79 @@ const Dropdown: React.FC<DropdownProps> = ({
       }
     }
   };
+  function handleDoubleClick() {
+    setIsEditing(true);
+  }
+  async function handleBlur() {
+    setIsEditing(false);
+    // console.log("IDDROPDOWN", id);
+    const fId = id.split("folder");
+    // console.log("IDSPLIT", fId);
+    if (fId?.length === 1) {
+      if (!folderTitle) return;
+      toast({ title: "Sucesso!", description: "Título da pasta editado." });
+      await updateFolder(
+        {
+          title,
+        },
+        fId[0]
+      );
+    }
+    if (fId.length === 2 && fId[1]) {
+      if (!fileTitle) return;
+      //WIP update the file
+    }
+  }
+  const hoverStyles = useMemo(
+    () =>
+      clsx(
+        "h-full hidden rounded-sm absolute right-0 items-center justify-center",
+        {
+          "group-hover/file:block": listType === "file",
+          "group-hover/folder:block": listType === "folder",
+        }
+      ),
+    [isFolder]
+  );
 
+  const addNewFile = async () => {
+    if (!workspaceId) return;
+    const newFile: File = {
+      folderId: id,
+      data: null,
+      createdAt: new Date().toISOString(),
+      inTrash: null,
+      title: "Untitled",
+      iconId: "📄",
+      id: v4(),
+      workspaceId,
+      bannerUrl: "",
+    };
+    dispatch({
+      type: "ADD_FILE",
+      payload: { file: newFile, folderId: id, workspaceId },
+    });
+    const { data, error } = await createFile(newFile);
+    if (error) {
+      toast({
+        title: "Error",
+        variant: "destructive",
+        description: "Could not create a file",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "File created.",
+      });
+    }
+  };
   return (
     <AccordionItem
       value={id}
       className={listStyles}
       onClick={(e) => {
         e.stopPropagation();
+        navigatePage(id, listType);
       }}>
       <AccordionTrigger
         id={listType}
@@ -125,7 +240,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             </div>
             <input
               type="text"
-              // value={listType === 'folder' ? folderTitle : fileTitle}
+              value={listType === "folder" ? folderTitle : fileTitle}
               className={clsx(
                 "outline-none overflow-hidden w-[140px] text-Neutrals/neutrals-7",
                 {
@@ -134,15 +249,51 @@ const Dropdown: React.FC<DropdownProps> = ({
                 }
               )}
               readOnly={!isEditing}
-              // onDoubleClick={handleDoubleClick}
-              // onBlur={handleBlur}
-              // onChange={
-              //   listType === 'folder' ? folderTitleChange : fileTitleChange
-              // }
+              onDoubleClick={handleDoubleClick}
+              onBlur={handleBlur}
+              onChange={
+                listType === "folder" ? folderTitleChange : fileTitleChange
+              }
             />
-          </div>{" "}
+          </div>
+          <div className={hoverStyles}>
+            <TooltipComponent message="Deletar pasta">
+              <Trash
+                // onClick={moveToTrash}
+                size={15}
+                className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
+              />
+            </TooltipComponent>
+            {listType === "folder" && !isEditing && (
+              <TooltipComponent message="Adicionar arquivo">
+                <PlusIcon
+                  // onClick={addNewFile}
+                  size={15}
+                  className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
+                />
+              </TooltipComponent>
+            )}
+          </div>
         </div>
       </AccordionTrigger>
+      <AccordionContent>
+        {state.workspaces
+          .find((workspace) => workspace.id === workspaceId)
+          ?.folders.find((folder) => folder.id === id)
+          ?.files.filter((file) => !file.inTrash)
+          .map((file) => {
+            const customFileId = `${id}folder${file.id}`;
+            return (
+              <Dropdown
+                key={file.id}
+                title={file.title}
+                listType="file"
+                id={customFileId}
+                iconId={file.iconId}
+              />
+            );
+          })}
+      </AccordionContent>
     </AccordionItem>
   );
 };

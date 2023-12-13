@@ -17,7 +17,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import FoldersDropdownList from "./folders-dropdown-list";
 
 interface SidebarProps {
-  params: { workspace: string };
+  params: { workspaceId: string };
   className?: string;
 }
 
@@ -34,10 +34,10 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
   const { data: subscriptionData, error: subscriptionError } =
     await getUserSubscriptionStatus(user.id);
 
-  //folders
-  // console.log("PARAMS", params.workspace);
+  // folders;
+  console.log("PARAMS", params.workspaceId);
   const { data: workspaceFolderData, error: foldersError } = await getFolders(
-    params.workspace
+    params.workspaceId
   );
   //error
   // console.log("FOLDER:", foldersError, "SUBS", subscriptionError);
@@ -65,14 +65,14 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
             ...privateWorkspaces,
             ...collaboratingWorkspaces,
             ...sharedWorkspaces,
-          ].find((workspace) => workspace.id === params.workspace)}
+          ].find((workspace) => workspace.id === params.workspaceId)}
         />
       </div>
       <PlanUsage
         foldersLength={workspaceFolderData?.length || 0}
         subscription={subscriptionData}
       />
-      <NativeNavigation myWorkspaceId={params.workspace} />
+      <NativeNavigation myWorkspaceId={params.workspaceId} />
       <ScrollArea
         className="overflow-scroll relative
           h-[450px]
@@ -90,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
         />
         <FoldersDropdownList
           workspaceFolders={workspaceFolderData || []}
-          workspaceId={params.workspace}
+          workspaceId={params.workspaceId}
         />
       </ScrollArea>
     </aside>

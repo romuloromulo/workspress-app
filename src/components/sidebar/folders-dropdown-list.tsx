@@ -82,6 +82,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
       });
     }
   }
+  console.log("FOLDER AQUI", folders);
 
   return (
     <>

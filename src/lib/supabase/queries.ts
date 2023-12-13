@@ -31,7 +31,15 @@ export const getUserSubscriptionStatus = async (userId: string) => {
     return { data: null, error: `Error ${error}` };
   }
 };
-
+export const createFile = async (file: File) => {
+  try {
+    await db.insert(files).values(file);
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: "Error" };
+  }
+};
 export const getFiles = async (folderId: string) => {
   const isValid = validate(folderId);
   if (!isValid) return { data: null, error: "Error" };

@@ -14,9 +14,11 @@ const Layout: React.FC<LayoutProps> = ({ children, params }) => {
       w-screen
   ">
       <Sidebar params={params} />
-      {children}
-      Teste
-      <div className="dark:boder-Neutrals-12/70 border-l-[1px] w-full relative overflow-scroll"></div>
+
+      <div className="dark:boder-Neutrals-12/70 border-l-[1px] w-full relative overflow-scroll">
+        {" "}
+        {children}
+      </div>
     </main>
   );
 };
