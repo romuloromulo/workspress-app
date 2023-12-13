@@ -123,6 +123,23 @@ const Dropdown: React.FC<DropdownProps> = ({
             <div className="relative">
               <EmojiPicker getValue={onChangeEmoji}>{iconId}</EmojiPicker>
             </div>
+            <input
+              type="text"
+              // value={listType === 'folder' ? folderTitle : fileTitle}
+              className={clsx(
+                "outline-none overflow-hidden w-[140px] text-Neutrals/neutrals-7",
+                {
+                  "bg-muted cursor-text": isEditing,
+                  "bg-transparent cursor-pointer": !isEditing,
+                }
+              )}
+              readOnly={!isEditing}
+              // onDoubleClick={handleDoubleClick}
+              // onBlur={handleBlur}
+              // onChange={
+              //   listType === 'folder' ? folderTitleChange : fileTitleChange
+              // }
+            />
           </div>{" "}
         </div>
       </AccordionTrigger>
