@@ -10,6 +10,7 @@ import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
 import { v4 } from "uuid";
 import { createFolder } from "@/lib/supabase/queries";
 import { useToast } from "../ui/use-toast";
+import Dropdown from "./Dropdown";
 
 interface FoldersDropdownListProps {
   workspaceFolders: Folder[];
@@ -71,7 +72,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
     if (error) {
       toast({
         title: "Error",
-        variant: "descructive",
+        variant: "destructive",
         description: "Não foi posível criar a pasta",
       });
     } else {

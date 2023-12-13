@@ -154,7 +154,17 @@ export const createFolder = async (folder: Folder) => {
     return { data: null, error: "Algo deu errado" };
   }
 };
-
+export const updateFolder = async (
+  folder: Partial<Folder>,
+  folderId: string
+) => {
+  try {
+    await db.update(folders).set(folder).where(eq(folders.id, folderId));
+    return { data: null, error: null };
+  } catch (error) {
+    return { data: null, error };
+  }
+};
 export const getUsersFromSearch = async (email: string) => {
   if (!email) return [];
   const accounts = db
