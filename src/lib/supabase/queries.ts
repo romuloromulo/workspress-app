@@ -40,7 +40,7 @@ export const createFile = async (file: File) => {
     return { data: null, error: "Error" };
   }
 };
-export const updateFile = async (file: Partial<File>, fileId: string) => {
+export const updateFile = async (file: Partial<File>, fId: string) => {
   try {
     const response = await db
       .update(files)
