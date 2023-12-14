@@ -1,7 +1,7 @@
 "use client";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   AccordionContent,
   AccordionItem,
@@ -18,6 +18,7 @@ import { useToast } from "../ui/use-toast";
 import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
 import { useAppState } from "@/lib/providers/state-providers";
 import { updateFolder, createFile, updateFile } from "@/lib/supabase/queries";
+import { workspaces } from "@/lib/supabase/schema";
 
 interface DropdownProps {
   title: string;
@@ -41,6 +42,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   const { user } = useSupabaseUser();
   const { state, dispatch, workspaceId, folderId } = useAppState();
   const [isEditing, setIsEditing] = useState(false);
+  const [disable, setDisable] = useState(true);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -127,7 +129,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       "group/file": !isFolder,
     }
   );
-  const onChangeEmoji = async (selectedEmoji: string) => {
+  async function onChangeEmoji(selectedEmoji: string) {
     if (!workspaceId) return;
     if (listType === "folder") {
       dispatch({
@@ -152,7 +154,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         });
       }
     }
-  };
+  }
   function handleDoubleClick() {
     setIsEditing(true);
   }
@@ -173,8 +175,15 @@ const Dropdown: React.FC<DropdownProps> = ({
     }
     if (fId.length === 2 && fId[1]) {
       if (!fileTitle) return;
-      await updateFile({ title: fileTitle }, fId[1]);
-      //WIP update the file
+      const { data, error } = await updateFile({ title: fileTitle }, fId[1]);
+      if (error) {
+        toast({
+          title: `${error}`,
+          variant: "destructive",
+          description: "O título não pode ser atualizado neste arquivo.",
+        });
+      }
+      toast({ title: "Sucesso!", description: "Título do arquivo editado." });
     }
   }
   const hoverStyles = useMemo(
@@ -188,8 +197,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       ),
     [isFolder]
   );
-
-  const addNewFile = async () => {
+  async function addNewFile() {
     if (!workspaceId) return;
     const newFile: File = {
       folderId: id,
@@ -219,17 +227,80 @@ const Dropdown: React.FC<DropdownProps> = ({
         description: "File created.",
       });
     }
-  };
-
-  const disable = state.workspaces
-    .find((workspace) => workspace.id === workspaceId)
-    ?.folders.find((folder) => folder.id === id);
-
-  if (disable) {
-    const files = disable.files;
-    console.log(files);
   }
-  console.log(disable);
+
+  useEffect(() => {
+    const disable = state.workspaces
+      .find((workspace) => workspace.id === workspaceId)
+      ?.folders.find((folder) => folder.id === id);
+
+    if (disable) {
+      const files = disable.files;
+      if (files.length > 0) setDisable(false);
+    }
+  }, [workspaces]);
+
+  async function moveToTrash() {
+    if (!user?.email || !workspaceId) return;
+    const pathId = id.split("folder");
+    if (listType === "folder") {
+      const { data, error } = await updateFolder(
+        {
+          inTrash: `Deletado por ${user?.email}`,
+        },
+        pathId[0]
+      );
+      if (error) {
+        toast({
+          title: `${error}`,
+          variant: "destructive",
+          description: "Pasta não pode ser movida para a lixeira",
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_FOLDER",
+          payload: {
+            folder: { inTrash: `Deletado por ${user?.email}` },
+            folderId: pathId[0],
+            workspaceId,
+          },
+        });
+        toast({
+          title: "Sucesso",
+          description: "Pasta movida para lixeira.",
+        });
+      }
+    }
+    if (listType === "folder") {
+      const { data, error } = await updateFolder(
+        {
+          inTrash: `Deletado por ${user?.email}`,
+        },
+        pathId[0]
+      );
+      if (error) {
+        toast({
+          title: `${error}`,
+          variant: "destructive",
+          description: "Pasta não pode ser movida para a lixeira",
+        });
+      } else {
+        dispatch({
+          type: "UPDATE_FILE",
+          payload: {
+            file: { inTrash: `Deletado por ${user?.email}` },
+            fileId: pathId[1],
+            folderId: pathId[0],
+            workspaceId,
+          },
+        });
+        toast({
+          title: "Sucesso",
+          description: "Arquivo movido para lixeira.",
+        });
+      }
+    }
+  }
 
   return (
     <AccordionItem
@@ -245,7 +316,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         p-2 
         dark:text-muted-foreground 
         text-sm"
-        disabled={listType === "file"}>
+        disabled={listType === "file" && disable}>
         <div className={groupIdentifies}>
           <div
             className="flex 
@@ -277,7 +348,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           <div className={hoverStyles}>
             <TooltipComponent message="Deletar pasta">
               <Trash
-                // onClick={moveToTrash}
+                onClick={moveToTrash}
                 size={15}
                 className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
               />
