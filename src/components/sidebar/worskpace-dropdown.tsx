@@ -123,7 +123,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
                  justify-center">
                     +
                   </article>
-                  Criar área de trabalho.
+                  Criar área de trabalho
                 </div>
               </CustomDialogTrigger>
             </div>

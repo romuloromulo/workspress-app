@@ -20,10 +20,10 @@ import { Separator } from "../ui/separator";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import {
-  // addCollaborators,
-  // deleteWorkspace,
+  addCollaborators,
+  deleteWorkspace,
   // getCollaborators,
-  // removeCollaborators,
+  removeCollaborators,
   updateWorkspace,
 } from "@/lib/supabase/queries";
 import { v4 } from "uuid";
@@ -54,6 +54,8 @@ import { Alert, AlertDescription } from "../ui/alert";
 import CypressProfileIcon from "../icons/cypressProfileIcon";
 // import LogoutButton from "../global/logout-button";
 import Link from "next/link";
+import CollaboratorSearch from "../global/collaboratorsearch";
+// import { profile } from "console";
 // import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 // import { postData } from "@/lib/utils";
 
@@ -87,6 +89,68 @@ const SettingsForm = () => {
       await updateWorkspace({ title: e.target.value }, workspaceId);
     }, 500);
   }
+  async function onChangeWorkspaceLogo(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!workspaceId) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Obter informações sobre a imagem atual
+    const { data: currentLogoData, error: currentLogoError } = await supabase
+      .from("workspace-logos")
+      .select("metadata")
+      .eq("metadata.workspaceId", workspaceId)
+      .single();
+
+    // Se houver uma imagem atual, exclua-a
+    if (currentLogoData) {
+      const currentLogoKey = currentLogoData.metadata.key;
+      await supabase.storage.from("workspace-logos").remove([currentLogoKey]);
+    }
+
+    const uuid = v4();
+    setUploadingLogo(true);
+
+    // Upload da nova imagem
+    const { data, error } = await supabase.storage
+      .from("workspace-logos")
+      .upload(`workspaceLogo.${uuid}`, file, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+
+    if (!error) {
+      dispatch({
+        type: "UPDATE_WORKSPACE",
+        payload: { workspace: { logo: data.path }, workspaceId },
+      });
+      await updateWorkspace({ logo: data.path }, workspaceId);
+      setUploadingLogo(false);
+    }
+  }
+  function onPermissionsChange() {}
+
+  async function addCollaborator(profile: User) {
+    if (!workspaceId) return;
+    // if(subscription?.status !== 'active' && collaborators.length >=2){
+    //   // setOpen(true);
+    //   return;
+    // }
+    await addCollaborators(collaborators, workspaceId);
+    setCollaborators([...collaborators, profile]);
+    window.location.reload();
+  }
+
+  const removeCollaborator = async (user: User) => {
+    if (!workspaceId) return;
+    if (collaborators.length === 1) {
+      setPermissions("private");
+    }
+    await removeCollaborators([user], workspaceId);
+    setCollaborators(
+      collaborators.filter((collaborator) => collaborator.id !== user.id)
+    );
+    window.location.reload();
+  };
 
   return (
     <div className="flex gap-4 flex-col">
@@ -99,7 +163,7 @@ const SettingsForm = () => {
         <Label
           htmlFor="workspaceName"
           className="text-sm text-muted-foreground">
-          Name
+          Nome
         </Label>
         <Input
           name="workspaceName"
@@ -110,17 +174,230 @@ const SettingsForm = () => {
         <Label
           htmlFor="workspaceLogo"
           className="text-sm text-muted-foreground">
-          Workspace Logo
+          Logo da Área de Trabalho
         </Label>
         <Input
           name="workspaceLogo"
           type="file"
           accept="image/*"
-          placeholder="Workspace Logo"
-          // onChange={onChangeWorkspaceLogo}
+          placeholder="logo da área detrabalho"
+          onChange={onChangeWorkspaceLogo}
           disabled={uploadingLogo || subscription?.status !== "active"}
         />{" "}
+        {/*subscritpion*/}
       </div>
+      <>
+        <Label htmlFor="permissions">Permissisões</Label>
+        <Select onValueChange={onPermissionsChange} value={permissions}>
+          <SelectTrigger className="w-full h-26 -mt-3">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="private">
+                <div
+                  className="p-2
+                  flex
+                  gap-4
+                  justify-center
+                  items-center
+                ">
+                  <Lock />
+                  <article className="text-left flex flex-col">
+                    <span>Privada</span>
+                    <p>
+                      Sua área de trabalho é privada para você. Você pode optar
+                      por compartilhá-la mais tarde.
+                    </p>
+                  </article>
+                </div>
+              </SelectItem>
+              <SelectItem value="shared">
+                <div className="p-2 flex gap-4 justify-center items-center">
+                  <Share></Share>
+                  <article className="text-left flex flex-col">
+                    <span>Shared</span>
+                    <span>You can invite collaborators.</span>
+                  </article>
+                </div>
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        {permissions === "shared" && (
+          <div>
+            <CollaboratorSearch
+              existingCollaborators={collaborators}
+              getCollaborator={(user) => {
+                addCollaborator(user);
+              }}>
+              <Button type="button" className="text-sm mt-4">
+                <Plus />
+                Adicionar colaborador
+              </Button>
+            </CollaboratorSearch>
+            <div className="mt-4">
+              <span className="text-sm text-muted-foreground">
+                Colaboradores {collaborators.length || ""}
+              </span>
+              <ScrollArea
+                className="
+            h-[120px]
+            overflow-y-scroll
+            w-full
+            rounded-md
+            border
+            border-muted-foreground/20">
+                {collaborators.length ? (
+                  collaborators.map((c) => (
+                    <div
+                      className="p-4 flex
+                      justify-between
+                      items-center
+                "
+                      key={c.id}>
+                      <div className="flex gap-4 items-center">
+                        <Avatar>
+                          <AvatarImage src="/avatars/7.png" />
+                          <AvatarFallback>PJ</AvatarFallback>
+                        </Avatar>
+                        <div
+                          className="text-sm 
+                          gap-2
+                          text-muted-foreground
+                          overflow-hidden
+                          overflow-ellipsis
+                          sm:w-[300px]
+                          w-[140px]
+                        ">
+                          {c.email}
+                        </div>
+                      </div>
+                      <Button
+                        variant="secondary"
+                        onClick={() => removeCollaborator(c)}>
+                        Remover
+                      </Button>
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    className="absolute
+                  right-0 left-0
+                  top-0
+                  bottom-0
+                  flex
+                  justify-center
+                  items-center
+                ">
+                    <span className="text-muted-foreground text-sm">
+                      You have no collaborators
+                    </span>
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+          </div>
+        )}
+        <Alert variant={"destructive"}>
+          <AlertDescription>
+            Aviso! excluir sua área de trabalho excluirá permanentemente todos
+            os dados relacionados a esta área de trabalho.
+          </AlertDescription>
+          <Button
+            type="submit"
+            size={"sm"}
+            variant={"destructive"}
+            className="mt-4 
+            text-sm
+            bg-destructive/40 
+            border-2 
+            border-destructive"
+            onClick={async () => {
+              if (!workspaceId) return;
+              await deleteWorkspace(workspaceId);
+              toast({ title: "Successfully deleted your workspae" });
+              dispatch({ type: "DELETE_WORKSPACE", payload: workspaceId });
+              router.replace("/dashboard");
+            }}>
+            Excluir área de trabalho
+          </Button>
+        </Alert>
+        <p className="flex items-center gap-2 mt-6">
+          <UserIcon size={20} /> Profile
+        </p>
+        <Separator />
+        <div className="flex items-center">
+          <Avatar>
+            <AvatarImage src={""} />
+            <AvatarFallback>
+              <CypressProfileIcon />
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col ml-6">
+            <small className="text-muted-foreground cursor-not-allowed">
+              {user ? user.email : ""}
+            </small>
+            <Label
+              htmlFor="profilePicture"
+              className="text-sm text-muted-foreground">
+              Profile Picture
+            </Label>
+            <Input
+              name="profilePicture"
+              type="file"
+              accept="image/*"
+              placeholder="Profile Picture"
+              // onChange={onChangeProfilePicture}
+              disabled={uploadingProfilePic}
+            />
+          </div>
+        </div>
+        {/* <LogoutButton>
+          <div className="flex items-center">
+            <LogOut />
+          </div>
+        </LogoutButton>
+        <p className="flex items-center gap-2 mt-6">
+          <CreditCard size={20} /> Billing & Plan
+        </p>
+        <Separator />
+        <p className="text-muted-foreground">
+          You are currently on a{" "}
+          {subscription?.status === "active" ? "Pro" : "Free"} Plan
+        </p>
+        <Link
+          href="/"
+          target="_blank"
+          className="text-muted-foreground flex flex-row items-center gap-2">
+          View Plans <ExternalLink size={16} />
+        </Link>
+        {subscription?.status === "active" ? (
+          <div>
+            <Button
+              type="button"
+              size="sm"
+              variant={"secondary"}
+              disabled={loadingPortal}
+              className="text-sm"
+              onClick={redirectToCustomerPortal}>
+              Manage Subscription
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <Button
+              type="button"
+              size="sm"
+              variant={"secondary"}
+              className="text-sm"
+              onClick={() => setOpen(true)}>
+              Start Plan
+            </Button>
+          </div>
+        )} */}
+      </>
     </div>
   );
 };

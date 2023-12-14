@@ -163,7 +163,26 @@ export const addCollaborators = async (users: User[], workspaceId: string) => {
       await db.insert(collaborators).values({ workspaceId, userId: user.id });
   });
 };
-
+export const removeCollaborators = async (
+  users: User[],
+  workspaceId: string
+) => {
+  const response = users.forEach(async (user: User) => {
+    const userExists = await db.query.collaborators.findFirst({
+      where: (u, { eq }) =>
+        and(eq(u.userId, user.id), eq(u.workspaceId, workspaceId)),
+    });
+    if (userExists)
+      await db
+        .delete(collaborators)
+        .where(
+          and(
+            eq(collaborators.workspaceId, workspaceId),
+            eq(collaborators.userId, user.id)
+          )
+        );
+  });
+};
 export const createFolder = async (folder: Folder) => {
   try {
     const results = await db.insert(folders).values(folder);
@@ -199,6 +218,10 @@ export const updateWorkspace = async (
     console.log(error);
     return { data: null, error: "Error" };
   }
+};
+export const deleteWorkspace = async (workspaceId: string) => {
+  if (!workspaceId) return;
+  await db.delete(workspaces).where(eq(workspaces.id, workspaceId));
 };
 
 export const getUsersFromSearch = async (email: string) => {
