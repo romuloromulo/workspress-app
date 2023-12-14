@@ -310,6 +310,7 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
     const urlSegments = pathname?.split("/").filter(Boolean);
     if (urlSegments)
       if (urlSegments?.length > 2) {
+        console.log("urlSegments state-provider", urlSegments);
         return urlSegments[2];
       }
   }, [pathname]);
@@ -318,6 +319,7 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
     const urlSegments = pathname?.split("/").filter(Boolean);
     if (urlSegments)
       if (urlSegments?.length > 3) {
+        console.log("urlSegments state-provider", urlSegments);
         return urlSegments[3];
       }
   }, [pathname]);

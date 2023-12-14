@@ -42,10 +42,7 @@ export const createFile = async (file: File) => {
 };
 export const updateFile = async (file: Partial<File>, fId: string) => {
   try {
-    const response = await db
-      .update(files)
-      .set(file)
-      .where(eq(files.id, fileId));
+    const response = await db.update(files).set(file).where(eq(files.id, fId));
     return { data: null, error: null };
   } catch (error) {
     console.log(error);
@@ -54,7 +51,7 @@ export const updateFile = async (file: Partial<File>, fId: string) => {
 };
 export const getFiles = async (folderId: string) => {
   const isValid = validate(folderId);
-  if (!isValid) return { data: null, error: "Error" };
+  if (!isValid) return { data: null, error: "Error geting Files" };
   try {
     const results = (await db
       .select()
@@ -70,7 +67,7 @@ export const getFiles = async (folderId: string) => {
 
 export const getFolders = async (workspaceId: string) => {
   const isValid = validate(workspaceId);
-  if (!isValid) return { data: null, error: "Error" };
+  if (!isValid) return { data: null, error: "Error getingFolders" };
   try {
     const results: Folder[] = await db
       .select()
