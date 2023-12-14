@@ -6,6 +6,7 @@ import { File, Folder, Subscription, User, workspace } from "./supabase.types";
 import { files, folders, users, workspaces } from "../../../migrations/schema";
 import { collaborators } from "./schema";
 import { experimental_taintUniqueValue } from "react";
+import { revalidatePath } from "next/cache";
 
 export const createWorkspace = async (workspace: workspace) => {
   try {
@@ -182,6 +183,24 @@ export const updateFolder = async (
     return { data: null, error };
   }
 };
+export const updateWorkspace = async (
+  workspace: Partial<workspace>,
+  workspaceId: string
+) => {
+  if (!workspaceId) return;
+  try {
+    await db
+      .update(workspaces)
+      .set(workspace)
+      .where(eq(workspaces.id, workspaceId));
+    revalidatePath(`/dashboard/${workspaceId}`);
+    return { data: null, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: null, error: "Error" };
+  }
+};
+
 export const getUsersFromSearch = async (email: string) => {
   if (!email) return [];
   const accounts = db

@@ -6,7 +6,7 @@ import { Folder } from "@/lib/supabase/supabase.types";
 import { Accordion } from "../ui/accordion";
 import TooltipComponent from "../global/tooltip-component";
 import { PlusIcon } from "lucide-react";
-import { useSupabaseUser } from "@/lib/providers/supabase-user.provider";
+import { useSupabaseUser } from "@/lib/providers/supabase-user-provider";
 import { v4 } from "uuid";
 import { createFolder } from "@/lib/supabase/queries";
 import { useToast } from "../ui/use-toast";
