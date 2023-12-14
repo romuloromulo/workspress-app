@@ -42,7 +42,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   const { user } = useSupabaseUser();
   const { state, dispatch, workspaceId, folderId } = useAppState();
   const [isEditing, setIsEditing] = useState(false);
-  const [disable, setDisable] = useState(true);
+  // const [hasFiles, setHasFiles] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -217,28 +217,28 @@ const Dropdown: React.FC<DropdownProps> = ({
     const { data, error } = await createFile(newFile);
     if (error) {
       toast({
-        title: "Error",
+        title: "Erro!",
         variant: "destructive",
-        description: "Could not create a file",
+        description: "Não foi possível criar arquivo.",
       });
     } else {
       toast({
-        title: "Success",
-        description: "File created.",
+        title: "Successo!",
+        description: "Arquivo criado.",
       });
     }
   }
 
-  useEffect(() => {
-    const disable = state.workspaces
-      .find((workspace) => workspace.id === workspaceId)
-      ?.folders.find((folder) => folder.id === id);
+  // useEffect(() => {
+  //   const disable = state.workspaces
+  //     .find((workspace) => workspace.id === workspaceId)
+  //     ?.folders.find((folder) => folder.id === id);
 
-    if (disable) {
-      const files = disable.files;
-      if (files.length > 0) setDisable(false);
-    }
-  }, [workspaces]);
+  //   if (disable) {
+  //     const files = disable.files;
+  //     setHasFiles(files.length > 0);
+  //   }
+  // }, [workspaces, state]);
 
   async function moveToTrash() {
     if (!user?.email || !workspaceId) return;
@@ -246,7 +246,7 @@ const Dropdown: React.FC<DropdownProps> = ({
     if (listType === "folder") {
       const { data, error } = await updateFolder(
         {
-          inTrash: `Deletado por ${user?.email}`,
+          inTrash: `Pasta deletada por ${user?.email}`,
         },
         pathId[0]
       );
@@ -271,18 +271,18 @@ const Dropdown: React.FC<DropdownProps> = ({
         });
       }
     }
-    if (listType === "folder") {
-      const { data, error } = await updateFolder(
+    if (listType === "file") {
+      const { data, error } = await updateFile(
         {
-          inTrash: `Deletado por ${user?.email}`,
+          inTrash: `Arquivo deletado por ${user?.email}`,
         },
-        pathId[0]
+        pathId[1]
       );
       if (error) {
         toast({
           title: `${error}`,
           variant: "destructive",
-          description: "Pasta não pode ser movida para a lixeira",
+          description: "Arquivo não pode ser movido para a lixeira.",
         });
       } else {
         dispatch({
@@ -301,6 +301,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       }
     }
   }
+  // console.log("DISABLE", disable || listType);
 
   return (
     <AccordionItem
@@ -316,7 +317,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         p-2 
         dark:text-muted-foreground 
         text-sm"
-        disabled={listType === "file" && disable}>
+        disabled={listType === "file"}>
         <div className={groupIdentifies}>
           <div
             className="flex 

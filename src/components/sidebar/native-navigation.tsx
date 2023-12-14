@@ -35,20 +35,18 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
             <span className="translate-y-[3px]">Minha área de trabalho</span>
           </Link>
         </li>
-        {/* 
-        <Settings>
-          <li
-            className="group/native
+
+        <li
+          className="group/native
             flex
             text-Neutrals/neutrals-7
             transition-all
             gap-2
             cursor-pointer
           ">
-            <CypressSettingsIcon />
-            <span>Settings</span>
-          </li>
-        </Settings> */}
+          <CypressSettingsIcon />
+          <span>Settings</span>
+        </li>
 
         <Trash>
           <li
