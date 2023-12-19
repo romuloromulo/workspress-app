@@ -55,6 +55,7 @@ import CypressProfileIcon from "../icons/cypressProfileIcon";
 // import LogoutButton from "../global/logout-button";
 import Link from "next/link";
 import CollaboratorSearch from "../global/collaboratorsearch";
+import { workspaces } from "@/lib/supabase/schema";
 // import { profile } from "console";
 // import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 // import { postData } from "@/lib/utils";
@@ -75,20 +76,23 @@ const SettingsForm = () => {
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [loadingPortal, setLoadingPortal] = useState(false);
 
-  function workspaceNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //on change
+  const workspaceNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(
+      "TESSSTE",
+      state.workspaces.map((e) => e.title)
+    );
     if (!workspaceId || !e.target.value) return;
     dispatch({
       type: "UPDATE_WORKSPACE",
-      payload: {
-        workspace: { title: e.target.value },
-        workspaceId,
-      },
+      payload: { workspace: { title: e.target.value }, workspaceId },
     });
     if (titleTimerRef.current) clearTimeout(titleTimerRef.current);
     titleTimerRef.current = setTimeout(async () => {
       await updateWorkspace({ title: e.target.value }, workspaceId);
     }, 500);
-  }
+  };
+
   async function onChangeWorkspaceLogo(e: React.ChangeEvent<HTMLInputElement>) {
     if (!workspaceId) return;
     const file = e.target.files?.[0];
@@ -151,6 +155,15 @@ const SettingsForm = () => {
     );
     window.location.reload();
   };
+  useEffect(() => {
+    const showingWorkspace = state.workspaces.find(
+      (workspace) => workspace.id === workspaceId
+    );
+
+    setWorkspaceDetails(showingWorkspace);
+  }, [workspaceId, state]);
+
+  // console.log("WorkspaceDetails", workspaceDetails);
 
   return (
     <div className="flex gap-4 flex-col">
@@ -168,7 +181,7 @@ const SettingsForm = () => {
         <Input
           name="workspaceName"
           value={workspaceDetails ? workspaceDetails.title : ""}
-          placeholder="Workspace Name"
+          placeholder="Nome da área de trabalho"
           onChange={workspaceNameChange}
         />
         <Label
