@@ -81,6 +81,25 @@ export const getFolders = async (workspaceId: string) => {
     return { data: null, error: "Error" };
   }
 };
+export const getWorkspaceDetails = async (workspaceId: string) => {
+  const isValid = validate(workspaceId);
+  if (!isValid)
+    return {
+      data: [],
+      error: "Error",
+    };
+  try {
+    const res = (await db
+      .select()
+      .from(workspaces)
+      .where(eq(workspaces.id, workspaceId))
+      .limit(1)) as workspace[];
+    return { data: res, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: [], error: "Error" };
+  }
+};
 
 export const getPrivateWorkspaces = async (userId: string) => {
   if (!userId) return [];

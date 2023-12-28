@@ -36,14 +36,17 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
   useEffect(() => {
     async function getUser() {
       const {
+        error,
         data: { user },
       } = await supabase.auth.getUser();
+      console.log(error);
       if (user) {
         // console.log("USER", user);
         setUser(user);
         const { data, error } = await getUserSubscriptionStatus(user.id);
         if (data) setSubscription(data);
         if (error) {
+          console.log("ERRO ACONTECEU", error);
           toast({
             title: "Erro inexperado",
             description: "Ops! Um erro aconteceu. Tente novamente mais tarde",

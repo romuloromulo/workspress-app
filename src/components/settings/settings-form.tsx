@@ -330,7 +330,7 @@ const SettingsForm = () => {
             onClick={async () => {
               if (!workspaceId) return;
               await deleteWorkspace(workspaceId);
-              toast({ title: "Successfully deleted your workspae" });
+              toast({ title: "Área de trabalho excluida com sucesso!" });
               dispatch({ type: "DELETE_WORKSPACE", payload: workspaceId });
               router.replace("/dashboard");
             }}>

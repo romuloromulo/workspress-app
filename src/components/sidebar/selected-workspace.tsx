@@ -18,7 +18,7 @@ const SelectedWorkspace: React.FC<SelectedWorkspaceProps> = ({
   const [workspaceLogo, setWorkspaceLogo] = useState("/cypresslogo.svg");
   const [workspaceTitle, setWorkspaceTitle] = useState(workspace.title);
 
-  console.log("WorkspaceTitle", workspace);
+  // console.log("WorkspaceTitle", workspace);
   useEffect(() => {
     if (workspace.logo) {
       const path = supabase.storage
