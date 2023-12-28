@@ -1,5 +1,7 @@
+"use client";
+import { useAppState } from "@/lib/providers/state-providers";
 import { File, Folder, workspace } from "@/lib/supabase/supabase.types";
-import React from "react";
+import React, { useCallback, useState } from "react";
 
 interface QuillEditorProps {
   dirType: "workspace" | "folder" | "file";
@@ -12,7 +14,23 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   fileId,
   dirDetails,
 }) => {
-  return <div></div>;
+  const { state, workspaceId, folderId, dispatch } = useAppState();
+  const [quill, setQuill] = useState<any>(null);
+
+  const wrapperRef = useCallback((wrapper) => {
+    if (typeof window !== "undefined") {
+      if (wrapper === null) return;
+      wrapper.innerHTML ='';
+      const editor = document.createElement('div');
+      wrapper.append(Editor)
+    }
+  }, []);
+
+  return (
+    <>
+      <div id="container" ref={wrapperRef} className="max-w-[800]"></div>
+    </>
+  );
 };
 
 export default QuillEditor;
