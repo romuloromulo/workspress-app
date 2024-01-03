@@ -1,8 +1,10 @@
 "use client";
 import { useAppState } from "@/lib/providers/state-providers";
 import { File, Folder, workspace } from "@/lib/supabase/supabase.types";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import "quill/dist/quill.snow.css";
+import { getDetails } from "@/lib/helpers/details";
+import { Button } from "../ui/button";
 
 interface QuillEditorProps {
   dirType: "workspace" | "folder" | "file";
@@ -37,6 +39,11 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const { state, workspaceId, folderId, dispatch } = useAppState();
   const [quill, setQuill] = useState<any>(null);
 
+  const details = useMemo(
+    () => getDetails({ dirType, fileId, dirDetails }),
+    [dirType, fileId, dirDetails, state, workspaceId, folderId, dispatch]
+  );
+
   const wrapperRef = useCallback(async (wrapper: any) => {
     if (typeof window !== "undefined") {
       if (wrapper === null) return;
@@ -61,9 +68,61 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
 
   return (
     <>
-      {/* <div className="flex justify-center items-center flex-col mt-2 relative"> */}
-      <div id="container" ref={wrapperRef} className="max-w-[800]"></div>
-      {/* </div> */}
+      <div className="relative">
+        {details.inTrash && (
+          <article
+            className="py-2 
+          z-40 
+          bg-[#EB5757] 
+          flex  
+          md:flex-row 
+          flex-col 
+          justify-center 
+          items-center 
+          gap-4 
+          flex-wrap">
+            <div
+              className="flex 
+            flex-col 
+            md:flex-row 
+            gap-2 
+            justify-center 
+            items-center">
+              <span className="text-white">{dirType} está no lixo.</span>
+              <Button
+                size="sm"
+                variant="outline"
+                className="bg-transparent
+                border-white
+                text-white
+                hover:bg-white
+                hover:text-[#EB5757]
+                "
+                // onClick={restoreFileHandler}
+              >
+                Por de volta.
+              </Button>
+
+              <Button
+                size="sm"
+                variant="outline"
+                className="bg-transparent
+                border-white
+                text-white
+                hover:bg-white
+                hover:text-[#EB5757]
+                "
+                // onClick={deleteFileHandler}
+              >
+                Deletar
+              </Button>
+            </div>
+          </article>
+        )}
+      </div>
+      <main className="flex justify-center items-center flex-col mt-2 relative">
+        <div id="container" ref={wrapperRef} className="max-w-[800]"></div>
+      </main>
     </>
   );
 };
