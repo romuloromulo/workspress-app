@@ -280,7 +280,6 @@ export const deleteWorkspace = async (workspaceId: string) => {
   if (!workspaceId) return;
   await db.delete(workspaces).where(eq(workspaces.id, workspaceId));
 };
-
 export const deleteFile = async (fileId: string) => {
   if (!fileId) return;
   await db.delete(files).where(eq(files.id, fileId));
@@ -288,7 +287,8 @@ export const deleteFile = async (fileId: string) => {
 
 export const deleteFolder = async (folderId: string) => {
   if (!folderId) return;
-  await db.delete(folders).where(eq(files.id, folderId));
+  const res = await db.delete(folders).where(eq(folders.id, folderId));
+  return res;
 };
 
 export const getUsersFromSearch = async (email: string) => {

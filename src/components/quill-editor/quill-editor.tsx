@@ -47,10 +47,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const { state, workspaceId, folderId, dispatch } = useAppState();
   const [quill, setQuill] = useState<any>(null);
 
-  const details = useMemo(
-    () => getDetails({ dirType, fileId, dirDetails }),
-    [dirType, fileId, dirDetails, state, workspaceId, folderId, dispatch]
-  );
+  const details = getDetails({ dirType, fileId, dirDetails });
 
   const wrapperRef = useCallback(async (wrapper: any) => {
     if (typeof window !== "undefined") {
@@ -91,7 +88,6 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       await updateFolder({ inTrash: "" }, fileId);
     }
   };
-
   const deleteFileHandler = async () => {
     if (dirType === "file") {
       if (!folderId || !workspaceId) return;
@@ -103,12 +99,17 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       router.replace(`/dashboard/${workspaceId}`);
     }
     if (dirType === "folder") {
+      console.log("deletando folder");
       if (!workspaceId) return;
+      console.log("deletando folder2");
+
       dispatch({
         type: "DELETE_FOLDER",
         payload: { folderId: fileId, workspaceId },
       });
       await deleteFolder(fileId);
+      console.log("deletando folder3");
+
       router.replace(`/dashboard/${workspaceId}`);
     }
   };
@@ -134,7 +135,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
             gap-2 
             justify-center 
             items-center">
-              <span className="text-white">{dirType} está no lixo.</span>
+              <span className="text-white">Diretório está no lixo.</span>
               <Button
                 size="sm"
                 variant="outline"
