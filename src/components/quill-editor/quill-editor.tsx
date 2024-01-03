@@ -5,6 +5,13 @@ import React, { useCallback, useMemo, useState } from "react";
 import "quill/dist/quill.snow.css";
 import { getDetails } from "@/lib/helpers/details";
 import { Button } from "../ui/button";
+import {
+  deleteFile,
+  deleteFolder,
+  updateFile,
+  updateFolder,
+} from "@/lib/supabase/queries";
+import { useRouter } from "next/navigation";
 
 interface QuillEditorProps {
   dirType: "workspace" | "folder" | "file";
@@ -36,6 +43,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   fileId,
   dirDetails,
 }) => {
+  const router = useRouter();
   const { state, workspaceId, folderId, dispatch } = useAppState();
   const [quill, setQuill] = useState<any>(null);
 
@@ -65,7 +73,45 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       setQuill(q);
     }
   }, []);
+  const restoreFileHandler = async () => {
+    if (dirType === "file") {
+      if (!folderId || !workspaceId) return;
+      dispatch({
+        type: "UPDATE_FILE",
+        payload: { file: { inTrash: "" }, fileId, folderId, workspaceId },
+      });
+      await updateFile({ inTrash: "" }, fileId);
+    }
+    if (dirType === "folder") {
+      if (!workspaceId) return;
+      dispatch({
+        type: "UPDATE_FOLDER",
+        payload: { folder: { inTrash: "" }, folderId: fileId, workspaceId },
+      });
+      await updateFolder({ inTrash: "" }, fileId);
+    }
+  };
 
+  const deleteFileHandler = async () => {
+    if (dirType === "file") {
+      if (!folderId || !workspaceId) return;
+      dispatch({
+        type: "DELETE_FILE",
+        payload: { fileId, folderId, workspaceId },
+      });
+      await deleteFile(fileId);
+      router.replace(`/dashboard/${workspaceId}`);
+    }
+    if (dirType === "folder") {
+      if (!workspaceId) return;
+      dispatch({
+        type: "DELETE_FOLDER",
+        payload: { folderId: fileId, workspaceId },
+      });
+      await deleteFolder(fileId);
+      router.replace(`/dashboard/${workspaceId}`);
+    }
+  };
   return (
     <>
       <div className="relative">
@@ -98,9 +144,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
                 hover:bg-white
                 hover:text-[#EB5757]
                 "
-                // onClick={restoreFileHandler}
-              >
-                Por de volta.
+                onClick={restoreFileHandler}>
+                Restaurar
               </Button>
 
               <Button
@@ -112,8 +157,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
                 hover:bg-white
                 hover:text-[#EB5757]
                 "
-                // onClick={deleteFileHandler}
-              >
+                onClick={deleteFileHandler}>
                 Deletar
               </Button>
             </div>

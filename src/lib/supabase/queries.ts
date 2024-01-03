@@ -101,6 +101,44 @@ export const getWorkspaceDetails = async (workspaceId: string) => {
   }
 };
 
+export const getFolderDetails = async (folderId: string) => {
+  const isValid = validate(folderId);
+  if (!isValid)
+    return {
+      data: [],
+      error: "Error",
+    };
+  try {
+    const res = (await db
+      .select()
+      .from(folders)
+      .where(eq(folders.id, folderId))
+      .limit(1)) as Folder[];
+    return { data: res, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: [], error: "Error" };
+  }
+};
+export const getFileDetails = async (fileId: string) => {
+  const isValid = validate(fileId);
+  if (!isValid)
+    return {
+      data: [],
+      error: "Error",
+    };
+  try {
+    const res = (await db
+      .select()
+      .from(files)
+      .where(eq(files.id, fileId))
+      .limit(1)) as Folder[];
+    return { data: res, error: null };
+  } catch (error) {
+    console.log(error);
+    return { data: [], error: "Error" };
+  }
+};
 export const getPrivateWorkspaces = async (userId: string) => {
   if (!userId) return [];
   const privateWorkspaces = (await db
@@ -241,6 +279,16 @@ export const updateWorkspace = async (
 export const deleteWorkspace = async (workspaceId: string) => {
   if (!workspaceId) return;
   await db.delete(workspaces).where(eq(workspaces.id, workspaceId));
+};
+
+export const deleteFile = async (fileId: string) => {
+  if (!fileId) return;
+  await db.delete(files).where(eq(files.id, fileId));
+};
+
+export const deleteFolder = async (folderId: string) => {
+  if (!folderId) return;
+  await db.delete(folders).where(eq(files.id, folderId));
 };
 
 export const getUsersFromSearch = async (email: string) => {

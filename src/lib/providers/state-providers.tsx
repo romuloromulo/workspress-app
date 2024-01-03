@@ -223,6 +223,7 @@ const appReducer = (
         }),
       };
     case "DELETE_FILE":
+      console.log("STATE PREU VER RAPIDAO", state);
       return {
         ...state,
         workspaces: state.workspaces.map((workspace) => {
