@@ -1,7 +1,7 @@
-import {
-  appFoldersType,
-  appWorkspacesType,
-} from "@/lib/providers/state-provider";
+// import {
+//   appFoldersType,
+//   appWorkspacesType,
+// } from "@/lib/providers/state-provider";
 import { Folder, workspace } from "@/lib/supabase/supabase.types";
 import React from "react";
 import CustomDialogTrigger from "../global/custom-dialog-trigger";
