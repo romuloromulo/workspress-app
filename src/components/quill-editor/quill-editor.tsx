@@ -370,6 +370,15 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
               </div>
             </EmojiPicker>
           </div>
+          <div className="flex">
+            <BannerUpload
+              details={details}
+              id={fileId}
+              dirtType={dirType}
+              className="mt-2 text-muted-foreground p-2 hover:text-card-foreground transition-all rounded-md">
+              {details.bannerUrl ? "Mudar banner" : "Adicionar banner"}
+            </BannerUpload>
+          </div>
         </div>
       </div>
       <main className="flex justify-center items-center flex-col mt-2 relative">
