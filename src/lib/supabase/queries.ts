@@ -5,7 +5,6 @@ import { and, eq, ilike, notExists } from "drizzle-orm";
 import { File, Folder, Subscription, User, workspace } from "./supabase.types";
 import { files, folders, users, workspaces } from "../../../migrations/schema";
 import { collaborators } from "./schema";
-import { experimental_taintUniqueValue } from "react";
 import { revalidatePath } from "next/cache";
 
 export const createWorkspace = async (workspace: workspace) => {
