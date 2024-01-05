@@ -29,7 +29,6 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
     formState: { isSubmitting: isUploading, errors },
   } = useForm<z.infer<typeof UploadBannerFormSchema>>({
     mode: "onChange",
-    resolver: zodResolver(UploadBannerFormSchema),
     defaultValues: {
       banner: "",
     },
@@ -38,10 +37,12 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
   const onSubmitHandler: SubmitHandler<
     z.infer<typeof UploadBannerFormSchema>
   > = async (values) => {
+    console.log("VALORES", values);
     const file = values.banner?.[0];
     if (!file || !id) return;
     try {
       let filePath = null;
+
       const uploadBanner = async () => {
         const { data, error } = await supabase.storage
           .from("file-banners")
@@ -49,6 +50,7 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
         if (error) throw new Error();
         filePath = data.path;
       };
+
       if (dirType === "file") {
         if (!workspaceId || !folderId) return;
         await uploadBanner();
@@ -68,8 +70,8 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
         dispatch({
           type: "UPDATE_FOLDER",
           payload: {
+            folderId: id,
             folder: { bannerUrl: filePath },
-            folderId,
             workspaceId,
           },
         });
@@ -101,13 +103,14 @@ const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
         type="file"
         accept="image/*"
         disabled={isUploading}
-        {...register("banner", { required: "Banner Image is required" })}
+        className="cursor-pointer"
+        {...register("banner", { required: "Imagem do banner é requerida" })}
       />
       <small className="text-red-600">
         {errors.banner?.message?.toString()}
       </small>
       <Button disabled={isUploading} type="submit">
-        {!isUploading ? "Upload Banner" : <Loader />}
+        {!isUploading ? "Carregar Banner" : <Loader />}
       </Button>
     </form>
   );

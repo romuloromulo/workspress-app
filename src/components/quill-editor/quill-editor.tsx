@@ -24,6 +24,8 @@ import { Badge } from "../ui/badge";
 import Image from "next/image";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import EmojiPicker from "../global/emoji-picker";
+import BannerUpload from "../banner-upload/banner-upload";
+import { XCircleIcon } from "lucide-react";
 
 interface QuillEditorProps {
   dirType: "workspace" | "folder" | "file";
@@ -61,6 +63,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const pathname = usePathname();
   const [quill, setQuill] = useState<any>(null);
   const [saving, setSaving] = useState(false);
+  const [deletingBanner, setDeletingBanner] = useState(false);
 
   const [collaborators, setCollaborators] = useState<
     {
@@ -205,6 +208,39 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       });
       await updateFile({ iconId: icon }, fileId);
     }
+  };
+
+  const deleteBanner = async () => {
+    if (!fileId) return;
+    setDeletingBanner(true);
+    if (dirType === "file") {
+      if (!folderId || !workspaceId) return;
+      dispatch({
+        type: "UPDATE_FILE",
+        payload: { file: { bannerUrl: "" }, fileId, folderId, workspaceId },
+      });
+      await supabase.storage.from("file-banners").remove([`banner-${fileId}`]);
+      await updateFile({ bannerUrl: "" }, fileId);
+    }
+    if (dirType === "folder") {
+      if (!workspaceId) return;
+      dispatch({
+        type: "UPDATE_FOLDER",
+        payload: { folder: { bannerUrl: "" }, folderId: fileId, workspaceId },
+      });
+      await supabase.storage.from("file-banners").remove([`banner-${fileId}`]);
+      await updateFolder({ bannerUrl: "" }, fileId);
+    }
+    if (dirType === "workspace") {
+      if (!workspaceId) return;
+      dispatch({
+        type: "UPDATE_WORKSPACE",
+        payload: { workspace: { bannerUrl: "" }, workspaceId: fileId },
+      });
+      await supabase.storage.from("file-banners").remove([`banner-${fileId}`]);
+      await updateWorkspace({ bannerUrl: "" }, fileId);
+    }
+    setDeletingBanner(false);
   };
 
   return (
@@ -372,12 +408,33 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           </div>
           <div className="flex">
             <BannerUpload
-              details={details}
+              // details={details}
               id={fileId}
-              dirtType={dirType}
+              dirType={dirType}
               className="mt-2 text-muted-foreground p-2 hover:text-card-foreground transition-all rounded-md">
               {details.bannerUrl ? "Mudar banner" : "Adicionar banner"}
             </BannerUpload>
+            {details.bannerUrl && (
+              <Button
+                disabled={deletingBanner}
+                onClick={deleteBanner}
+                variant="ghost"
+                className="gap-2 hover:bg-background
+                flex
+                item-center
+                justify-center
+                mt-2
+                text-sm
+                text-muted-foreground
+                w-36
+                p-2
+                rounded-md">
+                <XCircleIcon size={16} />
+                <span className="whitespace-nowrap font-normal">
+                  Remove Banner
+                </span>
+              </Button>
+            )}
           </div>
         </div>
       </div>
