@@ -350,6 +350,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
               text-white
               right-4
               z-50
+              cursor-pointer
               ">
                 Salvo
               </Badge>
@@ -390,7 +391,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     flex-col
      px-7 
      lg:my-8">
-          <div className="text-[80px]">
+          {/* <div className="text-[80px]">
             <EmojiPicker getValue={iconOnChange}>
               <div
                 className="w-[100px]
@@ -405,7 +406,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
                 {details.iconId}
               </div>
             </EmojiPicker>
-          </div>
+          </div> */}
           <div className="flex">
             <BannerUpload
               // details={details}
@@ -436,11 +437,27 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
               </Button>
             )}
           </div>
+          <span
+            className="
+            text-muted-foreground
+            text-3xl
+            font-bold
+            h-9
+          ">
+            {details.title}
+          </span>
+          <span className="text-gray-300 text-sm">
+            {dirType === "workspace"
+              ? "Área de trabalho"
+              : "" || dirType === "file"
+              ? "Arquivo"
+              : "" || dirType === "folder"
+              ? "Pasta"
+              : ""}
+          </span>
         </div>
       </div>
-      <main className="flex justify-center items-center flex-col mt-2 relative">
-        <div id="container" ref={wrapperRef} className="max-w-[800]"></div>
-      </main>
+      <div id="container" ref={wrapperRef} className="max-w-[800]"></div>
     </>
   );
 };
