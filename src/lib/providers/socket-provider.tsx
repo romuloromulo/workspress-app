@@ -1,8 +1,8 @@
 "use client";
 
-import { boolean } from "drizzle-orm/pg-core";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { io as ClientIO } from "socket.io-client";
+
 type SocketContextType = {
   socket: any | null;
   isConnected: boolean;
@@ -32,9 +32,12 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     socketInstance.on("connect", () => {
       setIsConnected(true);
     });
+
     socketInstance.on("disconnect", () => {
       setIsConnected(false);
     });
+
+    setSocket(socketInstance);
 
     return () => {
       socketInstance.disconnect();

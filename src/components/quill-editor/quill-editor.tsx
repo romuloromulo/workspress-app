@@ -1,7 +1,7 @@
 "use client";
 import { useAppState } from "@/lib/providers/state-providers";
 import { File, Folder, workspace } from "@/lib/supabase/supabase.types";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "quill/dist/quill.snow.css";
 import { getDetails } from "@/lib/helpers/details";
 import { Button } from "../ui/button";
@@ -26,6 +26,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import EmojiPicker from "../global/emoji-picker";
 import BannerUpload from "../banner-upload/banner-upload";
 import { XCircleIcon } from "lucide-react";
+import { useSocket } from "@/lib/providers/socket-provider";
 
 interface QuillEditorProps {
   dirType: "workspace" | "folder" | "file";
@@ -59,6 +60,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
 }) => {
   const router = useRouter();
   const supabase = createClientComponentClient();
+  const { socket } = useSocket();
   const { state, workspaceId, folderId, dispatch } = useAppState();
   const pathname = usePathname();
   const [quill, setQuill] = useState<any>(null);
@@ -242,6 +244,10 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     }
     setDeletingBanner(false);
   };
+
+  useEffect(() => {
+    return () => {};
+  }, []);
 
   return (
     <>

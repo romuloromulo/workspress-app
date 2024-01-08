@@ -8,6 +8,7 @@ import { twMerge } from "tailwind-merge";
 import AppStateProvider from "@/lib/providers/state-providers";
 import { SupabaseUserProvider } from "@/lib/providers/supabase-user-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { SocketProvider } from "@/lib/providers/socket-provider";
 
 // console.log(db);
 
@@ -25,16 +26,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <AppStateProvider>
-          <SupabaseUserProvider>
-            <body className={twMerge("bg-background", inter.className)}>
-              {children}
-              <Toaster />
-            </body>
-          </SupabaseUserProvider>
-        </AppStateProvider>
-      </ThemeProvider>
+      <body className={twMerge("bg-background", inter.className)}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <AppStateProvider>
+            <SupabaseUserProvider>
+              <SocketProvider>
+                {children}
+                <Toaster />
+              </SocketProvider>
+            </SupabaseUserProvider>
+          </AppStateProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
