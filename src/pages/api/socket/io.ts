@@ -17,10 +17,20 @@ const ioHandler = (req: NextApiRequest, res: NextApiResponseServerIo) => {
       path,
       addTrailingSlash: false,
     });
-    io.on("connection", (s) =>
+    io.on("connection", (s) => {
       s.on("create-room", (fileId) => {
         s.join(fileId);
-      })
-    );
+      });
+      s.on("send-changes", (deltas, fileId) => {
+        s.to(fileId).emit("receive-changes", deltas, fileId);
+      });
+      s.on("send-cursor-move", (range, fileId, cursorId) => {
+        s.to(fileId).emit("receive-cursor-move", range, fileId, cursorId);
+      });
+      res.socket.server.io = io;
+    });
   }
+  res.end();
 };
+
+export default ioHandler;
