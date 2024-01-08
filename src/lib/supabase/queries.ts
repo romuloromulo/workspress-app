@@ -131,7 +131,7 @@ export const getFileDetails = async (fileId: string) => {
       .select()
       .from(files)
       .where(eq(files.id, fileId))
-      .limit(1)) as Folder[];
+      .limit(1)) as File[];
     return { data: res, error: null };
   } catch (error) {
     console.log(error);

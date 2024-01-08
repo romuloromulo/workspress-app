@@ -8,6 +8,9 @@ import { Button } from "../ui/button";
 import {
   deleteFile,
   deleteFolder,
+  getFileDetails,
+  getFolderDetails,
+  getWorkspaceDetails,
   updateFile,
   updateFolder,
   updateWorkspace,
@@ -27,6 +30,7 @@ import EmojiPicker from "../global/emoji-picker";
 import BannerUpload from "../banner-upload/banner-upload";
 import { XCircleIcon } from "lucide-react";
 import { useSocket } from "@/lib/providers/socket-provider";
+import { off } from "process";
 
 interface QuillEditorProps {
   dirType: "workspace" | "folder" | "file";
@@ -246,8 +250,69 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   };
 
   useEffect(() => {
+    if (!fileId) return;
+    const fetchInformation = async () => {
+      if (dirType === "file") {
+        const { data: selectedDir, error } = await getFileDetails(fileId);
+        if (error || !selectedDir) {
+          return router.replace("/dashboard");
+        }
+        if (!selectedDir[0]) {
+          if (!workspaceId) return;
+          router.replace(`/dashboard/${workspaceId}`);
+        }
+        if (!workspaceId || quill === null) return;
+        if (!selectedDir[0].data) return;
+        quill.setContents(JSON.parse(selectedDir[0].data || ""));
+        dispatch({
+          type: "UPDATE_FILE",
+          payload: {
+            file: { data: selectedDir[0].data },
+            fileId,
+            folderId: selectedDir[0]?.folderId,
+            workspaceId,
+          },
+        });
+      }
+      if (dirType === "folder") {
+        const { data: selectedDir, error } = await getFolderDetails(fileId);
+        if (error || !selectedDir) {
+          return router.replace("/dashboard");
+        }
+        if (!selectedDir[0]) {
+          router.replace(`/dashboard/${workspaceId}`);
+        }
+        if (!workspaceId || quill === null) return;
+        if (!selectedDir[0].data) return;
+        quill.setContents(JSON.parse(selectedDir[0].data || ""));
+        dispatch({
+          type: "UPDATE_FOLDER",
+          payload: {
+            folder: { data: selectedDir[0].data },
+            folderId: fileId,
+            workspaceId: selectedDir[0].workspaceId,
+          },
+        });
+      }
+      if (dirType === "workspace") {
+        const { data: selectedDir, error } = await getWorkspaceDetails(fileId);
+        if (error || !selectedDir) {
+          return router.replace("/dashboard");
+        }
+        if (!workspaceId || quill === null) return;
+        if (!selectedDir[0].data) return;
+        quill.setContents(JSON.parse(selectedDir[0].data || ""));
+        dispatch({
+          type: "UPDATE_WORKSPACE",
+          payload: {
+            workspace: { data: selectedDir[0].data },
+            workspaceId: fileId,
+          },
+        });
+      }
+    };
     return () => {};
-  }, []);
+  }, [fileId, workspaceId, folderId]);
 
   return (
     <>

@@ -50,6 +50,13 @@
       "when": 1702408690764,
       "tag": "0006_swift_wolfsbane",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1704733123979,
+      "tag": "0007_light_giant_man",
+      "breakpoints": true
     }
   ]
 }
