@@ -80,7 +80,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [quill, setQuill] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [deletingBanner, setDeletingBanner] = useState(false);
-  const [localCursos, setLocalCursors] = useState<any>([]);
+  const [localCursors, setLocalCursors] = useState<any>([]);
   //prettier ignore
   const [collaborators, setCollaborators] = useState<
     { id: string; email: string; avatarUrl: string }[]
@@ -146,6 +146,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       setQuill(q);
     }
   }, []);
+
+  ////////funçoesnormais////////////////////////////////////////////////////
   const restoreFileHandler = async () => {
     if (dirType === "file") {
       if (!folderId || !workspaceId) return;
@@ -255,6 +257,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     setDeletingBanner(false);
   };
 
+  /////////useEffects///////////////////////////////////////////////////////
+
   useEffect(() => {
     if (!fileId) return;
     const fetchInformation = async () => {
@@ -321,6 +325,27 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   }, [fileId, workspaceId, folderId, quill, dirType]);
 
   useEffect(() => {
+    if (socket === null || quill === null || !fileId || !localCursors.length)
+      return;
+
+    const socketHandler = (range: any, roomId: string, cursorId: string) => {
+      if (roomId === fileId) {
+        const cursorToMove = localCursors.find(
+          (c: any) => c.cursors()?.[0].id === cursorId
+        );
+        if (cursorToMove) {
+          cursorToMove.moveCursor(cursorId, range);
+        }
+      }
+    };
+    socket.on("receive-cursor-move", socketHandler);
+    return () => {
+      socket.off("receive-cursor-move", socketHandler);
+    };
+  }, [socket, quill, fileId, localCursors]);
+
+  //criando sala
+  useEffect(() => {
     if (socket === null || quill === null || !fileId) return;
     socket.emit("create-room", fileId);
     console.log("ESTÁ CONECTADO?", isConnected);
@@ -330,7 +355,13 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   useEffect(() => {
     if (socket === null || quill === null || !fileId || !user) return;
     //WIP cursor update
-    const selectionChangehandler = () => {};
+    const selectionChangeHandler = (cursorId: string) => {
+      return (range: any, oldRange: any, source: any) => {
+        if (source === "user" && cursorId) {
+          socket.emit("send-cursor-move", range, fileId, cursorId);
+        }
+      };
+    };
     const quillHandler = (delta: any, oldDelta: any, source: any) => {
       if (source !== "user") return;
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
@@ -381,10 +412,12 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       socket.emit("send-changes", delta, fileId);
     };
     quill.on("text-change", quillHandler);
+    quill.on("selection-change", selectionChangeHandler(user.id));
     //WIP curosres selecionados handler
 
     return () => {
       quill.off("text-change", quillHandler);
+      quill.off("selection-change", selectionChangeHandler);
       //WIP CURSORES
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     };
