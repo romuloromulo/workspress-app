@@ -138,11 +138,11 @@ const SettingsForm = () => {
 
   async function addCollaborator(profile: User) {
     if (!workspaceId) return;
-    // if(subscription?.status !== 'active' && collaborators.length >=2){
-    //   // setOpen(true);
-    //   return;
-    // }
-    await addCollaborators(collaborators, workspaceId);
+    if (subscription?.status !== "active" && collaborators.length >= 2) {
+      // setOpen(true);
+      return;
+    }
+    await addCollaborators([profile], workspaceId);
     setCollaborators([...collaborators, profile]);
     window.location.reload();
   }
@@ -159,12 +159,20 @@ const SettingsForm = () => {
     window.location.reload();
   };
 
+  const onClickAlertConfirm = async () => {
+    if (!workspaceId) return;
+    if (collaborators.length > 0) {
+      await removeCollaborators(collaborators, workspaceId);
+    }
+    setPermissions("private");
+    setOpenAlertMessage(false);
+  };
+
   useEffect(() => {
     const showingWorkspace = state.workspaces.find(
       (workspace) => workspace.id === workspaceId
     );
-
-    setWorkspaceDetails(showingWorkspace);
+    if (showingWorkspace) setWorkspaceDetails(showingWorkspace);
   }, [workspaceId, state]);
 
   useEffect(() => {
@@ -321,7 +329,7 @@ const SettingsForm = () => {
                   items-center
                 ">
                     <span className="text-muted-foreground text-sm">
-                      You have no collaborators
+                      Você não possui colaboradores
                     </span>
                   </div>
                 )}
@@ -341,6 +349,7 @@ const SettingsForm = () => {
             className="mt-4 
             text-sm
             bg-destructive/40 
+ 
             border-2 
             border-destructive"
             onClick={async () => {
@@ -371,7 +380,7 @@ const SettingsForm = () => {
             <Label
               htmlFor="profilePicture"
               className="text-sm text-muted-foreground">
-              Profile Picture
+              Foto de Perfil
             </Label>
             <Input
               name="profilePicture"
@@ -393,7 +402,7 @@ const SettingsForm = () => {
         </p>
         <Separator />
         <p className="text-muted-foreground">
-          You are currently on a{" "}
+          Você no memento está no{" "}
           {subscription?.status === "active" ? "Pro" : "Free"} Plan
         </p>
         <Link
@@ -429,6 +438,25 @@ const SettingsForm = () => {
           </div>
         )}
       </>
+      <AlertDialog open={openAlertMessage}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+            <AlertDescription>
+              Mudar uma área de de trabalho de compartilhada para privada irá
+              remover todos os colaboradores permanentemente.
+            </AlertDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpenAlertMessage(false)}>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={onClickAlertConfirm}>
+              Continuar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

@@ -384,14 +384,28 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       socket.emit("send-changes", delta, fileId);
     };
     quill.on("text-change", quillHandler);
-    //WIP curosres selecionados handelr
+    //WIP curosres selecionados handler
 
     return () => {
       quill.off("text-change", quillHandler);
       //WIP CURSORES
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     };
-  }, [socket, quill, user, fileId, details, workspaceId, folderId]);
+  }, [socket, quill, user, fileId, details, workspaceId, folderId, dispatch]);
+
+  useEffect(() => {
+    if (quill === null || socket === null) return;
+    const socketHandler = (deltas: any, id: string) => {
+      if (id === fileId) {
+        quill.updateContents(deltas);
+      }
+    };
+    socket.on("receive-changes", socketHandler);
+    return () => {
+      socket.off("receive-changes", socketHandler);
+    };
+  }, [quill, socket, fileId]);
+
   return (
     <>
       <div className="relative">
