@@ -379,12 +379,19 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
             await updateFile({ data: JSON.stringify(contents) }, fileId);
           }
         }
-        // const updateState = () => {
-        //   dispatch({ type: "UPDATE_FILE" });
-        // };
+        setSaving(false);
       }, 850);
+      socket.emit("send-changes", delta, fileId);
     };
-  }, [socket, quill, user, fileId, details]);
+    quill.on("text-change", quillHandler);
+    //WIP curosres selecionados handelr
+
+    return () => {
+      quill.off("text-change", quillHandler);
+      //WIP CURSORES
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, [socket, quill, user, fileId, details, workspaceId, folderId]);
   return (
     <>
       <div className="relative">
@@ -599,7 +606,12 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           </span>
         </div>
       </div>
-      <div id="container" ref={wrapperRef} className="max-w-[800]"></div>
+      <main className="h-screen">
+        <div
+          id="container"
+          ref={wrapperRef}
+          className="max-w-[800] h-full"></div>
+      </main>
     </>
   );
 };

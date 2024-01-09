@@ -22,7 +22,7 @@ import { Input } from "../ui/input";
 import {
   addCollaborators,
   deleteWorkspace,
-  // getCollaborators,
+  getCollaborators,
   removeCollaborators,
   updateWorkspace,
 } from "@/lib/supabase/queries";
@@ -52,11 +52,11 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Alert, AlertDescription } from "../ui/alert";
 import CypressProfileIcon from "../icons/cypressProfileIcon";
-// import LogoutButton from "../global/logout-button";
+import LogoutButton from "../global/logout-button";
 import Link from "next/link";
 import CollaboratorSearch from "../global/collaboratorsearch";
 import { workspaces } from "@/lib/supabase/schema";
-// import { profile } from "console";
+import { profile } from "console";
 // import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 // import { postData } from "@/lib/utils";
 
@@ -76,7 +76,6 @@ const SettingsForm = () => {
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [loadingPortal, setLoadingPortal] = useState(false);
 
-  //on change
   const workspaceNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(
       "TESSSTE",
@@ -131,7 +130,11 @@ const SettingsForm = () => {
       setUploadingLogo(false);
     }
   }
-  function onPermissionsChange() {}
+  const onPermissionsChange = (val: string) => {
+    if (val === "private") {
+      setOpenAlertMessage(true);
+    } else setPermissions(val);
+  };
 
   async function addCollaborator(profile: User) {
     if (!workspaceId) return;
@@ -155,6 +158,7 @@ const SettingsForm = () => {
     );
     window.location.reload();
   };
+
   useEffect(() => {
     const showingWorkspace = state.workspaces.find(
       (workspace) => workspace.id === workspaceId
@@ -162,6 +166,18 @@ const SettingsForm = () => {
 
     setWorkspaceDetails(showingWorkspace);
   }, [workspaceId, state]);
+
+  useEffect(() => {
+    if (!workspaceId) return;
+    const fetchCollaborators = async () => {
+      const response = await getCollaborators(workspaceId);
+      if (response.length) {
+        setPermissions("shared");
+        setCollaborators(response);
+      }
+    };
+    fetchCollaborators();
+  }, [workspaceId]);
 
   // console.log("WorkspaceDetails", workspaceDetails);
 
@@ -229,8 +245,8 @@ const SettingsForm = () => {
                 <div className="p-2 flex gap-4 justify-center items-center">
                   <Share></Share>
                   <article className="text-left flex flex-col">
-                    <span>Shared</span>
-                    <span>You can invite collaborators.</span>
+                    <span>Compartilhada</span>
+                    <span>Você pode convidar colaboradores.</span>
                   </article>
                 </div>
               </SelectItem>
@@ -367,7 +383,7 @@ const SettingsForm = () => {
             />
           </div>
         </div>
-        {/* <LogoutButton>
+        <LogoutButton>
           <div className="flex items-center">
             <LogOut />
           </div>
@@ -394,7 +410,8 @@ const SettingsForm = () => {
               variant={"secondary"}
               disabled={loadingPortal}
               className="text-sm"
-              onClick={redirectToCustomerPortal}>
+              // onClick={redirectToCustomerPortal}
+            >
               Manage Subscription
             </Button>
           </div>
@@ -405,11 +422,12 @@ const SettingsForm = () => {
               size="sm"
               variant={"secondary"}
               className="text-sm"
-              onClick={() => setOpen(true)}>
+              // onClick={() => setOpen(true)}
+            >
               Start Plan
             </Button>
           </div>
-        )} */}
+        )}
       </>
     </div>
   );
