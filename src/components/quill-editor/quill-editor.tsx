@@ -14,6 +14,7 @@ import { Button } from "../ui/button";
 import {
   deleteFile,
   deleteFolder,
+  findUser,
   getFileDetails,
   getFolderDetails,
   getWorkspaceDetails,
@@ -79,15 +80,11 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [quill, setQuill] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [deletingBanner, setDeletingBanner] = useState(false);
-
+  const [localCursos, setLocalCursors] = useState<any>([]);
+  //prettier ignore
   const [collaborators, setCollaborators] = useState<
-    {
-      id: string;
-      email: string;
-      avatarUrl: string;
-    }[]
-  >();
-
+    { id: string; email: string; avatarUrl: string }[]
+  >([]);
   const details = getDetails({ dirType, fileId, dirDetails });
 
   const breadCrumbs = useMemo(() => {
@@ -406,6 +403,52 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     };
   }, [quill, socket, fileId]);
 
+  useEffect(() => {
+    if (!fileId || quill === null) return;
+    const room = supabase.channel(fileId);
+    const subscription = room
+      .on("presence", { event: "sync" }, () => {
+        const newState = room.presenceState();
+        console.log("NEWSTATE", newState);
+        const newCollaborators = Object.values(newState).flat() as any;
+        setCollaborators(newCollaborators);
+        if (user) {
+          const allCursors: any = [];
+          newCollaborators.forEach(
+            (collaborator: { id: string; email: string; avatar: string }) => {
+              if (collaborator.id !== user.id) {
+                const userCursor = quill.getModule("cursors");
+                userCursor.createCursor(
+                  collaborator.id,
+                  collaborator.email.split("@")[0],
+                  `#${Math.random().toString(16).slice(2, 8)}`
+                );
+                allCursors.push(userCursor);
+              }
+            }
+          );
+          setLocalCursors(allCursors);
+        }
+      })
+      .subscribe(async (status) => {
+        if (status !== "SUBSCRIBED" || !user) return;
+        const response = await findUser(user.id);
+        if (!response) return;
+        room.track({
+          id: user.id,
+          email: user.email?.split("@")[0],
+          avatarUrl: response.avatarUrl
+            ? supabase.storage.from("avatars").getPublicUrl(response.avatarUrl)
+                .data.publicUrl
+            : "",
+        });
+      });
+    return () => {
+      supabase.removeChannel(room);
+    };
+  }, [fileId, quill, supabase, user]);
+
+  console.log("COLABORADORES", collaborators);
   return (
     <>
       <div className="relative">

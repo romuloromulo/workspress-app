@@ -317,3 +317,10 @@ export const getUsersFromSearch = async (email: string) => {
     .where(ilike(users.email, `${email}%`));
   return accounts;
 };
+
+export const findUser = async (userId: string) => {
+  const response = await db.query.users.findFirst({
+    where: (u, { eq }) => eq(u.id, userId),
+  });
+  return response;
+};
