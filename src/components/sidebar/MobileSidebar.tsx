@@ -10,12 +10,12 @@ interface MobileSidebarProps {
 
 export const nativeNavigations = [
   {
-    title: "Sidebar",
+    title: "Menu",
     id: "sidebar",
     customIcon: Menu,
   },
   {
-    title: "Pages",
+    title: "Pagina",
     id: "pages",
     customIcon: CypressPageIcon,
   },
@@ -23,6 +23,7 @@ export const nativeNavigations = [
 
 const MobileSidebar: React.FC<MobileSidebarProps> = ({ children }) => {
   const [selectedNav, setSelectedNav] = useState("");
+  console.log("SELECTEDNAV", selectedNav);
   return (
     <>
       {selectedNav === "sidebar" && <>{children}</>}
@@ -47,6 +48,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ children }) => {
               items-center
               flex-col
               justify-center
+              cursor-pointer
             "
               key={item.id}
               onClick={() => {
