@@ -1,3 +1,4 @@
+import MobileSidebar from "@/components/sidebar/MobileSidebar";
 import Sidebar from "@/components/sidebar/sidebar";
 import React from "react";
 
@@ -13,7 +14,9 @@ const Layout: React.FC<LayoutProps> = ({ children, params }) => {
       h-screen
       w-screen
   ">
-      <Sidebar params={params} />
+      <MobileSidebar>
+        <Sidebar params={params} />
+      </MobileSidebar>
 
       <div className="dark:boder-Neutrals-12/70 border-l-[1px] w-full relative overflow-scroll">
         {" "}
