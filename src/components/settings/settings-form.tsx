@@ -57,13 +57,14 @@ import Link from "next/link";
 import CollaboratorSearch from "../global/collaboratorsearch";
 import { workspaces } from "@/lib/supabase/schema";
 import { profile } from "console";
-// import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
+import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
+
 // import { postData } from "@/lib/utils";
 
 const SettingsForm = () => {
   const { toast } = useToast();
   const { user, subscription } = useSupabaseUser();
-  // const { open, setOpen } = useSubscriptionModal();
+  const { open, setOpen } = useSubscriptionModal();
   const router = useRouter();
   const supabase = createClientComponentClient();
   const { state, workspaceId, dispatch } = useAppState();
@@ -211,7 +212,7 @@ const SettingsForm = () => {
         <Label
           htmlFor="workspaceLogo"
           className="text-sm text-muted-foreground">
-          Logo da Área de Trabalho
+          Logo da Área de Trabalho{" "}
         </Label>
         <Input
           name="workspaceLogo"
@@ -221,7 +222,11 @@ const SettingsForm = () => {
           onChange={onChangeWorkspaceLogo}
           disabled={uploadingLogo || subscription?.status !== "active"}
         />{" "}
-        {/*subscritpion*/}
+        {subscription?.status !== "active" && (
+          <small className="text-muted-foreground">
+            Para customizar sua página é necessario ser um assinante Pro
+          </small>
+        )}
       </div>
       <>
         <Label htmlFor="permissions">Permissisões</Label>
@@ -363,7 +368,7 @@ const SettingsForm = () => {
           </Button>
         </Alert>
         <p className="flex items-center gap-2 mt-6">
-          <UserIcon size={20} /> Profile
+          <UserIcon size={20} /> Perfil
         </p>
         <Separator />
         <div className="flex items-center">
@@ -398,18 +403,19 @@ const SettingsForm = () => {
           </div>
         </LogoutButton>
         <p className="flex items-center gap-2 mt-6">
-          <CreditCard size={20} /> Billing & Plan
+          <CreditCard size={20} /> Contas e Planos
         </p>
         <Separator />
         <p className="text-muted-foreground">
-          Você no memento está no{" "}
-          {subscription?.status === "active" ? "Pro" : "Free"} Plan
+          No momento você está no plano{" "}
+          {subscription?.status === "active" ? "Pro" : "Gratuito"}
         </p>
         <Link
           href="/"
           target="_blank"
           className="text-muted-foreground flex flex-row items-center gap-2">
-          View Plans <ExternalLink size={16} />
+          Ver todos os planos
+          <ExternalLink size={16} />
         </Link>
         {subscription?.status === "active" ? (
           <div>
@@ -421,7 +427,7 @@ const SettingsForm = () => {
               className="text-sm"
               // onClick={redirectToCustomerPortal}
             >
-              Manage Subscription
+              Gerenciar assinatura
             </Button>
           </div>
         ) : (
@@ -431,9 +437,8 @@ const SettingsForm = () => {
               size="sm"
               variant={"secondary"}
               className="text-sm"
-              // onClick={() => setOpen(true)}
-            >
-              Start Plan
+              onClick={() => setOpen(true)}>
+              Assinar plano
             </Button>
           </div>
         )}

@@ -17,10 +17,10 @@ import { useToast } from "../ui/use-toast";
 // import { getStripe } from "@/lib/stripe/stripeClient";
 
 interface SubscriptionModalProps {
-  products: ProductWirhPrice[];
+  // products: ProductWirhPrice[];
 }
 
-const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
+const SubscriptionModal: React.FC<SubscriptionModalProps> = () => {
   const { open, setOpen } = useSubscriptionModal();
   const { toast } = useToast();
   const { subscription } = useSupabaseUser();
@@ -58,40 +58,26 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {subscription?.status === "active" ? (
-        <DialogContent>Already on a paid plan!</DialogContent>
+        <DialogContent>Você já esta em um plano pago!</DialogContent>
       ) : (
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Upgrade to a Pro Plan</DialogTitle>
+            <DialogTitle>Assine o Plano Pro!</DialogTitle>
           </DialogHeader>
           <DialogDescription>
-            To access Pro features you need to have a paid plan.
+            Para acessar outros recursos você precisa ser assinante do Plano
+            Pro.
           </DialogDescription>
-          {products.length
-            ? products.map((product) => (
-                <div
-                  className="
-                  flex
-                  justify-between
-                  items-center
-                  "
-                  key={product.id}>
-                  {product.prices?.map((price) => (
-                    <React.Fragment key={price.id}>
-                      <b className="text-3xl text-foreground">
-                        {/* {formatPrice(price)} / <small>{price.interval}</small> */}
-                      </b>
-                      <Button
-                        onClick={() => onClickContinue(price)}
-                        disabled={isLoading}>
-                        {isLoading ? <Loader /> : "Upgrade ✨"}
-                      </Button>
-                    </React.Fragment>
-                  ))}
-                </div>
-              ))
-            : ""}
-          {/* No Products Available */}
+          <div className="flex justify-between items-center">
+            <>
+              <b className="text-3xl text-foreground">
+                R$12,90/<small>mês</small>
+              </b>
+              <Button disabled={isLoading}>
+                {isLoading ? <Loader /> : "Assinar ✅"}
+              </Button>
+            </>
+          </div>
         </DialogContent>
       )}
     </Dialog>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppState } from "@/lib/providers/state-providers";
 import { Folder } from "@/lib/supabase/supabase.types";
-
 import { Accordion } from "../ui/accordion";
 import TooltipComponent from "../global/tooltip-component";
 import { PlusIcon } from "lucide-react";
@@ -12,6 +11,7 @@ import { createFolder } from "@/lib/supabase/queries";
 import { useToast } from "../ui/use-toast";
 import Dropdown from "./Dropdown";
 import useSupabaseRealTime from "@/lib/helpers/useSupabaseRealTime";
+import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 
 interface FoldersDropdownListProps {
   workspaceFolders: Folder[];
@@ -24,6 +24,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
 }) => {
   useSupabaseRealTime();
   const { state, dispatch, folderId } = useAppState();
+  const { open, setOpen } = useSubscriptionModal();
   const [folders, setFolders] = useState(workspaceFolders);
   const { toast } = useToast();
   const { subscription } = useSupabaseUser();
@@ -55,6 +56,8 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
 
   async function addFolderHandler() {
     if (folders.length >= 3 && !subscription) {
+      setOpen(true);
+      return;
     }
     const newFolder: Folder = {
       data: null,
