@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import { toDateTime } from "../utils";
 import { subscriptions } from "../supabase/schema";
 
-export const upserProductRecord = async (product: Stripe.Product) => {
+export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
     id: product.id,
     active: product.active,

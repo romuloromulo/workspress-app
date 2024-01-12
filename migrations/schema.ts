@@ -10,7 +10,7 @@ import {
   integer,
   jsonb,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const keyStatus = pgEnum("key_status", [
   "default",
@@ -53,6 +53,22 @@ export const subscriptionStatus = pgEnum("subscription_status", [
   "incomplete_expired",
   "past_due",
   "unpaid",
+]);
+export const equalityOp = pgEnum("equality_op", [
+  "eq",
+  "neq",
+  "lt",
+  "lte",
+  "gt",
+  "gte",
+  "in",
+]);
+export const action = pgEnum("action", [
+  "INSERT",
+  "UPDATE",
+  "DELETE",
+  "TRUNCATE",
+  "ERROR",
 ]);
 
 export const customers = pgTable("customers", {
@@ -201,3 +217,14 @@ export const workspaces = pgTable("workspaces", {
   logo: text("logo"),
   bannerUrl: text("banner_url"),
 });
+
+export const productsRelations = relations(products, ({ many }) => ({
+  prices: many(prices),
+}));
+
+export const priceRelations = relations(prices, ({ one }) => ({
+  product: one(products, {
+    fields: [prices.productId],
+    references: [products.id],
+  }),
+}));

@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   uuid,
@@ -8,7 +8,12 @@ import {
   integer,
   jsonb,
 } from "drizzle-orm/pg-core";
-import { prices, subscriptionStatus, users } from "../../../migrations/schema";
+import {
+  prices,
+  products,
+  subscriptionStatus,
+  users,
+} from "../../../migrations/schema";
 
 export const workspaces = pgTable("workspaces", {
   id: uuid("id").defaultRandom().primaryKey().notNull(),
@@ -136,3 +141,16 @@ export const collaborators = pgTable("collaborators", {
     .references(() => users.id, { onDelete: "cascade" }),
   id: uuid("id").defaultRandom().primaryKey().notNull(),
 });
+
+//Nao delete!!
+
+export const productsRelations = relations(products, ({ many }) => ({
+  prices: many(prices),
+}));
+
+export const priceRelations = relations(prices, ({ one }) => ({
+  product: one(products, {
+    fields: [prices.productId],
+    references: [products.id],
+  }),
+}));
