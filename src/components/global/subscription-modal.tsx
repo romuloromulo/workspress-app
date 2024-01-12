@@ -9,18 +9,18 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { useSupabaseUser } from "@/lib/providers/supabase-user-provider";
-// import { formatPrice, postData } from "@/lib/utils";
 import { Button } from "../ui/button";
 import Loader from "./Loader";
 import { Price, ProductWirhPrice } from "@/lib/supabase/supabase.types";
 import { useToast } from "../ui/use-toast";
-// import { getStripe } from "@/lib/stripe/stripeClient";
+import { formatPrice, postData } from "@/lib/utils";
+import { getStripe } from "@/lib/stripe/stripeClient";
 
 interface SubscriptionModalProps {
-  // products: ProductWirhPrice[];
+  products: ProductWirhPrice[];
 }
 
-const SubscriptionModal: React.FC<SubscriptionModalProps> = () => {
+const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
   const { open, setOpen } = useSubscriptionModal();
   const { toast } = useToast();
   const { subscription } = useSupabaseUser();
@@ -31,25 +31,25 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = () => {
     try {
       setIsLoading(true);
       if (!user) {
-        toast({ title: "You must be logged in" });
+        toast({ title: "Você precisa estar logado" });
         setIsLoading(false);
         return;
       }
       if (subscription) {
-        toast({ title: "Already on a paid plan" });
+        toast({ title: "Você já esta no plano pro" });
         setIsLoading(false);
         return;
       }
-      // const { sessionId } = await postData({
-      //   url: "/api/create-checkout-session",
-      //   data: { price },
-      // });
+      const { sessionId } = await postData({
+        url: "/api/create-checkout-session",
+        data: { price },
+      });
 
       console.log("Getting Checkout for stripe");
-      // const stripe = await getStripe();
-      // stripe?.redirectToCheckout({ sessionId });
+      const stripe = await getStripe();
+      stripe?.redirectToCheckout({ sessionId });
     } catch (error) {
-      toast({ title: "Oppse! Something went wrong.", variant: "destructive" });
+      toast({ title: "Opa! Alguma coisa deu errado.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
@@ -68,16 +68,26 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = () => {
             Para acessar outros recursos você precisa ser assinante do Plano
             Pro.
           </DialogDescription>
-          <div className="flex justify-between items-center">
-            <>
-              <b className="text-3xl text-foreground">
-                R$12,90/<small>mês</small>
-              </b>
-              <Button disabled={isLoading}>
-                {isLoading ? <Loader /> : "Assinar ✅"}
-              </Button>
-            </>
-          </div>
+          {products.length
+            ? products.map((product) => (
+                <div
+                  className="flex justify-between items-center"
+                  key={product.id}>
+                  {product.prices?.map((price) => (
+                    <>
+                      <b className="text-3xl text-foreground" key={price.id}>
+                        {formatPrice(price)}/ <small>mês</small>
+                      </b>
+                      <Button
+                        disabled={isLoading}
+                        onClick={() => onClickContinue}>
+                        {isLoading ? <Loader /> : "Assinar ✅"}
+                      </Button>
+                    </>
+                  ))}
+                </div>
+              ))
+            : ""}
         </DialogContent>
       )}
     </Dialog>
