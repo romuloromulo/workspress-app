@@ -24,6 +24,7 @@ import { useAppState } from "../../lib/providers/state-providers";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { CreateWorkspaceFormSchema } from "@/lib/types";
 import { z } from "zod";
+import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 
 interface DashboardSetupProps {
   user: AuthUser;
@@ -39,6 +40,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   const { dispatch } = useAppState();
   const [selectedEmoji, setSelectedEmoji] = useState("💼");
   const supabase = createClientComponentClient();
+  // const { subscription } = useSubscriptionModal();
   const {
     register,
     handleSubmit,
@@ -179,7 +181,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 type="file"
                 accept="image/*"
                 placeholder="Workspace Name"
-                // disabled={isLoading || subscription?.status !== 'active'}
+                disabled={isLoading || subscription?.status !== "active"}
                 {...register("logo", {
                   required: false,
                 })}
