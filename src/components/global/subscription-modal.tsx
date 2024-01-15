@@ -80,7 +80,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
                       </b>
                       <Button
                         disabled={isLoading}
-                        onClick={() => onClickContinue}>
+                        onClick={() => onClickContinue(price)}>
                         {isLoading ? <Loader /> : "Assinar ✅"}
                       </Button>
                     </>

@@ -37,7 +37,7 @@ const TrashRestore = () => {
     <section>
       {!!folders.length && (
         <>
-          <h3>Folders</h3>
+          <h3>Pastas</h3>
           {folders.map((folder) => (
             <Link
               className="hover:bg-muted
@@ -60,7 +60,7 @@ const TrashRestore = () => {
       )}
       {!!files.length && (
         <>
-          <h3>Files</h3>
+          <h3>Arquivos</h3>
           {files.map((file) => (
             <Link
               key={file.id}
@@ -88,7 +88,7 @@ const TrashRestore = () => {
           -translate-y-1/2
 
       ">
-          No Items in trash
+          Sem itens na lixeira.
         </div>
       )}
     </section>

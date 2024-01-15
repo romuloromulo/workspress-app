@@ -14,129 +14,132 @@ export const CLIENTS = [
 
 export const USERS = [
   {
-    name: "Alice",
-    message:
-      "Cypress has been a game-changer for our team. With its reliable end-to-end testing, we catch bugs early, leading to faster development cycles and improved collaboration.",
+    nome: "Alice",
+    mensagem:
+      "Cypress tem sido um divisor de águas para nossa equipe. Com seus testes confiáveis de ponta a ponta, detectamos bugs precocemente, resultando em ciclos de desenvolvimento mais rápidos e uma colaboração aprimorada.",
   },
   {
-    name: "Bob",
-    message:
-      "I used to spend hours debugging frontend issues, but Cypress simplified everything. Now, I'm more productive, and my colleagues can trust our code thanks to Cypress.",
+    nome: "Bob",
+    mensagem:
+      "Costumava passar horas depurando problemas de frontend, mas o Cypress simplificou tudo. Agora, sou mais produtivo, e meus colegas podem confiar em nosso código graças ao Cypress.",
   },
   {
-    name: "Charlie",
-    message:
-      "Cypress has transformed the way we work. Our QA and development teams are on the same page, and our productivity has skyrocketed. It's a must-have tool.",
+    nome: "Charlie",
+    mensagem:
+      "O Cypress transformou a forma como trabalhamos. Nossas equipes de QA e desenvolvimento estão na mesma página, e nossa produtividade disparou. É uma ferramenta essencial.",
   },
   {
-    name: "David",
-    message:
-      "I was skeptical at first, but Cypress exceeded my expectations. Our project timelines have improved, and collaboration between teams is seamless.",
+    nome: "David",
+    mensagem:
+      "Eu estava cético no início, mas o Cypress superou minhas expectativas. Nossos prazos de projeto melhoraram, e a colaboração entre equipes é perfeita.",
   },
   {
-    name: "Ella",
-    message:
-      "Cypress made writing and running tests a breeze. Our team's productivity has never been higher, and we're delivering more reliable software.",
+    nome: "Ella",
+    mensagem:
+      "O Cypress tornou a escrita e execução de testes muito fácil. A produtividade de nossa equipe nunca foi tão alta, e entregamos software mais confiável.",
   },
   {
-    name: "Frank",
-    message:
-      "Thanks to Cypress, we've eliminated testing bottlenecks. Our developers and testers collaborate effortlessly, resulting in quicker releases.",
+    nome: "Frank",
+    mensagem:
+      "Graças ao Cypress, eliminamos gargalos de teste. Nossos desenvolvedores e testadores colaboram sem esforço, resultando em lançamentos mais rápidos.",
   },
   {
-    name: "Grace",
-    message:
-      "Cypress has improved our development process significantly. We now have more time for innovation, and our products are of higher quality.",
+    nome: "Grace",
+    mensagem:
+      "O Cypress melhorou significativamente nosso processo de desenvolvimento. Agora temos mais tempo para inovação, e nossos produtos têm uma qualidade superior.",
   },
   {
-    name: "Hank",
-    message:
-      "Cypress's user-friendly interface made it easy for our non-technical team members to contribute to testing. Our workflow is much more efficient now.",
+    nome: "Hank",
+    mensagem:
+      "A interface amigável do Cypress facilitou a contribuição de membros não técnicos de nossa equipe nos testes. Nosso fluxo de trabalho agora é muito mais eficiente.",
   },
   {
-    name: "Ivy",
-    message:
-      "Our team's collaboration improved immensely with Cypress. We catch issues early, leading to less friction and quicker feature deployments.",
+    nome: "Ivy",
+    mensagem:
+      "A colaboração de nossa equipe melhorou muito com o Cypress. Detectamos problemas precocemente, resultando em menos atritos e implementações de recursos mais rápidas.",
   },
   {
-    name: "Jack",
-    message:
-      "Cypress's robust testing capabilities have elevated our development standards. We work more harmoniously, and our releases are more reliable.",
+    nome: "Jack",
+    mensagem:
+      "As robustas capacidades de teste do Cypress elevaram nossos padrões de desenvolvimento. Trabalhamos de maneira mais harmoniosa, e nossos lançamentos são mais confiáveis.",
   },
   {
-    name: "Katherine",
-    message:
-      "Cypress is a lifesaver for our cross-functional teams. We're more productive, and there's a shared sense of responsibility for product quality.",
+    nome: "Katherine",
+    mensagem:
+      "O Cypress é um salva-vidas para nossas equipes multifuncionais. Somos mais produtivos, e há um senso compartilhado de responsabilidade pela qualidade do produto.",
   },
   {
-    name: "Liam",
-    message:
-      "Cypress has helped us maintain high standards of quality. Our team's collaboration has improved, resulting in faster development cycles.",
+    nome: "Liam",
+    mensagem:
+      "O Cypress nos ajudou a manter altos padrões de qualidade. A colaboração de nossa equipe melhorou, resultando em ciclos de desenvolvimento mais rápidos.",
   },
   {
-    name: "Mia",
-    message:
-      "Cypress is a powerful tool that improved our productivity and collaboration. It's now an integral part of our development process.",
+    nome: "Mia",
+    mensagem:
+      "O Cypress é uma ferramenta poderosa que melhorou nossa produtividade e colaboração. Agora faz parte integrante de nosso processo de desenvolvimento.",
   },
   {
-    name: "Nathan",
-    message:
-      "Cypress's user-friendly interface and detailed reporting have made testing a breeze. Our team's productivity is at an all-time high.",
+    nome: "Nathan",
+    mensagem:
+      "A interface amigável e os relatórios detalhados do Cypress tornaram os testes muito fáceis. A produtividade de nossa equipe está em alta.",
   },
   {
-    name: "Olivia",
-    message:
-      "We saw immediate benefits in terms of productivity and collaboration after adopting Cypress. It's an essential tool for our development workflow.",
+    nome: "Olivia",
+    mensagem:
+      "Vimos benefícios imediatos em termos de produtividade e colaboração após adotar o Cypress. É uma ferramenta essencial para nosso fluxo de trabalho de desenvolvimento.",
   },
   {
-    name: "Paul",
-    message:
-      "Cypress has streamlined our testing process and brought our teams closer. We're more efficient and deliver better results.",
+    nome: "Paul",
+    mensagem:
+      "O Cypress otimizou nosso processo de teste e aproximou nossas equipes. Somos mais eficientes e entregamos resultados melhores.",
   },
   {
-    name: "Quinn",
-    message:
-      "Cypress has been a game-changer for us. Our productivity and collaboration have improved significantly, leading to better software.",
+    nome: "Quinn",
+    mensagem:
+      "O Cypress foi um divisor de águas para nós. Nossa produtividade e colaboração melhoraram significativamente, resultando em um software melhor.",
   },
   {
-    name: "Rachel",
-    message:
-      "Thanks to Cypress, our testing process is now a seamless part of our development cycle. Our teams collaborate effortlessly.",
+    nome: "Rachel",
+    mensagem:
+      "Graças ao Cypress, nosso processo de teste agora é uma parte perfeita de nosso ciclo de desenvolvimento. Nossas equipes colaboram sem esforço.",
   },
   {
-    name: "Sam",
-    message:
-      "Cypress is a fantastic tool that has revolutionized our workflow. Our productivity and collaboration have reached new heights.",
+    nome: "Sam",
+    mensagem:
+      "O Cypress é uma ferramenta fantástica que revolucionou nosso fluxo de trabalho. Nossa produtividade e colaboração atingiram novos patamares.",
   },
 ];
 
 export const PRICING_CARDS = [
   {
-    planType: "Free Plan",
+    planType: "Plano gratuito",
     price: "0",
-    description: "Limited block trials  for teams",
+    description: "Testes limitados para equipes",
     highlightFeature: "",
-    freatures: [
-      "Unlimited blocks for teams",
-      "Unlimited file uploads",
-      "30 day page history",
-      "Invite 2 guests",
+    features: [
+      "Blocos ilimitados para equipes",
+      "Envio ilimitado de arquivos",
+      "Histórico de página de 30 dias",
+      "Convide até 2 usuários",
     ],
   },
   {
-    planType: "Pro Plan",
+    planType: "Plano Pro",
     price: "12.99",
-    description: "Billed annually. $17 billed monthly",
-    highlightFeature: "Everything in free +",
-    freatures: [
-      "Unlimited blocks for teams",
-      "Unlimited file uploads",
-      "1 year day page history",
-      "Invite 10 guests",
+    description: "Cobrado anualmente. R$17,00 mensalmente.",
+    highlightFeature: "Tudo no gratuito +",
+    recursos: [
+      "Blocos ilimitados para equipes",
+      "Envio ilimitado de arquivos",
+      "Histórico de página de 1 ano",
+      "Convide até 10 usúarios",
     ],
   },
 ];
 
-export const PRICING_PLANS = { proplan: "Pro Plan", freeplan: "Free Plan" };
+export const PRICING_PLANS = {
+  proplan: "Plano Pro",
+  freeplan: "Plano Gratuito",
+};
 
 export const MAX_FOLDERS_FREE_PLAN = 3;

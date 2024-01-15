@@ -30,14 +30,14 @@ export async function POST(request: Request) {
       mode: "subscription",
       allow_promotion_codes: true,
       subscription_data: { trial_from_plan: true, metadata },
-      //aprimorar urls de cancelamento e sucesso depois
-      sucess_url: `${getURL()}/dashboard`,
+      success_url: `${getURL()}/dashboard`,
       cancel_url: `${getURL()}/dashboard`,
     });
     return NextResponse.json({
       sessionId: session.id,
     });
   } catch (error) {
-    return new NextResponse("Interal Error", { status: 500 });
+    console.log("ERROOO", error);
+    return new NextResponse("Interal ErroAr", { status: 500 });
   }
 }

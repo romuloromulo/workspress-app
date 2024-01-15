@@ -59,7 +59,7 @@ const NativeNavigation: React.FC<NativeNavigationProps> = ({
             gap-2
           ">
             <CypressTrashIcon />
-            <span>Trash</span>
+            <span>Lixeira</span>
           </li>
         </Trash>
       </ul>

@@ -204,7 +204,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       data: null,
       createdAt: new Date().toISOString(),
       inTrash: null,
-      title: "Untitled",
+      title: "Sem título",
       iconId: "📄",
       id: v4(),
       workspaceId,
