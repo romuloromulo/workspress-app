@@ -55,7 +55,7 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
       }
     }
     getUser();
-  }, [supabase, toast]);
+  }, [supabase]);
 
   return (
     <SupabaseUserContext.Provider value={{ user, subscription }}>

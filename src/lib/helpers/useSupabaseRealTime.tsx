@@ -100,7 +100,7 @@ const useSupabaseRealtime = () => {
     return () => {
       channel.unsubscribe();
     };
-  }, [supabase, state, selectedWorskpace]);
+  }, [supabase, state, selectedWorskpace, dispatch, router]);
 
   useEffect(() => {
     const channel = supabase
@@ -184,7 +184,7 @@ const useSupabaseRealtime = () => {
     return () => {
       channel.unsubscribe();
     };
-  }, [supabase, state, selectedWorskpace]);
+  }, [supabase, state, selectedWorskpace, dispatch, router]);
 
   return null;
 };
