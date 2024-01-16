@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import "quill/dist/quill.snow.css";
+
 import { Button } from "../ui/button";
 import {
   deleteFile,
@@ -115,7 +116,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       inTrash: dirDetails.inTrash,
       bannerUrl: dirDetails.bannerUrl,
     } as workspace | Folder | File;
-  }, [state, workspaceId, folderId, dirDetails, dirType, fileId]);
+  }, [state, workspaceId, folderId]);
 
   const breadCrumbs = useMemo(() => {
     if (!pathname || !state.workspaces || !workspaceId) return;
