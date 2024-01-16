@@ -85,38 +85,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [collaborators, setCollaborators] = useState<
     { id: string; email: string; avatarUrl: string }[]
   >([]);
-  const details = useMemo(() => {
-    let selectedDir;
-    if (dirType === "file") {
-      selectedDir = state.workspaces
-        .find((workspace) => workspace.id === workspaceId)
-        ?.folders.find((folder) => folder.id === folderId)
-        ?.files.find((file) => file.id === fileId);
-    }
-    if (dirType === "folder") {
-      selectedDir = state.workspaces
-        .find((workspace) => workspace.id === workspaceId)
-        ?.folders.find((folder) => folder.id === fileId);
-    }
-    if (dirType === "workspace") {
-      selectedDir = state.workspaces.find(
-        (workspace) => workspace.id === fileId
-      );
-    }
-
-    if (selectedDir) {
-      return selectedDir;
-    }
-
-    return {
-      title: dirDetails.title,
-      iconId: dirDetails.iconId,
-      createdAt: dirDetails.createdAt,
-      data: dirDetails.data,
-      inTrash: dirDetails.inTrash,
-      bannerUrl: dirDetails.bannerUrl,
-    } as workspace | Folder | File;
-  }, [state, workspaceId, folderId]);
+  const details = getDetails({ dirType, fileId, dirDetails });
 
   const breadCrumbs = useMemo(() => {
     if (!pathname || !state.workspaces || !workspaceId) return;
@@ -353,7 +322,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       }
     };
     fetchInformation();
-  }, [fileId, workspaceId, folderId, quill, dirType, router, dispatch]);
+  }, [fileId, workspaceId, folderId, quill, dirType]);
 
   useEffect(() => {
     if (socket === null || quill === null || !fileId || !localCursors.length)
@@ -380,7 +349,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     if (socket === null || quill === null || !fileId) return;
     socket.emit("create-room", fileId);
     console.log("ESTÁ CONECTADO?", isConnected);
-  }, [socket, quill, fileId, isConnected]);
+  }, [socket, quill, fileId]);
 
   //enviar as mudanças do quill para todos os clientes
   useEffect(() => {
@@ -452,17 +421,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       //WIP CURSORES
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     };
-  }, [
-    socket,
-    quill,
-    user,
-    fileId,
-    details,
-    workspaceId,
-    folderId,
-    dispatch,
-    dirType,
-  ]);
+  }, [socket, quill, user, fileId, details, workspaceId, folderId, dispatch]);
 
   useEffect(() => {
     if (quill === null || socket === null) return;

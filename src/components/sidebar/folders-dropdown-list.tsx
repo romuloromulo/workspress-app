@@ -45,7 +45,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
         },
       });
     }
-  }, [workspaceFolders, workspaceId, dispatch, state.workspaces]);
+  }, [workspaceFolders, workspaceId]);
 
   useEffect(() => {
     setFolders(

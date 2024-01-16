@@ -37,13 +37,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
         },
       });
     }
-  }, [
-    privateWorkspaces,
-    sharedWorkspaces,
-    collaboratingWorkspaces,
-    dispatch,
-    state.workspaces.length,
-  ]);
+  }, [privateWorkspaces, sharedWorkspaces, collaboratingWorkspaces]);
 
   useEffect(() => {
     const findSelectedWorkspace = state.workspaces.find(
