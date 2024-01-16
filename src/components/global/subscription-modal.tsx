@@ -74,8 +74,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
                   className="flex justify-between items-center"
                   key={product.id}>
                   {product.prices?.map((price) => (
-                    <>
-                      <b className="text-3xl text-foreground" key={price.id}>
+                    <React.Fragment key={price.id}>
+                      <b className="text-3xl text-foreground">
                         {formatPrice(price)}/ <small>mês</small>
                       </b>
                       <Button
@@ -83,7 +83,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
                         onClick={() => onClickContinue(price)}>
                         {isLoading ? <Loader /> : "Assinar ✅"}
                       </Button>
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               ))

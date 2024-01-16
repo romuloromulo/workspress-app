@@ -85,7 +85,39 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   const [collaborators, setCollaborators] = useState<
     { id: string; email: string; avatarUrl: string }[]
   >([]);
-  const details = getDetails({ dirType, fileId, dirDetails });
+
+  const details = useMemo(() => {
+    let selectedDir;
+    if (dirType === "file") {
+      selectedDir = state.workspaces
+        .find((workspace) => workspace.id === workspaceId)
+        ?.folders.find((folder) => folder.id === folderId)
+        ?.files.find((file) => file.id === fileId);
+    }
+    if (dirType === "folder") {
+      selectedDir = state.workspaces
+        .find((workspace) => workspace.id === workspaceId)
+        ?.folders.find((folder) => folder.id === fileId);
+    }
+    if (dirType === "workspace") {
+      selectedDir = state.workspaces.find(
+        (workspace) => workspace.id === fileId
+      );
+    }
+
+    if (selectedDir) {
+      return selectedDir;
+    }
+
+    return {
+      title: dirDetails.title,
+      iconId: dirDetails.iconId,
+      createdAt: dirDetails.createdAt,
+      data: dirDetails.data,
+      inTrash: dirDetails.inTrash,
+      bannerUrl: dirDetails.bannerUrl,
+    } as workspace | Folder | File;
+  }, [state, workspaceId, folderId]);
 
   const breadCrumbs = useMemo(() => {
     if (!pathname || !state.workspaces || !workspaceId) return;
