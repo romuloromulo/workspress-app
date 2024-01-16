@@ -195,7 +195,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           "group-hover/folder:block": listType === "folder",
         }
       ),
-    [isFolder]
+    [isFolder, listType]
   );
   async function addNewFile() {
     if (!workspaceId) return;
