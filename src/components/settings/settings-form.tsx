@@ -58,6 +58,7 @@ import CollaboratorSearch from "../global/collaboratorsearch";
 import { workspaces } from "@/lib/supabase/schema";
 import { profile } from "console";
 import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
+import { postData } from "@/lib/utils";
 
 // import { postData } from "@/lib/utils";
 
@@ -140,7 +141,7 @@ const SettingsForm = () => {
   async function addCollaborator(profile: User) {
     if (!workspaceId) return;
     if (subscription?.status !== "active" && collaborators.length >= 2) {
-      // setOpen(true);
+      setOpen(true);
       return;
     }
     await addCollaborators([profile], workspaceId);
@@ -187,6 +188,18 @@ const SettingsForm = () => {
     };
     fetchCollaborators();
   }, [workspaceId]);
+
+  const redirectToCustomerPortal = async () => {
+    setLoadingPortal(true);
+    try {
+      const { url, error } = await postData({ url: "/api/create-portal-link" });
+      window.location.assign(url);
+    } catch (error) {
+      console.log(error);
+      setLoadingPortal(false);
+    }
+    setLoadingPortal(false);
+  };
 
   // console.log("WorkspaceDetails", workspaceDetails);
 
@@ -425,8 +438,7 @@ const SettingsForm = () => {
               variant={"secondary"}
               disabled={loadingPortal}
               className="text-sm"
-              // onClick={redirectToCustomerPortal}
-            >
+              onClick={redirectToCustomerPortal}>
               Gerenciar assinatura
             </Button>
           </div>
