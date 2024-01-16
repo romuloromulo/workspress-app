@@ -9,7 +9,6 @@ import React, {
   useState,
 } from "react";
 import "quill/dist/quill.snow.css";
-import { getDetails } from "@/lib/helpers/details";
 import { Button } from "../ui/button";
 import {
   deleteFile,
