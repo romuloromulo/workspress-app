@@ -1,11 +1,16 @@
 import Stripe from "stripe";
 import { Price, Product, Subscription } from "../supabase/supabase.types";
-import { customers, prices, products, users } from "../../../migrations/schema";
-import { stripe } from "./index";
 import db from "../supabase/db";
+import {
+  customers,
+  prices,
+  products,
+  subscriptions,
+  users,
+} from "../../../migrations/schema";
+import { stripe } from "./index";
 import { eq } from "drizzle-orm";
 import { toDateTime } from "../utils";
-import { subscriptions } from "../supabase/schema";
 
 export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
@@ -17,14 +22,14 @@ export const upsertProductRecord = async (product: Stripe.Product) => {
     metadata: product.metadata,
   };
   try {
-    await db.insert(products).values(productData).onConflictDoUpdate({
-      target: products.id,
-      set: productData,
-    });
+    await db
+      .insert(products)
+      .values(productData)
+      .onConflictDoUpdate({ target: products.id, set: productData });
   } catch (error) {
     throw new Error();
   }
-  console.log("Produtor inserido", product.id);
+  console.log("Product inserted/updates:", product.id);
 };
 
 export const upsertPriceRecord = async (price: Stripe.Price) => {

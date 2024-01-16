@@ -30,10 +30,12 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
   } = await supabase.auth.getUser();
 
   if (!user) return;
+  console.log("USER AQUI", user);
 
   //subscr
   const { data: subscriptionData, error: subscriptionError } =
     await getUserSubscriptionStatus(user.id);
+  console.log("SUBSCRIPTIONDATA", subscriptionData, subscriptionError);
 
   // folders;
   console.log("PARAMS", params.workspaceId);

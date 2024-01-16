@@ -2,7 +2,10 @@ import { SubscriptionModalProvider } from "@/lib/providers/subscription-modal-pr
 import db from "@/lib/supabase/db";
 import React from "react";
 import { products } from "../../../../migrations/schema";
-import { getActiveProductsWithPrice } from "@/lib/supabase/queries";
+import {
+  getActiveProductsWithPrice,
+  getUserSubscriptionStatus,
+} from "@/lib/supabase/queries";
 
 interface LayoutProps {
   children: React.ReactNode;

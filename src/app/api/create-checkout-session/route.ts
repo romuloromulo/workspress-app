@@ -1,7 +1,9 @@
 import { stripe } from "@/lib/stripe";
 import { createOrRetrieveCustomer } from "@/lib/stripe/admTasks";
+
 import { getURL } from "@/lib/utils";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -12,6 +14,7 @@ export async function POST(request: Request) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
     const customer = await createOrRetrieveCustomer({
       email: user?.email || "",
       uuid: user?.id || "",
@@ -33,11 +36,9 @@ export async function POST(request: Request) {
       success_url: `${getURL()}/dashboard`,
       cancel_url: `${getURL()}/dashboard`,
     });
-    return NextResponse.json({
-      sessionId: session.id,
-    });
-  } catch (error) {
-    console.log("ERROOO", error);
-    return new NextResponse("Interal ErroAr", { status: 500 });
+    return NextResponse.json({ sessionId: session.id });
+  } catch (error: any) {
+    console.log(error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

@@ -109,7 +109,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
           className="text-Neutrals-8 
         font-bold 
         text-xs">
-          FOLDERS
+          PASTAS
         </span>
         <TooltipComponent message="Criar pasta">
           <PlusIcon
