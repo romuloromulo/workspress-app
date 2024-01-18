@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../../../public/cypresslogo.svg";
 import {
   NavigationMenu,
@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { User } from "@/lib/supabase/supabase.types";
 
 const routes = [
   { title: "Ferramentas", href: "#ferramentas" },
@@ -63,6 +65,22 @@ const components: { title: string; href: string; description: string }[] = [
 ];
 
 function Header() {
+  const [user, setUser] = useState<any>("");
+  const supabaseClient = createClientComponentClient();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await supabaseClient.auth.getUser();
+      if (res && res.data.user) {
+        const theUser = res.data.user;
+        setUser(theUser);
+      }
+    };
+    getUser();
+  }, []);
+
+  console.log("USER AQUIaaa", user);
+
   const [path, setPath] = useState("#products");
   return (
     <header
@@ -199,16 +217,31 @@ function Header() {
         gap-2
         justify-end
       ">
-        <Link href={"/login"}>
-          <Button variant="btn-secondary" className=" p-1 hidden sm:block">
-            Login
-          </Button>
-        </Link>
-        <Link href="/signup">
-          <Button variant="btn-primary" className="whitespace-nowrap">
-            Sign Up
-          </Button>
-        </Link>
+        {user ? (
+          <div className="flex items-center justify-between gap-2">
+            <div className="border border-gray-200 rounded-md p-2">
+              Olá, {user.email.split("@")[0]}
+            </div>
+            <Link href={"/dashboard"}>
+              <Button variant="btn-primary" className=" p-1 hidden sm:block">
+                Dashboard
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <>
+            <Link href={"/login"}>
+              <Button variant="btn-secondary" className=" p-1 hidden sm:block">
+                Login
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button variant="btn-primary" className="whitespace-nowrap">
+                Sign Up
+              </Button>
+            </Link>
+          </>
+        )}
       </aside>
     </header>
   );
