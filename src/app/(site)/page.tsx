@@ -191,10 +191,9 @@ function HomePage() {
           overflow-visible
         ">
           <TitleSection
-            title="Trusted by all"
-            subheading="Join thousands of satisfied users who rely on our platform for their 
-            personal and professional productivity needs."
-            pill="Testimonials"
+            title="Uma plataforma de confiança!"
+            subheading="Se junte a milhares de usuarios que confiam em nossa plataforma para administrar seus projetos"
+            pill="Testemunhos"
           />
           {[...Array(2)].map((arr, index) => (
             <div
@@ -210,24 +209,24 @@ function HomePage() {
               )}>
               {USERS.map((testimonial, index) => (
                 <CustomCard
-                  key={testimonial.name}
+                  key={testimonial.nome}
                   className="w-[500px] shrink-0 rounded-xl dark:bg-gradient-to-t dark:from-border dark:to-background"
                   cardHeader={
                     <div className="flex items-center gap-4">
                       <Avatar>
-                        <AvatarImage src={`/avatars/${index - 1}.png`} />
+                        <AvatarImage src={`/avatars/${index + 2}.png`} />
                         <AvatarFallback>AV</AvatarFallback>
                       </Avatar>
                       <div>
                         <CardTitle className="dark:text-wahsed-purple-800">
-                          {testimonial.name.toLowerCase()}
+                          {testimonial.nome.toLowerCase()}
                         </CardTitle>
                       </div>
                     </div>
                   }
                   cardContent={
                     <p className="dark:text-washed-purple-800">
-                      {testimonial.message}
+                      {testimonial.mensagem}
                     </p>
                   }></CustomCard>
               ))}
@@ -284,7 +283,9 @@ function HomePage() {
                       />
                     </>
                   )}
-                  {card.planType}
+                  {card.planType === "Free Plan"
+                    ? "Plano gratuito"
+                    : "Plano Pro"}
                 </CardTitle>
               }
               cardContent={
@@ -293,48 +294,31 @@ function HomePage() {
                     className="font-normal 
                   text-2xl
               ">
-                    ${card.price}
+                    R${card.price}
                   </span>
                   {+card.price > 0 ? (
                     <span className="dark:text-washed-purple-800 ml-1">
-                      /mo
+                      /mês
                     </span>
                   ) : (
                     ""
                   )}
-                  <p className="dark:text-washed-purple-800">
+                  <p className="dark:text-washed-purple-800 ">
                     {card.description}
                   </p>
                   <Button
                     // variant="primary"
                     className="whitespace-nowrap w-full mt-4">
                     {card.planType === PRICING_PLANS.proplan
-                      ? "Go Pro"
-                      : "Get Started"}
+                      ? "Assine o pro"
+                      : "Se inscreva"}
                   </Button>
                 </CardContent>
               }
               cardFooter={
-                <ul
-                  className="font-normal
-                flex
-                mb-2
-                flex-col
-                gap-4
-              ">
-                  <small>{card.highlightFeature}</small>
-                  {card.freatures.map((feature) => (
-                    <li
-                      key={feature}
-                      className="flex
-                    items-center
-                    gap-2
-                  ">
-                      <Image src={CheckIcon} alt="Check Icon" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  TesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTesteTeste
+                </div>
               }
             />
           ))}

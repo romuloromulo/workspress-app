@@ -14,99 +14,99 @@ export const CLIENTS = [
 
 export const USERS = [
   {
-    name: "Alice",
-    message:
-      "Cypress has been a game-changer for our team. With its reliable end-to-end testing, we catch bugs early, leading to faster development cycles and improved collaboration.",
+    nome: "Alice",
+    mensagem:
+      "O Cypress foi um divisor de águas para nossa equipe. Com seus testes de ponta a ponta confiáveis, identificamos bugs no início, resultando em ciclos de desenvolvimento mais rápidos e uma colaboração aprimorada.",
   },
   {
-    name: "Bob",
-    message:
-      "I used to spend hours debugging frontend issues, but Cypress simplified everything. Now, I'm more productive, and my colleagues can trust our code thanks to Cypress.",
+    nome: "Mariana",
+    mensagem:
+      "Eu costumava passar horas depurando problemas no frontend, mas o Cypress simplificou tudo. Agora, sou mais produtivo, e meus colegas podem confiar em nosso código graças ao Cypress.",
   },
   {
-    name: "Charlie",
-    message:
-      "Cypress has transformed the way we work. Our QA and development teams are on the same page, and our productivity has skyrocketed. It's a must-have tool.",
+    nome: "Amanda",
+    mensagem:
+      "O Cypress transformou a maneira como trabalhamos. Nossas equipes de QA e desenvolvimento estão na mesma página, e nossa produtividade disparou. É uma ferramenta indispensável.",
   },
   {
-    name: "David",
-    message:
-      "I was skeptical at first, but Cypress exceeded my expectations. Our project timelines have improved, and collaboration between teams is seamless.",
+    nome: "David",
+    mensagem:
+      "Eu estava cético no início, mas o Cypress superou minhas expectativas. Nossos prazos de projeto melhoraram, e a colaboração entre as equipes é perfeita.",
   },
   {
-    name: "Ella",
-    message:
-      "Cypress made writing and running tests a breeze. Our team's productivity has never been higher, and we're delivering more reliable software.",
+    nome: "Ella",
+    mensagem:
+      "O Cypress tornou a escrita e execução de testes muito fácil. A produtividade de nossa equipe nunca foi tão alta, e entregamos software mais confiável.",
   },
   {
-    name: "Frank",
-    message:
-      "Thanks to Cypress, we've eliminated testing bottlenecks. Our developers and testers collaborate effortlessly, resulting in quicker releases.",
+    nome: "Frank",
+    mensagem:
+      "Graças ao Cypress, eliminamos gargalos nos testes. Nossos desenvolvedores e testadores colaboram sem esforço, resultando em lançamentos mais rápidos.",
   },
   {
-    name: "Grace",
-    message:
-      "Cypress has improved our development process significantly. We now have more time for innovation, and our products are of higher quality.",
+    nome: "Gabriel",
+    mensagem:
+      "O Cypress melhorou significativamente nosso processo de desenvolvimento. Agora temos mais tempo para inovação, e nossos produtos têm uma qualidade superior.",
   },
   {
-    name: "Hank",
-    message:
-      "Cypress's user-friendly interface made it easy for our non-technical team members to contribute to testing. Our workflow is much more efficient now.",
+    nome: "Henrique",
+    mensagem:
+      "A interface amigável do Cypress facilitou a contribuição de membros não técnicos de nossa equipe para os testes. Nosso fluxo de trabalho é muito mais eficiente agora.",
   },
   {
-    name: "Ivy",
-    message:
-      "Our team's collaboration improved immensely with Cypress. We catch issues early, leading to less friction and quicker feature deployments.",
+    nome: "Isabela",
+    mensagem:
+      "A colaboração de nossa equipe melhorou imensamente com o Cypress. Identificamos problemas no início, resultando em menos atritos e implantações de recursos mais rápidas.",
   },
   {
-    name: "Jack",
-    message:
-      "Cypress's robust testing capabilities have elevated our development standards. We work more harmoniously, and our releases are more reliable.",
+    nome: "João",
+    mensagem:
+      "As capacidades robustas de teste do Cypress elevaram nossos padrões de desenvolvimento. Trabalhamos de maneira mais harmoniosa, e nossos lançamentos são mais confiáveis.",
   },
   {
-    name: "Katherine",
-    message:
-      "Cypress is a lifesaver for our cross-functional teams. We're more productive, and there's a shared sense of responsibility for product quality.",
+    nome: "Katherine",
+    mensagem:
+      "O Cypress é um salva-vidas para nossas equipes multifuncionais. Somos mais produtivos, e há um senso compartilhado de responsabilidade pela qualidade do produto.",
   },
   {
-    name: "Liam",
-    message:
-      "Cypress has helped us maintain high standards of quality. Our team's collaboration has improved, resulting in faster development cycles.",
+    nome: "Liam",
+    mensagem:
+      "O Cypress nos ajudou a manter altos padrões de qualidade. A colaboração de nossa equipe melhorou, resultando em ciclos de desenvolvimento mais rápidos.",
   },
   {
-    name: "Mia",
-    message:
-      "Cypress is a powerful tool that improved our productivity and collaboration. It's now an integral part of our development process.",
+    nome: "Mia",
+    mensagem:
+      "O Cypress é uma ferramenta poderosa que melhorou nossa produtividade e colaboração. Agora é parte integrante de nosso processo de desenvolvimento.",
   },
   {
-    name: "Nathan",
-    message:
-      "Cypress's user-friendly interface and detailed reporting have made testing a breeze. Our team's productivity is at an all-time high.",
+    nome: "Nathan",
+    mensagem:
+      "A interface amigável e os relatórios detalhados do Cypress tornaram os testes um passeio. A produtividade de nossa equipe está em alta.",
   },
   {
-    name: "Olivia",
-    message:
-      "We saw immediate benefits in terms of productivity and collaboration after adopting Cypress. It's an essential tool for our development workflow.",
+    nome: "Olivia",
+    mensagem:
+      "Vimos benefícios imediatos em termos de produtividade e colaboração após adotar o Cypress. É uma ferramenta essencial para nosso fluxo de trabalho de desenvolvimento.",
   },
   {
-    name: "Paul",
-    message:
-      "Cypress has streamlined our testing process and brought our teams closer. We're more efficient and deliver better results.",
+    nome: "Paulo",
+    mensagem:
+      "O Cypress otimizou nosso processo de teste e aproximou nossas equipes. Somos mais eficientes e entregamos resultados melhores.",
   },
   {
-    name: "Quinn",
-    message:
-      "Cypress has been a game-changer for us. Our productivity and collaboration have improved significantly, leading to better software.",
+    nome: "Quiteria",
+    mensagem:
+      "O Cypress foi um divisor de águas para nós. Nossa produtividade e colaboração melhoraram significativamente, resultando em um software melhor.",
   },
   {
-    name: "Rachel",
-    message:
-      "Thanks to Cypress, our testing process is now a seamless part of our development cycle. Our teams collaborate effortlessly.",
+    nome: "Rafaela",
+    mensagem:
+      "Graças ao Cypress, nosso processo de teste é agora uma parte integrante de nosso ciclo de desenvolvimento. Nossas equipes colaboram sem esforço.",
   },
   {
-    name: "Sam",
-    message:
-      "Cypress is a fantastic tool that has revolutionized our workflow. Our productivity and collaboration have reached new heights.",
+    nome: "Samuel",
+    mensagem:
+      "O Cypress é uma ferramenta fantástica que revolucionou nosso fluxo de trabalho. Nossa produtividade e colaboração atingiram novas alturas.",
   },
 ];
 
