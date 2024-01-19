@@ -169,7 +169,7 @@ function HomePage() {
           <Image src={Cal} alt="Banner" className="rounded-2xl" />
         </div>
       </section>
-      <section className="relative">
+      <section id="depoimentos" className="relative">
         <div
           className="w-full
           blur-[120px]
@@ -193,7 +193,7 @@ function HomePage() {
           <TitleSection
             title="Uma plataforma de confiança!"
             subheading="Se junte a milhares de usuarios que confiam em nossa plataforma para administrar seus projetos"
-            pill="Testemunhos"
+            pill="Depoimentos"
           />
           {[...Array(2)].map((arr, index) => (
             <div

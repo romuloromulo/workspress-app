@@ -568,6 +568,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
         )}
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between justify-center sm:items-center sm:p-2 p-8">
           <div>{breadCrumbs}</div>
+
           <div className="flex items-center gap-4">
             <div className="flex items-center justify-center h-10">
               {collaborators?.map((collaborator) => (
@@ -603,6 +604,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
                 </TooltipProvider>
               ))}
             </div>
+
             {saving ? (
               <Badge
                 variant="secondary"
@@ -645,87 +647,88 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           />
         </div>
       )}
-      <div
-        className="flex 
-        justify-center
-        items-center
-        flex-col
-        mt-2
-        relative
-      ">
-        {" "}
-        <div
-          className="w-full 
-    self-center 
-    max-w-[800px] 
-    flex 
-    flex-col
-     px-7 
-     lg:my-8">
-          {/* <div className="text-[80px]">
-            <EmojiPicker getValue={iconOnChange}>
-              <div
-                className="w-[100px]
-                cursor-pointer
-                transition-colors
-                h-[100px]
-                flex
-                items-center
-                justify-center
-                hover:bg-muted
-                rounded-xl">
-                {details.iconId}
-              </div>
-            </EmojiPicker>
-          </div> */}
-          <div className="flex">
-            <BannerUpload
-              // details={details}
-              id={fileId}
-              dirType={dirType}
-              className="mt-2 text-muted-foreground p-2 hover:text-card-foreground transition-all rounded-md">
-              {details.bannerUrl ? "Mudar banner" : "Adicionar banner"}
-            </BannerUpload>
-            {details.bannerUrl && (
-              <Button
-                disabled={deletingBanner}
-                onClick={deleteBanner}
-                variant="ghost"
-                className="gap-2 hover:bg-background
+      <div className="flex">
+        <BannerUpload
+          // details={details}
+          id={fileId}
+          dirType={dirType}
+          className="text-muted-foreground p-2 hover:text-card-foreground transition-all rounded-md">
+          {details.bannerUrl ? "Mudar banner" : "Adicionar banner"}
+        </BannerUpload>
+        {details.bannerUrl && (
+          <Button
+            disabled={deletingBanner}
+            onClick={deleteBanner}
+            variant="ghost"
+            className="gap-2 hover:bg-background
                 flex
                 item-center
                 justify-center
-                mt-2
+          
                 text-sm
                 text-muted-foreground
                 w-36
                 p-2
                 rounded-md">
-                <XCircleIcon size={16} />
-                <span className="whitespace-nowrap font-normal">
-                  Remove Banner
-                </span>
-              </Button>
-            )}
-          </div>
-          <span
-            className="
+            <XCircleIcon size={16} />
+            <span className="whitespace-nowrap font-normal">
+              Remover Banner
+            </span>
+          </Button>
+        )}
+      </div>
+      <div
+        className="flex
+        flex-col
+        mt-2
+        relative
+      ">
+        <div
+          className="w-full 
+                   max-w-[800px] 
+    flex 
+    flex-col
+     lg:my-8
+     justify-start
+     items-start">
+          <div className="flex items-center justify-start">
+            <div className="text-[40px]">
+              <EmojiPicker getValue={iconOnChange}>
+                <div
+                  className="w-[100px]
+                cursor-pointer
+                transition-colors
+                h-[100px]
+                flex
+                items-center
+              justify-center
+                hover:bg-muted
+                rounded-xl">
+                  {details.iconId}
+                </div>
+              </EmojiPicker>
+            </div>
+            <div className="flex flex-col justify-start">
+              <span
+                className="
             text-muted-foreground
             text-3xl
             font-bold
             h-9
-          ">
-            {details.title}
-          </span>
-          <span className="text-gray-300 text-sm">
-            {dirType === "workspace"
-              ? "Área de trabalho"
-              : "" || dirType === "file"
-              ? "Arquivo"
-              : "" || dirType === "folder"
-              ? "Pasta"
-              : ""}
-          </span>
+            ">
+                {details.title}
+              </span>
+              <span className="text-gray-300 text-sm">
+                {dirType === "workspace"
+                  ? "Área de trabalho"
+                  : "" || dirType === "file"
+                  ? "Arquivo"
+                  : "" || dirType === "folder"
+                  ? "Pasta"
+                  : ""}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <main className="h-screen">

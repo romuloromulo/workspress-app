@@ -108,7 +108,7 @@ function Header() {
               onClick={() => setPath("#recursos")}
               className={cn({
                 "dark:text-white": path === "#recursos",
-                "dar:text-white/40": path !== "#recursos",
+                "dark:text-white/40": path !== "#recursos",
                 "font-normal": true,
                 "text-xl": true,
               })}>
@@ -123,6 +123,7 @@ function Header() {
                 md:w-[400px]
                 ld:w-[500px]
                 lg:grid-cols-[.75fr_1fr]
+                text-black
                 ">
                 <li className="row-span-3">
                   <span
@@ -165,7 +166,7 @@ function Header() {
               Planos
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4  md:grid-row-2  ">
+              <ul className="grid w-[400px] gap-3 p-4  dark:text-white text-black md:grid-row-2  ">
                 <ListItem title="Plano Pro" href={"#"}>
                   Desbloqueie todo o poder com colaboração.
                 </ListItem>
@@ -197,7 +198,7 @@ function Header() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="#">
+            <Link href="#depoimentos">
               <NavigationMenuLink
                 className={cn(navigationMenuTriggerStyle(), {
                   "dark:text-white": path === "#depoimentos",
@@ -205,7 +206,7 @@ function Header() {
                   "font-normal": true,
                   "text-xl": true,
                 })}>
-                Testimonial
+                Depoimentos
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
@@ -223,7 +224,9 @@ function Header() {
               Olá, {user.email.split("@")[0]}
             </div>
             <Link href={"/dashboard"}>
-              <Button variant="btn-primary" className=" p-1 hidden sm:block">
+              <Button
+                variant="btn-primary"
+                className=" p-1 hidden sm:block hover:text-gray-500 duration-200">
                 Dashboard
               </Button>
             </Link>
