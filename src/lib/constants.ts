@@ -114,25 +114,25 @@ export const PRICING_CARDS = [
   {
     planType: "Free Plan",
     price: "0",
-    description: "Limited block trials  for teams",
+    description: "Limitações de pastas",
     highlightFeature: "",
     freatures: [
-      "Unlimited blocks for teams",
-      "Unlimited file uploads",
-      "30 day page history",
-      "Invite 2 guests",
+      "Blocos limitados para equipes",
+      "Uploads de arquivos ilimitados",
+
+      "Convide 2 até 2 usuarios como colaboradores",
     ],
   },
   {
     planType: "Pro Plan",
-    price: "12.99",
-    description: "Billed annually. $17 billed monthly",
-    highlightFeature: "Everything in free +",
+    price: "12,90",
+    description: "Cobrado anualmente. 17,90 mensalmente.",
+    highlightFeature: "Tudo do plano gratuito +",
     freatures: [
-      "Unlimited blocks for teams",
-      "Unlimited file uploads",
-      "1 year day page history",
-      "Invite 10 guests",
+      "Blocos ilimitados para equipes",
+      "Uploads de arquivos ilimitados",
+      "Histórico de páginas de 1 ano",
+      "Convite para 10 colaboradores",
     ],
   },
 ];
