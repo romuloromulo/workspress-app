@@ -200,7 +200,7 @@ function Header() {
             </NavigationMenuContent>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="#depoimentos">
+            <Link href="#depoimentos" scroll={false}>
               <NavigationMenuLink
                 className={cn(navigationMenuTriggerStyle(), {
                   "dark:text-white": path === "#depoimentos",

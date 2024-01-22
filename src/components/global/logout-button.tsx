@@ -9,7 +9,7 @@ import { useAppState } from "@/lib/providers/state-providers";
 
 interface LogoutButtonProps {
   children: React.ReactNode;
-  className: string;
+  className?: string;
 }
 
 const LogoutButton: React.FC<LogoutButtonProps> = ({ children, className }) => {
