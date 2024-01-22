@@ -566,7 +566,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
             </div>
           </article>
         )}
-        <div className="flex flex-col-reverse sm:flex-row sm:justify-between justify-center sm:items-center sm:p-2 p-8 bg-blue-400 mx-4">
+        <div className="flex flex-col-reverse sm:flex-row sm:justify-between justify-center sm:items-center sm:p-2 p-8 mx-4">
           <div>{breadCrumbs}</div>
 
           <div className="flex items-center gap-4">
@@ -647,7 +647,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           />
         </div>
       )}
-      <div className="flex">
+      <div className="flex w-full justify-end">
         <BannerUpload
           // details={details}
           id={fileId}
@@ -677,20 +677,14 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           </Button>
         )}
       </div>
-      <div
-        className="flex
-        flex-col
-        mt-2
-        relative
-      ">
+      <div className="relative">
         <div
-          className="w-full 
-                   max-w-[800px] 
-    flex 
-    flex-col
-     lg:my-8
-     justify-start
-     items-start">
+          className="w-full  
+            max-w-[800px] 
+            flex 
+            flex-col
+            justify-start
+            items-start">
           <div className="flex items-center justify-start">
             <div className="text-[40px]">
               <EmojiPicker getValue={iconOnChange}>

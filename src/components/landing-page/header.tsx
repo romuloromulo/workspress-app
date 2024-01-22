@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { User } from "@/lib/supabase/supabase.types";
+import LogoutButton from "../global/logout-button";
+import { LogOut } from "lucide-react";
 
 const routes = [
   { title: "Ferramentas", href: "#ferramentas" },
@@ -220,9 +222,27 @@ function Header() {
       ">
         {user ? (
           <div className="flex items-center justify-between gap-2">
-            <div className="border border-gray-200 rounded-md p-2">
-              Olá, {user.email.split("@")[0]}
-            </div>
+            <NavigationMenu className="hidden md:block">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger onClick={() => {}}>
+                    Olá, {user.email.split("@")[0]}
+                  </NavigationMenuTrigger>
+
+                  <NavigationMenuContent>
+                    <ul className="flex w-full  gap-3 dark:text-white text-black md:grid-row-2  justify-start">
+                      <li className="w-full ">
+                        <span className="flex w-full">
+                          <LogoutButton className="w-full px-2 flex gap-20">
+                            Sair <LogOut />
+                          </LogoutButton>
+                        </span>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             <Link href={"/dashboard"}>
               <Button
                 variant="btn-primary"

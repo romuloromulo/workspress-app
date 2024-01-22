@@ -9,9 +9,10 @@ import { useAppState } from "@/lib/providers/state-providers";
 
 interface LogoutButtonProps {
   children: React.ReactNode;
+  className: string;
 }
 
-const LogoutButton: React.FC<LogoutButtonProps> = ({ children }) => {
+const LogoutButton: React.FC<LogoutButtonProps> = ({ children, className }) => {
   // const { user } = useSupabaseUser();
   const { dispatch } = useAppState();
   const router = useRouter();
@@ -22,7 +23,7 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ children }) => {
     dispatch({ type: "SET_WORKSPACES", payload: { workspaces: [] } });
   };
   return (
-    <Button variant="ghost" size="icon" className="p-0" onClick={logout}>
+    <Button variant="ghost" size="icon" className={className} onClick={logout}>
       {children}
     </Button>
   );
