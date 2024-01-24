@@ -18,7 +18,7 @@ import { CardContent, CardTitle } from "@/components/ui/card";
 function HomePage() {
   return (
     <>
-      <section className="overflow-hidden px-4 sm:px-6 mt-10 sm:flex sm:flex-col gap-4 md:justify-center md:items-center">
+      <section className="overflow-hidden px-4 sm:px-6 mt-10 sm:flex sm:flex-col gap-4 justify-center items-center ">
         <TitleSection
           pill="Sua área de trabalho perfeita."
           title="Tudo em uma só plataforma produtiva e colaborativa."
@@ -39,7 +39,8 @@ function HomePage() {
             className=" w-full
             rounded-[10px]
             p-6
-            text-2xl
+            text-lg
+            md:text-2xl
             bg-background
           ">
             Use Workspress gratuitamente!

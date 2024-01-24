@@ -1,10 +1,12 @@
 import Header from "@/components/landing-page/header";
+import MobilerHeader from "@/components/landing-page/mobile-header";
 import React from "react";
 
 function HomePageLayout({ children }: { children: React.ReactNode }) {
   return (
     <main>
       <Header />
+
       {children}
     </main>
   );
