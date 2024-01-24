@@ -20,6 +20,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { User } from "@/lib/supabase/supabase.types";
 import LogoutButton from "../global/logout-button";
 import { LogOut } from "lucide-react";
+import ModeToggle from "../global/modeToggle";
 
 const routes = [
   { title: "Ferramentas", href: "#ferramentas" },
@@ -103,6 +104,7 @@ function Header() {
           workspress.
         </span>
       </Link>
+
       <NavigationMenu className="hidden md:block">
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -113,6 +115,7 @@ function Header() {
                 "dark:text-white/40": path !== "#recursos",
                 "font-normal": true,
                 "text-xl": true,
+                "text-black": true,
               })}>
               {" "}
               Recursos
@@ -125,6 +128,7 @@ function Header() {
                 md:w-[400px]
                 ld:w-[500px]
                 lg:grid-cols-[.75fr_1fr]
+                
                 text-black
                 ">
                 <li className="row-span-3">
@@ -136,7 +140,7 @@ function Header() {
                   bg-gradient-to-b
                   from-muted/50
                   to-muted
-                  p-6 no-underline
+                  p-4 no-underline
                   outline-none
                   focus:shadow-md
                   ">
@@ -170,7 +174,7 @@ function Header() {
             <NavigationMenuContent>
               <ul className="grid w-[400px] gap-3 p-4  dark:text-white text-black md:grid-row-2  ">
                 <ListItem title="Plano Pro" href={"#"}>
-                  Desbloqueie todo o poder com colaboração.
+                  Desbloqueie todas as ferramentas de colaboração.
                 </ListItem>
                 <ListItem title="Plano Gratuito" href={"#"}>
                   Ótimo para equipes que estão começando.
@@ -220,6 +224,9 @@ function Header() {
         gap-2
         justify-end
       ">
+        <div className="w-auto mr-16">
+          <ModeToggle />
+        </div>
         {user ? (
           <div className="flex items-center justify-between gap-2">
             <NavigationMenu className="hidden md:block">
@@ -244,26 +251,24 @@ function Header() {
               </NavigationMenuList>
             </NavigationMenu>
             <Link href={"/dashboard"}>
-              <Button
-                variant="btn-primary"
-                className=" p-1 hidden sm:block hover:text-gray-500 duration-200">
+              <Button variant="btn-primary" className="whitespace-nowrap">
                 Dashboard
               </Button>
             </Link>
           </div>
         ) : (
-          <>
+          <div className="flex items-center justify-center gap-4">
             <Link href={"/login"}>
-              <Button variant="btn-secondary" className=" p-1 hidden sm:block">
+              <div className="py-1 text-lg px-5 text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-700  ml-2">
                 Login
-              </Button>
+              </div>
             </Link>
             <Link href="/signup">
               <Button variant="btn-primary" className="whitespace-nowrap">
                 Se inscreva
               </Button>
             </Link>
-          </>
+          </div>
         )}
       </aside>
     </header>
@@ -282,18 +287,19 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "group block select-none space-y-1 font-medium leading-none"
+            "group block select-none space-y-1 font-medium leading-none        bg-gray-300 bg-opacity-25 p-2 rounded-md"
           )}
           {...props}>
-          <div className="text-white text-sm font-medium leading-none">
+          <div className="dark:text-white text-sm font-medium leading-none">
             {title}
           </div>
           <p
-            className="group-hover:text-white/70
+            className="dark:group-hover:text-white/70
             line-clamp-2
             text-sm
             leading-snug
-            text-white/40
+           dark:text-white/40
+    
           ">
             {children}
           </p>
