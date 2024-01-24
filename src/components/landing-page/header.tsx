@@ -259,7 +259,7 @@ function Header() {
         ) : (
           <div className="flex items-center justify-center gap-4">
             <Link href={"/login"}>
-              <div className="py-1 text-lg px-5 dark:text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-700  ml-2">
+              <div className="py-1 text-lg px-5 dark:text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-200 rounderd-md dark:border-gray-700  ml-2">
                 Login
               </div>
             </Link>
