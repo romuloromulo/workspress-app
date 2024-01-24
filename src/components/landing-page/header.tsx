@@ -259,7 +259,7 @@ function Header() {
         ) : (
           <div className="flex items-center justify-center gap-4">
             <Link href={"/login"}>
-              <div className="py-1 text-lg px-5 text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-700  ml-2">
+              <div className="py-1 text-lg px-5 dark:text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-700  ml-2">
                 Login
               </div>
             </Link>
@@ -287,10 +287,10 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "group block select-none space-y-1 font-medium leading-none        bg-gray-300 bg-opacity-25 p-2 rounded-md"
+            "group block select-none space-y-1 font-medium leading-none        bg-gray-300 bg-opacity-25 p-2 rounded-md dark:bg-transparent"
           )}
           {...props}>
-          <div className="dark:text-white text-sm font-medium leading-none">
+          <div className="dark:text-white/80 text-sm font-medium leading-none">
             {title}
           </div>
           <p
@@ -298,7 +298,7 @@ const ListItem = React.forwardRef<
             line-clamp-2
             text-sm
             leading-snug
-           dark:text-white/40
+           dark:text-white/80
     
           ">
             {children}
