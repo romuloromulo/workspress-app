@@ -22,6 +22,7 @@ import LogoutButton from "../global/logout-button";
 import { LogOut } from "lucide-react";
 import ModeToggle from "../global/modeToggle";
 import { Menu, X } from "lucide-react";
+import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 
 const routes = [
   { title: "Ferramentas", href: "#ferramentas" },
@@ -71,6 +72,7 @@ const components: { title: string; href: string; description: string }[] = [
 function Header() {
   const [user, setUser] = useState<any>("");
   const [openNav, setOpenNav] = useState<boolean>(false);
+  const { setOpen } = useSubscriptionModal();
   const supabaseClient = createClientComponentClient();
   function handleNav() {
     setOpenNav((prev) => !prev);
@@ -181,10 +183,13 @@ function Header() {
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4  dark:text-white text-black md:grid-row-2  ">
-                  <ListItem title="Plano Pro" href={"#"}>
-                    Desbloqueie todas as ferramentas de colaboração.
-                  </ListItem>
-                  <ListItem title="Plano Gratuito" href={"#"}>
+                  <li className="cursor-pointer">
+                    <ListItem title="Plano Pro" onClick={() => setOpen(true)}>
+                      Desbloqueie todas as ferramentas de colaboração.
+                    </ListItem>
+                  </li>
+
+                  <ListItem title="Plano Gratuito" href={"/signup"}>
                     Ótimo para equipes que estão começando.
                   </ListItem>
                 </ul>
@@ -400,10 +405,11 @@ function Header() {
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4  dark:text-white text-black md:grid-row-2  ">
-                  <ListItem title="Plano Pro" href={"#"}>
+                  <ListItem title="Plano Pro" onClick={() => setOpenNav(true)}>
                     Desbloqueie todas as ferramentas de colaboração.
                   </ListItem>
-                  <ListItem title="Plano Gratuito" href={"#"}>
+
+                  <ListItem title="Plano Gratuito" href={"/signup"}>
                     Ótimo para equipes que estão começando.
                   </ListItem>
                 </ul>
