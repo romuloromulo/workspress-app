@@ -9,7 +9,7 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ children }) => {
   return (
-    <CustomDialogTrigger header="Settings" content={<SettingsForm />}>
+    <CustomDialogTrigger header="Configurações" content={<SettingsForm />}>
       {children}
     </CustomDialogTrigger>
   );

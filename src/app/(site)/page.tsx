@@ -313,9 +313,7 @@ function HomePage() {
                     href={
                       card.planType === PRICING_PLANS.proplan ? "" : "/login"
                     }>
-                    <Button
-                      // variant="primary"
-                      className="whitespace-nowrap w-full mt-4">
+                    <Button className="whitespace-nowrap w-full mt-4">
                       {card.planType === PRICING_PLANS.proplan
                         ? "Assine o pro"
                         : "Se inscreva"}

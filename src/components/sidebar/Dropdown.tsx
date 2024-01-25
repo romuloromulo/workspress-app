@@ -1,7 +1,7 @@
 "use client";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   AccordionContent,
   AccordionItem,
@@ -158,11 +158,12 @@ const Dropdown: React.FC<DropdownProps> = ({
   function handleDoubleClick() {
     setIsEditing(true);
   }
+
   async function handleBlur() {
     setIsEditing(false);
-    // console.log("IDDROPDOWN", id);
+    console.log("IDDROPDOWN", id);
     const fId = id.split("folder");
-    // console.log("IDSPLIT", fId);
+    console.log("IDSPLIT", fId);
     if (fId?.length === 1) {
       if (!folderTitle) return;
       toast({ title: "Sucesso!", description: "Título da pasta editado." });
@@ -186,6 +187,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       toast({ title: "Sucesso!", description: "Título do arquivo editado." });
     }
   }
+
   const hoverStyles = useMemo(
     () =>
       clsx(
@@ -228,17 +230,6 @@ const Dropdown: React.FC<DropdownProps> = ({
       });
     }
   }
-
-  // useEffect(() => {
-  //   const disable = state.workspaces
-  //     .find((workspace) => workspace.id === workspaceId)
-  //     ?.folders.find((folder) => folder.id === id);
-
-  //   if (disable) {
-  //     const files = disable.files;
-  //     setHasFiles(files.length > 0);
-  //   }
-  // }, [workspaces, state]);
 
   async function moveToTrash() {
     if (!user?.email || !workspaceId) return;

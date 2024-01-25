@@ -77,20 +77,22 @@ const SettingsForm = () => {
   const [uploadingProfilePic, setUploadingProfilePic] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [loadingPortal, setLoadingPortal] = useState(false);
+  const [disableInput, setDisableInput] = useState(false);
 
   const workspaceNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(
-      "TESSSTE",
-      state.workspaces.map((e) => e.title)
-    );
-    if (!workspaceId || !e.target.value) return;
+    if (!workspaceId) return;
+
+    const newTitle =
+      e.target.value.trim() === "" ? "Sem Título" : e.target.value;
+
     dispatch({
       type: "UPDATE_WORKSPACE",
-      payload: { workspace: { title: e.target.value }, workspaceId },
+      payload: { workspace: { title: newTitle }, workspaceId },
     });
+
     if (titleTimerRef.current) clearTimeout(titleTimerRef.current);
     titleTimerRef.current = setTimeout(async () => {
-      await updateWorkspace({ title: e.target.value }, workspaceId);
+      await updateWorkspace({ title: newTitle }, workspaceId);
     }, 500);
   };
 
@@ -214,17 +216,16 @@ const SettingsForm = () => {
         <Label
           htmlFor="workspaceName"
           className="text-sm text-muted-foreground">
-          Nome
+          Novo Nome
         </Label>
         <Input
           name="workspaceName"
-          value={workspaceDetails ? workspaceDetails.title : ""}
           placeholder="Nome da área de trabalho"
           onChange={workspaceNameChange}
         />
         <Label
           htmlFor="workspaceLogo"
-          className="text-sm text-muted-foreground">
+          className="text-sm text-muted-foreground mt-2">
           Logo da Área de Trabalho{" "}
         </Label>
         <Input

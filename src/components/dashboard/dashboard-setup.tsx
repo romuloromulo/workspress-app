@@ -103,8 +103,8 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
       });
 
       toast({
-        title: "Workspace Created",
-        description: `${newWorkspace.title} has been created successfully.`,
+        title: "Área de trabalho criada!",
+        description: `${newWorkspace.title} foi criada com sucesso.`,
       });
 
       router.replace(`/dashboard/${newWorkspace.id}`);
@@ -112,9 +112,9 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
       console.log(error, "Error");
       toast({
         variant: "destructive",
-        title: "Could not create your workspace",
+        title: "Não foi possível criar área de trabalho",
         description:
-          "Oops! Something went wrong, and we couldn't create your workspace. Try again or come back later.",
+          "Ops! Algo deu errado e não foi possível criar sua área de trabalho. Tente novamente ou volte mais tarde",
       });
     } finally {
       reset();
@@ -203,7 +203,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
             </div>
             <div className="self-end">
               <Button disabled={isLoading} type="submit">
-                {!isLoading ? "Create Workspace" : <Loader />}
+                {!isLoading ? "Criar Área De Trabalho" : <Loader />}
               </Button>
             </div>
           </div>
