@@ -120,7 +120,7 @@ function Header() {
                 onClick={() => setPath("#recursos")}
                 className={cn({
                   "dark:text-white": path === "#recursos",
-                  "dark:text-white/40": path !== "#recursos",
+                  "dark:text-white/90": path !== "#recursos",
                   "font-normal": true,
                   "text-xl": true,
                   "text-black": true,
@@ -240,7 +240,7 @@ function Header() {
               <NavigationMenu className="hidden md:block">
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger onClick={() => {}}>
+                    <NavigationMenuTrigger>
                       Olá, {user.email.split("@")[0]}
                     </NavigationMenuTrigger>
 
@@ -282,7 +282,7 @@ function Header() {
       </header>
 
       <div
-        className="bg-black/10
+        className="backdrop-blur-lg 
         sm:hidden 
         fixed 
         z-50 
@@ -298,7 +298,7 @@ function Header() {
         id="MenuMobile">
         <Link
           href={"/"}
-          className="w-full flex gap-2
+          className="flex gap-2
     justify-left items-center">
           <Image src={Logo} alt="Cypress Logo" width={25} height={25} />{" "}
           <span
@@ -308,7 +308,17 @@ function Header() {
             workspress.
           </span>
         </Link>
-        <div className="">
+        {user ? (
+          <Link href={"/dashboard"}>
+            <Button variant="btn-primary" className="whitespace-nowrap">
+              Dashboard
+            </Button>
+          </Link>
+        ) : (
+          ""
+        )}
+
+        <div className={openNav ? "hidden" : ""}>
           <Menu size={32} onClick={handleNav} />
         </div>
       </div>
@@ -318,30 +328,164 @@ function Header() {
             ? "fixed left-0 top-0 w-screen sm:hidden h-2/3 backdrop-blur-lg  p-10 ease-in duration-500 z-50"
             : "fixed left-[-100%] top-0 p-10 ease-out duration-500 z-50"
         }>
-        <div className="w-full flex items-center justify-between">
-          <div onClick={handleNav} className="cursor-pointer">
-            <X size={25} />
+        <div
+          onClick={handleNav}
+          className="cursor-pointer w-full justify-end flex">
+          <X size={25} />
+        </div>
+
+        <NavigationMenu>
+          <NavigationMenuList className="flex-col gap-2 items-start justify-start">
+            <NavigationMenuItem className="bg-transparent">
+              <NavigationMenuTrigger
+                onClick={() => setPath("#recursos")}
+                className={cn({
+                  "dark:text-white": path === "#recursos",
+                  "dark:text-white/40": path !== "#recursos",
+                  "font-normal": true,
+                  "text-xl": true,
+                  "text-black": true,
+                  "bg-transparent": true,
+                })}>
+                {" "}
+                Recursos
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul
+                  className="grid
+                gap-3              
+                lg:grid-cols-[.75fr_1fr]
+                text-black
+                ">
+                  <li className="row-span-3">
+                    <span
+                      className="flex h-full w-full select-none
+                  flex-col
+                  justify-end
+                  rounded-md
+                  bg-gradient-to-b
+                  from-muted/50
+                  to-muted
+                  p-4 no-underline
+                  outline-none
+                  focus:shadow-md
+                  ">
+                      Bem-vindo(a)
+                    </span>
+                  </li>
+                  <ListItem href="#" title="Introdução">
+                    Componentes reutilizáveis construídos usando Radix UI e
+                    Tailwind CSS.
+                  </ListItem>
+                  <ListItem href="#" title="Instalação">
+                    Como instalar dependências e estruturar seu aplicativo.
+                  </ListItem>
+                  <ListItem href="#" title="Tipografia">
+                    Estilos para títulos, parágrafos, listas...etc
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger
+                onClick={() => setPath("#planos")}
+                className={cn({
+                  "dark:text-white": path === "#planos",
+                  "dark:text-white/90": path !== "#planos",
+                  "font-normal": true,
+                  "text-xl": true,
+                  "bg-transparent": true,
+                })}>
+                Planos
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4  dark:text-white text-black md:grid-row-2  ">
+                  <ListItem title="Plano Pro" href={"#"}>
+                    Desbloqueie todas as ferramentas de colaboração.
+                  </ListItem>
+                  <ListItem title="Plano Gratuito" href={"#"}>
+                    Ótimo para equipes que estão começando.
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuContent>
+                <ul
+                  className="grid w-[400px]
+              gap-3
+              p-4
+              md:w-[500px]
+              md:grid-cols-2 
+              lg:w-[600px]
+              ">
+                  {components.map((component) => (
+                    <ListItem
+                      key={component.title}
+                      title={component.title}
+                      href={component.href}>
+                      {component.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Link href="#depoimentos" scroll={false}>
+                <NavigationMenuLink
+                  className={cn(navigationMenuTriggerStyle(), {
+                    "dark:text-white": path === "#depoimentos",
+                    "dark:text-white/90": path !== "#depoimentos",
+                    "font-normal": true,
+                    "text-xl": true,
+                    "bg-transparent": true,
+                  })}>
+                  Depoimentos
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+        {user ? (
+          <div className="flex-col ">
+            <NavigationMenu className="w-full">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
+                    onClick={() => {}}
+                    className="w-40 flex justify-start">
+                    Olá, {user.email?.split("@")[0]}
+                  </NavigationMenuTrigger>
+
+                  <NavigationMenuContent>
+                    <ul className="flex-col w-full  gap-3 dark:text-white text-black md:grid-row-2  justify-start">
+                      <li className="w-full ">
+                        <span className="flex w-full">
+                          <LogoutButton className="w-full px-2 flex gap-20">
+                            Sair <LogOut />
+                          </LogoutButton>
+                        </span>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
-        </div>
-        <div className=" ml-4 w-full mt-5 flex justify-center items-center z-50">
-          <ul className="flex gap-8 flex-col font-extrabold text-2xl text-black z-10">
-            <li
-              onClick={handleNav}
-              className=" hover:underline hover:text-white ease-in duration-300  ">
-              <Link href="/">Início</Link>
-            </li>
-            <li
-              onClick={handleNav}
-              className=" hover:underline hover:text-white ease-in duration-300 ">
-              <Link href="/menu">Menu</Link>
-            </li>
-            <li
-              onClick={handleNav}
-              className=" hover:underline hover:text-white ease-in duration-300 ">
-              <Link href="/contato">Contato</Link>
-            </li>
-          </ul>
-        </div>
+        ) : (
+          <div className="flex-col items-center w-1/2 justify-start gap-4 ml-2">
+            <Link href={"/login"}>
+              <div className="text-xl px-4 py-2 dark:text-white hover:text-gray-700 duration-300  border-1 border-gray-400 rounded-md">
+                Login
+              </div>
+            </Link>
+            <Link href="/signup">
+              <div className="text-xl px-4 py-2 bg-purple-700 rounded-md dark:text-white hover:text-gray-700 duration-300 ">
+                Se inscreva
+              </div>
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );
