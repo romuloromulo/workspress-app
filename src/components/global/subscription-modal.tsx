@@ -40,6 +40,7 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
         setIsLoading(false);
         return;
       }
+
       const { sessionId } = await postData({
         url: "/api/create-checkout-session",
         data: { price },

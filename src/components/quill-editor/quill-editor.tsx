@@ -566,10 +566,10 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
             </div>
           </article>
         )}
-        <div className="flex flex-col-reverse sm:flex-row sm:justify-between justify-center sm:items-center sm:p-2 p-8 mx-4">
+        <div className="flex gap-4   sm:flex-row justify-between items-center sm:p-8 p-4 mx-4 sm:mx-0">
           <div>{breadCrumbs}</div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex ml-3 items-center gap-4 ">
             <div className="flex items-center justify-center h-10">
               {collaborators?.map((collaborator) => (
                 <TooltipProvider key={collaborator.id}>
@@ -647,9 +647,8 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
           />
         </div>
       )}
-      <div className="flex w-full justify-end">
+      <div className="flex w-full justify-end px-8 sm:px-16">
         <BannerUpload
-          // details={details}
           id={fileId}
           dirType={dirType}
           className="text-muted-foreground p-2 hover:text-card-foreground transition-all rounded-md">

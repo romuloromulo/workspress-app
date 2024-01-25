@@ -1,3 +1,4 @@
+"use client";
 import TitleSection from "@/components/landing-page/title-section";
 import Banner from "../../../public/appBanner.png";
 import Cal from "../../../public/cal.png";
@@ -7,7 +8,8 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { CLIENTS, PRICING_CARDS, PRICING_PLANS, USERS } from "@/lib/constants";
-import { randomUUID } from "crypto";
+// import { randomUUID } from "crypto";
+import { v4 } from "uuid";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 import CustomCard from "@/components/landing-page/custom-card";
@@ -15,8 +17,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { CardContent, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
 
 function HomePage() {
+  const { open, setOpen } = useSubscriptionModal();
+
   return (
     <>
       <section className="overflow-hidden px-4 sm:px-6 mt-10 sm:flex sm:flex-col gap-4 justify-center items-center ">
@@ -199,7 +204,7 @@ function HomePage() {
           />
           {[...Array(2)].map((arr, index) => (
             <div
-              key={randomUUID()}
+              key={v4()}
               className={twMerge(
                 clsx("mt-10 flex flex-nowrap gap-6 self-start", {
                   "flex-row-reverse": index === 1,
@@ -243,6 +248,7 @@ function HomePage() {
           pill="Valores"
         />
         <div
+          id="card"
           className="flex 
         flex-col-reverse
         sm:flex-row
@@ -311,9 +317,17 @@ function HomePage() {
 
                   <Link
                     href={
-                      card.planType === PRICING_PLANS.proplan ? "" : "/login"
+                      card.planType === PRICING_PLANS.proplan
+                        ? "#card"
+                        : "/signup"
                     }>
-                    <Button className="whitespace-nowrap w-full mt-4">
+                    <Button
+                      className="whitespace-nowrap w-full mt-4"
+                      onClick={
+                        card.planType === PRICING_PLANS.proplan
+                          ? () => setOpen(true)
+                          : () => {}
+                      }>
                       {card.planType === PRICING_PLANS.proplan
                         ? "Assine o pro"
                         : "Se inscreva"}

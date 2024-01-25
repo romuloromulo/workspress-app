@@ -35,10 +35,10 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
   //subscr
   const { data: subscriptionData, error: subscriptionError } =
     await getUserSubscriptionStatus(user.id);
-  console.log("SUBSCRIPTIONDATA", subscriptionData, subscriptionError);
+  // console.log("SUBSCRIPTIONDATA", subscriptionData, subscriptionError);
 
   // folders;
-  console.log("PARAMS", params.workspaceId);
+  // console.log("PARAMS", params.workspaceId);
   const { data: workspaceFolderData, error: foldersError } = await getFolders(
     params.workspaceId
   );

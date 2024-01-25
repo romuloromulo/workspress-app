@@ -160,6 +160,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   }
 
   async function handleBlur() {
+    if (!isEditing) return;
     setIsEditing(false);
     console.log("IDDROPDOWN", id);
     const fId = id.split("folder");

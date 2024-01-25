@@ -22,6 +22,7 @@ interface BannerUploadFormProps {
 const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
   const supabase = createClientComponentClient();
   const { state, workspaceId, folderId, dispatch } = useAppState();
+
   const {
     register,
     handleSubmit,
