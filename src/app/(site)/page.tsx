@@ -14,6 +14,7 @@ import CustomCard from "@/components/landing-page/custom-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { CardContent, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 function HomePage() {
   return (
@@ -307,13 +308,19 @@ function HomePage() {
                   <p className="dark:text-washed-purple-800 ">
                     {card.description}
                   </p>
-                  <Button
-                    // variant="primary"
-                    className="whitespace-nowrap w-full mt-4">
-                    {card.planType === PRICING_PLANS.proplan
-                      ? "Assine o pro"
-                      : "Se inscreva"}
-                  </Button>
+
+                  <Link
+                    href={
+                      card.planType === PRICING_PLANS.proplan ? "" : "/login"
+                    }>
+                    <Button
+                      // variant="primary"
+                      className="whitespace-nowrap w-full mt-4">
+                      {card.planType === PRICING_PLANS.proplan
+                        ? "Assine o pro"
+                        : "Se inscreva"}
+                    </Button>
+                  </Link>
                 </CardContent>
               }
               cardFooter={

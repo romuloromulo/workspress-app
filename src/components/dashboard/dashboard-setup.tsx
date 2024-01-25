@@ -1,7 +1,7 @@
 "use client";
 import { AuthUser } from "@supabase/supabase-js";
 import React, { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { v4 } from "uuid";
 
 import {
@@ -128,10 +128,11 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
       sm:h-auto
   ">
       <CardHeader>
-        <CardTitle>Create A Workspace</CardTitle>
+        <CardTitle>Criar área de trabalho</CardTitle>
         <CardDescription>
-          Lets create a private workspace to get you started.You can add
-          collaborators later from the workspace settings tab.
+          Vamos criar uma área de trabalho privada para você começar. Você pode
+          adicionar colaboradores posteriormente na guia de configurações do
+          espaço de trabalho.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -152,15 +153,15 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                   className="text-sm
                   text-muted-foreground
                 ">
-                  Name
+                  Nome
                 </Label>
                 <Input
                   id="workspaceName"
                   type="text"
-                  placeholder="Workspace Name"
+                  placeholder="Nome da área de trabalho"
                   disabled={isLoading}
                   {...register("workspaceName", {
-                    required: "Workspace name is required",
+                    required: "Nome da área de trabalho é obrigatório",
                   })}
                 />
                 <small className="text-red-600">
@@ -174,13 +175,13 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                 className="text-sm
                   text-muted-foreground
                 ">
-                Workspace Logo
+                Logo da área de trabalho
               </Label>
               <Input
                 id="logo"
                 type="file"
                 accept="image/*"
-                placeholder="Workspace Name"
+                placeholder="Nome da área de trabalho"
                 disabled={isLoading || subscription?.status !== "active"}
                 {...register("logo", {
                   required: false,
@@ -195,7 +196,8 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
                   text-muted-foreground
                   block
               ">
-                  To customize your workspace, you need to be on a Pro Plan
+                  Para customizar sua área de trabalho é necessario ser
+                  assinante do Plano Pro
                 </small>
               )}
             </div>

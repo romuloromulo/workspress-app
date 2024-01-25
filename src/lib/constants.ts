@@ -34,7 +34,7 @@ export const USERS = [
       "Eu estava cético no início, mas o Cypress superou minhas expectativas. Nossos prazos de projeto melhoraram, e a colaboração entre as equipes é perfeita.",
   },
   {
-    nome: "Ella",
+    nome: "Jorge",
     mensagem:
       "O Cypress tornou a escrita e execução de testes muito fácil. A produtividade de nossa equipe nunca foi tão alta, e entregamos software mais confiável.",
   },
