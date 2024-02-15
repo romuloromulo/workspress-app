@@ -380,7 +380,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   useEffect(() => {
     if (socket === null || quill === null || !fileId) return;
     socket.emit("create-room", fileId);
-    console.log("ESTÁ CONECTADO?", isConnected);
+    // console.log("ESTÁ CONECTADO?", isConnected);
   }, [socket, quill, fileId]);
 
   //enviar as mudanças do quill para todos os clientes
@@ -513,7 +513,7 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
     };
   }, [fileId, quill, supabase, user]);
 
-  console.log("COLABORADORES", collaborators);
+  // console.log("COLABORADORES", collaborators);
   return (
     <>
       <div className="relative">

@@ -123,6 +123,7 @@ function HomePage() {
                     items-center
                   ">
                   <Image
+                    key={client.alt}
                     src={client.logo}
                     alt={client.alt}
                     width={200}

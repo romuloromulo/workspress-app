@@ -89,7 +89,7 @@ function Header() {
     getUser();
   }, []);
 
-  console.log("USER AQUIaaa", user);
+  // console.log("USER AQUIaaa", user);
 
   const [path, setPath] = useState("#products");
   return (
@@ -287,7 +287,7 @@ function Header() {
       </header>
 
       <div
-        className="backdrop-blur-lg 
+        className="
         sm:hidden 
         fixed 
         z-50 
@@ -298,7 +298,7 @@ function Header() {
         justify-between
         items-center
         h-12
-        px-2
+        px-2  
         "
         id="MenuMobile">
         <Link
