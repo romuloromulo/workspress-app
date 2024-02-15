@@ -60,11 +60,9 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
     const file = value.logo?.[0];
     let filePath = null;
     const workspaceUUID = v4();
-    console.log("FILE FILE FILE", file);
 
     if (file) {
       try {
-        console.log(file, "FILE AQUI");
         const { data, error } = await supabase.storage
           .from("workspace-logos")
           .upload(`workspaceLogo.${workspaceUUID}`, file, {

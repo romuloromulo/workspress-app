@@ -57,14 +57,14 @@ const WorkspaceCreateor = () => {
       if (permissions === "private") {
         toast({ title: "Successo", description: "Área de trabalho criada!" });
         await createWorkspace(newWorkspace);
-        console.log("CRIAADA PRIVADA");
+
         window.location.reload();
       }
       if (permissions === "shared") {
         toast({ title: "Successo", description: "Área de trabalho criada!" });
         await createWorkspace(newWorkspace);
         await addCollaborators(collaborators, uuid);
-        console.log("CRIAADA COMPARTILHADA");
+
         window.location.reload();
       }
     }
