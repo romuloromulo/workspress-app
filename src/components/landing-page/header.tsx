@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { Link as ScrollLink } from "react-scroll";
 import React, { useEffect, useState } from "react";
 import Logo from "../../../public/cypresslogo.svg";
+import { animateScroll } from "react-scroll";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -217,7 +219,11 @@ function Header() {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="#depoimentos" scroll={false}>
+              <ScrollLink
+                to="depoimentos"
+                spy={true}
+                smooth="easeInOutQuart"
+                duration={500}>
                 <NavigationMenuLink
                   className={cn(navigationMenuTriggerStyle(), {
                     "dark:text-white": path === "#depoimentos",
@@ -227,7 +233,7 @@ function Header() {
                   })}>
                   Depoimentos
                 </NavigationMenuLink>
-              </Link>
+              </ScrollLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
@@ -272,7 +278,7 @@ function Header() {
           ) : (
             <div className="flex items-center justify-center gap-4">
               <Link href={"/login"}>
-                <div className="py-1 text-lg px-5 dark:text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-200 rounderd-md dark:border-gray-700  ml-2">
+                <div className="py-1 text-lg px-5 dark:text-white hidden sm:block hover:text-gray-700 duration-300 border-x border-gray-200 rounderd-md dark:border-gray-700 hover:text-primary dark:hover:text-primary ml-2">
                   Login
                 </div>
               </Link>
