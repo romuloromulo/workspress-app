@@ -95,7 +95,7 @@ const WorkspaceDropdown: React.FC<WorkspaceDropdownProps> = ({
               )}
               {!!collaboratingWorkspaces.length && (
                 <>
-                  <p className="text-muted-foreground">Collaborating</p>
+                  <p className="text-muted-foreground">Com Colaboradores</p>
                   <hr />
                   {collaboratingWorkspaces.map((option) => (
                     <SelectedWorkspace
