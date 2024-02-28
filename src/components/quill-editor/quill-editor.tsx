@@ -198,7 +198,9 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       await updateFolder({ inTrash: "" }, fileId);
     }
   };
+
   const deleteFileHandler = async () => {
+    console.log("TIPO DE DIRETÓRIO", dirType, "FILEID", fileId);
     if (dirType === "file") {
       if (!folderId || !workspaceId) return;
       dispatch({
@@ -209,17 +211,12 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
       router.replace(`/dashboard/${workspaceId}`);
     }
     if (dirType === "folder") {
-      console.log("deletando folder");
-      if (!workspaceId) return;
-      console.log("deletando folder2");
-
+      if (!folderId || !workspaceId) return;
       dispatch({
         type: "DELETE_FOLDER",
         payload: { folderId: fileId, workspaceId },
       });
-      await deleteFolder(fileId);
-      console.log("deletando folder3");
-
+      await deleteFolder(folderId);
       router.replace(`/dashboard/${workspaceId}`);
     }
   };
