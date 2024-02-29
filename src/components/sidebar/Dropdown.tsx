@@ -130,13 +130,15 @@ const Dropdown: React.FC<DropdownProps> = ({
     }
   );
   async function onChangeEmoji(selectedEmoji: string) {
+    const pathId = id.split("folder");
     if (!workspaceId) return;
+
     if (listType === "folder") {
       dispatch({
         type: "UPDATE_FOLDER",
         payload: {
           workspaceId,
-          folderId: id,
+          folderId: pathId[0],
           folder: { iconId: selectedEmoji },
         },
       });
@@ -154,7 +156,37 @@ const Dropdown: React.FC<DropdownProps> = ({
         });
       }
     }
+
+    if (listType === "file") {
+      dispatch({
+        type: "UPDATE_FILE",
+        payload: {
+          workspaceId,
+          folderId: pathId[0],
+          fileId: pathId[1],
+          file: { iconId: selectedEmoji },
+        },
+      });
+      const { data, error } = await updateFile(
+        { iconId: selectedEmoji },
+        pathId[1]
+      );
+      if (error) {
+        console.log(error);
+        toast({
+          title: `${error}`,
+          variant: "destructive",
+          description: "O emoji não pode ser atualizado nesta pasta",
+        });
+      } else {
+        toast({
+          title: "Sucesso",
+          description: "Emoji atualizado!",
+        });
+      }
+    }
   }
+
   function handleDoubleClick() {
     setIsEditing(true);
   }
@@ -162,9 +194,9 @@ const Dropdown: React.FC<DropdownProps> = ({
   async function handleBlur() {
     if (!isEditing) return;
     setIsEditing(false);
-    console.log("IDDROPDOWN", id);
+    // console.log("IDDROPDOWN", id);
     const fId = id.split("folder");
-    console.log("IDSPLIT", fId);
+    // console.log("IDSPLIT", fId);
     if (fId?.length === 1) {
       if (!folderTitle) return;
       toast({ title: "Sucesso!", description: "Título da pasta editado." });
