@@ -9,7 +9,7 @@ import {
 } from "../ui/accordion";
 import clsx from "clsx";
 import EmojiPicker from "../global/emoji-picker";
-
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import TooltipComponent from "../global/tooltip-component";
 import { PlusIcon, Trash } from "lucide-react";
 import { File } from "@/lib/supabase/supabase.types";
@@ -18,7 +18,6 @@ import { useToast } from "../ui/use-toast";
 import { useSupabaseUser } from "@/lib/providers/supabase-user-provider";
 import { useAppState } from "@/lib/providers/state-providers";
 import { updateFolder, createFile, updateFile } from "@/lib/supabase/queries";
-import { workspaces } from "@/lib/supabase/schema";
 
 interface DropdownProps {
   title: string;
@@ -42,6 +41,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   const { user } = useSupabaseUser();
   const { state, dispatch, workspaceId, folderId } = useAppState();
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState<Boolean>(false);
   // const [hasFiles, setHasFiles] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -200,6 +200,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       ),
     [isFolder]
   );
+
   async function addNewFile() {
     if (!workspaceId) return;
     const newFile: File = {
@@ -234,8 +235,29 @@ const Dropdown: React.FC<DropdownProps> = ({
     }
   }
 
+  type GenericFunction = (...args: any[]) => any;
+
+  function debounce(func: GenericFunction, delay: number): GenericFunction {
+    let timeoutId: NodeJS.Timeout;
+
+    return function (this: typeof debounce, ...args: any[]): void {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    }.bind(debounce); // Use bind para definir o tipo de 'this'
+  }
+
+  // Uso do debounce para envolver a função addNewFile com um atraso de 500 milissegundos
+  const debouncedAddNewFile = debounce(addNewFile, 500);
+
+  // Em vez de chamar addNewFile diretamente, chame debouncedAddNewFile
+  // Exemplo: debouncedAddNewFile();
+
   async function moveToTrash() {
     if (!user?.email || !workspaceId) return;
+    setIsDeleting(true);
     const pathId = id.split("folder");
     if (listType === "folder") {
       const { data, error } = await updateFolder(
@@ -294,6 +316,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         });
       }
     }
+    setIsDeleting(false);
   }
   // console.log("DISABLE", disable || listType);
 
@@ -341,17 +364,26 @@ const Dropdown: React.FC<DropdownProps> = ({
             />
           </div>
           <div className={hoverStyles}>
-            <TooltipComponent message="Deletar pasta">
-              <Trash
-                onClick={moveToTrash}
-                size={15}
-                className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
-              />
-            </TooltipComponent>
+            {isDeleting ? (
+              <TooltipComponent message="Deletando">
+                <AiOutlineLoading3Quarters
+                  size={15}
+                  className="animate-spin mr-2"
+                />
+              </TooltipComponent>
+            ) : (
+              <TooltipComponent message="Deletar pasta">
+                <Trash
+                  onClick={moveToTrash}
+                  size={15}
+                  className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors mr-2"
+                />
+              </TooltipComponent>
+            )}
             {listType === "folder" && !isEditing && (
               <TooltipComponent message="Adicionar arquivo">
                 <PlusIcon
-                  onClick={addNewFile}
+                  onClick={debouncedAddNewFile}
                   size={15}
                   className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
                 />
