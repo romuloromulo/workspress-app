@@ -213,11 +213,9 @@ const Dropdown: React.FC<DropdownProps> = ({
       workspaceId,
       bannerUrl: "",
     };
-    dispatch({
-      type: "ADD_FILE",
-      payload: { file: newFile, folderId: id, workspaceId },
-    });
+
     const { data, error } = await createFile(newFile);
+
     if (error) {
       toast({
         title: "Erro!",
@@ -225,6 +223,10 @@ const Dropdown: React.FC<DropdownProps> = ({
         description: "Não foi possível criar arquivo.",
       });
     } else {
+      dispatch({
+        type: "ADD_FILE",
+        payload: { file: newFile, folderId: id, workspaceId },
+      });
       toast({
         title: "Successo!",
         description: "Arquivo criado.",
