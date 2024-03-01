@@ -257,10 +257,14 @@ const Dropdown: React.FC<DropdownProps> = ({
         description: "Não foi possível criar arquivo.",
       });
     } else {
-      dispatch({
-        type: "ADD_FILE",
-        payload: { file: newFile, folderId: id, workspaceId },
-      });
+      debounce(
+        () =>
+          dispatch({
+            type: "ADD_FILE",
+            payload: { file: newFile, folderId: id, workspaceId },
+          }),
+        500
+      );
       toast({
         title: "Successo!",
         description: "Arquivo criado.",
