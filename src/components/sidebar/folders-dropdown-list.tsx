@@ -12,6 +12,7 @@ import { useToast } from "../ui/use-toast";
 import Dropdown from "./Dropdown";
 import useSupabaseRealTime from "@/lib/helpers/useSupabaseRealTime";
 import { useSubscriptionModal } from "@/lib/providers/subscription-modal-provider";
+import { debounce } from "@/lib/utils";
 
 interface FoldersDropdownListProps {
   workspaceFolders: Folder[];
@@ -69,10 +70,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
       workspaceId,
       bannerUrl: "",
     };
-    dispatch({
-      type: "ADD_FOLDER",
-      payload: { workspaceId, folder: { ...newFolder, files: [] } },
-    });
+
     const { data, error } = await createFolder(newFolder);
     if (error) {
       toast({
@@ -81,13 +79,17 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
         description: "Não foi posível criar a pasta",
       });
     } else {
+      dispatch({
+        type: "ADD_FOLDER",
+        payload: { workspaceId, folder: { ...newFolder, files: [] } },
+      });
       toast({
         title: "Sucesso",
         description: "Pasta criada",
       });
     }
   }
-  // console.log("FOLDER AQUI", folders);
+  const debouncedAddFolder = debounce(addFolderHandler, 500);
 
   return (
     <>
@@ -113,7 +115,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
         </span>
         <TooltipComponent message="Criar pasta">
           <PlusIcon
-            onClick={addFolderHandler}
+            onClick={debouncedAddFolder}
             size={16}
             className="group-hover/title:inline-block
             hidden 

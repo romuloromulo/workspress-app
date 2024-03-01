@@ -50,3 +50,19 @@ export const toDateTime = (secs: number) => {
   t.setSeconds(secs);
   return t;
 };
+
+type GenericFunction = (...args: any[]) => any;
+export function debounce(
+  func: GenericFunction,
+  delay: number
+): GenericFunction {
+  let timeoutId: NodeJS.Timeout;
+
+  return function (this: typeof debounce, ...args: any[]): void {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  }.bind(debounce); // Use bind para definir o tipo de 'this'
+}

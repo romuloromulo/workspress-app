@@ -18,6 +18,7 @@ import { useToast } from "../ui/use-toast";
 import { useSupabaseUser } from "@/lib/providers/supabase-user-provider";
 import { useAppState } from "@/lib/providers/state-providers";
 import { updateFolder, createFile, updateFile } from "@/lib/supabase/queries";
+import { debounce } from "@/lib/utils";
 
 interface DropdownProps {
   title: string;
@@ -267,20 +268,6 @@ const Dropdown: React.FC<DropdownProps> = ({
     }
   }
 
-  type GenericFunction = (...args: any[]) => any;
-
-  function debounce(func: GenericFunction, delay: number): GenericFunction {
-    let timeoutId: NodeJS.Timeout;
-
-    return function (this: typeof debounce, ...args: any[]): void {
-      clearTimeout(timeoutId);
-
-      timeoutId = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    }.bind(debounce); // Use bind para definir o tipo de 'this'
-  }
-
   // Uso do debounce para envolver a função addNewFile com um atraso de 500 milissegundos
   const debouncedAddNewFile = debounce(addNewFile, 500);
 
@@ -288,6 +275,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   // Exemplo: debouncedAddNewFile();
 
   async function moveToTrash() {
+    console.log("CHECAR SE USAR EXISTE");
     if (!user?.email || !workspaceId) return;
     setIsDeleting(true);
     const pathId = id.split("folder");
