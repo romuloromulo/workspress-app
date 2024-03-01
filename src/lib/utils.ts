@@ -51,7 +51,7 @@ export const toDateTime = (secs: number) => {
   return t;
 };
 
-type GenericFunction = (...args: any[]) => any;
+type GenericFunction = (...args: any[]) => any | (() => void);
 export function debounce(
   func: GenericFunction,
   delay: number

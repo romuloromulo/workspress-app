@@ -72,6 +72,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
     };
 
     const { data, error } = await createFolder(newFolder);
+
     if (error) {
       toast({
         title: "Error",
@@ -79,10 +80,13 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
         description: "Não foi posível criar a pasta",
       });
     } else {
-      dispatch({
-        type: "ADD_FOLDER",
-        payload: { workspaceId, folder: { ...newFolder, files: [] } },
-      });
+      debounce(() => {
+        dispatch({
+          type: "ADD_FOLDER",
+          payload: { workspaceId, folder: { ...newFolder, files: [] } },
+        });
+      }, 500);
+
       toast({
         title: "Sucesso",
         description: "Pasta criada",
