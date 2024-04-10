@@ -1,6 +1,5 @@
 import { stripe } from "@/lib/stripe";
-import { createOrRetrieveCustomer } from "@/lib/stripe/admTasks";
-
+import { createOrRetrieveCustomer } from "../../../lib/stripe/admTasks";
 import { getURL } from "@/lib/utils";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 

@@ -1,7 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Price } from "./supabase/supabase.types";
-import { string } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,7 +17,6 @@ export const formatPrice = (price: Price) => {
 
 export const getURL = () => {
   let url = process?.env?.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000/";
-
   url = url.includes("http") ? url : `https://${url}`;
   url = url.charAt(url.length - 1) === "/" ? url : `${url}/`;
   return url;

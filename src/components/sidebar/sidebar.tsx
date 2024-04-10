@@ -35,6 +35,7 @@ const Sidebar: React.FC<SidebarProps> = async ({ params, className }) => {
   //subscr
   const { data: subscriptionData, error: subscriptionError } =
     await getUserSubscriptionStatus(user.id);
+
   // console.log("SUBSCRIPTIONDATA", subscriptionData, subscriptionError);
 
   // folders;

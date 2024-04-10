@@ -28,9 +28,9 @@ export const getUserSubscriptionStatus = async (userId: string) => {
       where: (s, { eq }) => eq(s.userId, userId),
     });
     if (data) return { data: data as Subscription, error: null };
-    else return { data: null, error: null };
+    else return "deu ruim";
   } catch (error) {
-    console.log(error);
+    console.log("ERROR GET SUBSCRIPTON", error);
     return { data: null, error: `Error` };
   }
 };

@@ -26,7 +26,8 @@ const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ products }) => {
   const { subscription } = useSupabaseUser();
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useSupabaseUser();
-
+  console.log("SUBSCRIPTION", user);
+  console.log("SUBSCRIPTION", subscription);
   const onClickContinue = async (price: Price) => {
     try {
       setIsLoading(true);

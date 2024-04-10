@@ -24,7 +24,7 @@ const PlanUsage: React.FC<PlanUsageProps> = ({
     if (stateFolderLenght === undefined) return;
     setUsagePercentage((stateFolderLenght / MAX_FOLDERS_FREE_PLAN) * 100);
   }, [state, workspaceId]);
-
+  console.log("SUBSCRIPTION STATUS", subscription?.status);
   return (
     <article className="mb-4">
       {subscription?.status !== "active" && (

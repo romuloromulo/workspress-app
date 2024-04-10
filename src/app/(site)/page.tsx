@@ -241,7 +241,7 @@ function HomePage() {
           ))}
         </div>
       </section>
-      <section className="mt-20 px-4 sm:px-6">
+      <section className="mt-20 px-4 sm:px-6 pb-24 ">
         <TitleSection
           title="O Plano perfeito para você."
           subheading="Experimente todos os benefícios dos nossos planos. Escolhe o plano que mais se encaixa nas suas necessidades e leve sua produtividade a um novo nível. ."
